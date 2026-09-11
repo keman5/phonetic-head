@@ -1,0 +1,20 @@
+{
+  "source_sha256": "c4316f47fc648026acb4dd05f1b5dafdc6586cec49b4722735ef3e33fa142b65",
+  "weld_tolerance_metres": 1e-05,
+  "skin_vertices_before": 169350,
+  "skin_vertices_after_weld": 149701,
+  "skin_vertices_after_repair": 160011,
+  "voxel_size_metres": 0.0007,
+  "decimation_ratio": 0.16,
+  "inward_shell_metres": 0.0012,
+  "max_surface_distance_metres": 0.001996682258322835,
+  "p99_surface_distance_metres": 0.0013524119276553392,
+  "morph_transfer": "Barycentric source displacement sampling",
+  "morphs": [
+    "Basis",
+    "JawOpen",
+    "LipClose",
+    "LipSpread"
+  ],
+  "internal_anatomy": "Original GLB untouched; output contains skin only."
+}

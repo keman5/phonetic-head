@@ -4,17 +4,26 @@ import {mkdir,writeFile} from 'node:fs/promises';
 await mkdir('qa',{recursive:true});
 const browser=await chromium.launch({executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',headless:true,args:['--use-angle=metal']});
 const page=await browser.newPage({viewport:{width:1440,height:1000},deviceScaleFactor:1});
-const errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.status()>=400)errors.push(r.status()+' '+r.url());});
+const errors=[];page.on('console',m=>{if(m.type()==='error'&&m.text().includes('THREE.'))errors.push(m.text());});page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.status()>=400)errors.push(r.status()+' '+r.url());});
 try{
 await page.goto('http://127.0.0.1:4173/');
 await page.waitForFunction(()=>window.labSnapshot?.().ready,{},{timeout:60000});
-const initial=await page.evaluate(()=>window.labSnapshot());assert(initial.meshCount>200);assert.equal(initial.visibleSides.right,0);assert(initial.visibleSides.left>0);
+const initial=await page.evaluate(()=>window.labSnapshot());assert.equal(initial.palette,'human');assert.equal(initial.solidCoreMeshes,2);assert.equal(initial.visibleSolidCoreMeshes,2);assert.equal(initial.repairedSkinMeshes,2);assert(initial.humanEyeColors.every(c=>c==='ffffff'));assert(initial.meshCount>200);assert(initial.sectionCapCount>50);assert(initial.medianNormalGroups>0);assert.equal(initial.visibleSectionCaps,0);assert(initial.visibleSides.right>0);assert(initial.visibleSides.left>0);
 await page.screenshot({path:'qa/01-initial.png',fullPage:true});
+await page.locator('[data-view="oblique"]').click();
+for(let i=0;i<13;i++)await page.locator('#viewer').press('ArrowDown');
+await page.locator('#stage').screenshot({path:'qa/solid-human-bottom.png'});
+await page.locator('[data-preset="cutaway"]').click();assert.equal((await page.evaluate(()=>window.labSnapshot())).visibleSolidCoreMeshes,1);
+await page.locator('#stage').screenshot({path:'qa/solid-human-half-bottom.png'});
+await page.locator('[data-view="oblique"]').click();
+await page.locator('[data-preset="cutaway"]').click();
+assert((await page.evaluate(()=>window.labSnapshot())).visibleMuscleCaps>0);
+await page.locator('[data-view="right"]').click();await page.locator('#stage').screenshot({path:'qa/solid-human-section.png'});await page.locator('[data-view="oblique"]').click();
 await page.locator('#play').click();await page.waitForTimeout(1200);
 assert((await page.evaluate(()=>window.labSnapshot())).progress>.1);
 await page.locator('#play').click();const paused=await page.evaluate(()=>window.labSnapshot().progress);await page.waitForTimeout(250);assert.equal(await page.evaluate(()=>window.labSnapshot().progress),paused);
 await page.locator('#timeline').fill('500');await page.locator('#timeline').dispatchEvent('input');
-let state=await page.evaluate(()=>window.labSnapshot());assert.equal(state.progress,.5);assert(state.morphMeshes>0);
+let state=await page.evaluate(()=>window.labSnapshot());assert.equal(state.progress,.5);assert(state.morphMeshes>0);assert.equal(state.skinMorphMeshes,2);
 await page.screenshot({path:'qa/02-theta.png',fullPage:true});
 await page.locator('#swap-sides').click();state=await page.evaluate(()=>window.labSnapshot());assert.equal(state.visibleSides.left,0);assert(state.visibleSides.right>0);
 await page.locator('[data-preset="xray"]').click();state=await page.evaluate(()=>window.labSnapshot());assert(state.visibleSides.left>0&&state.visibleSides.right>0);
@@ -29,7 +38,7 @@ await page.locator('#play').click();await page.waitForTimeout(80);const airA=awa
 await page.locator('[data-focus="genio"]').click();assert((await page.locator('#selection').innerText()).includes('颏舌肌'));
 await page.screenshot({path:'qa/03-xray.png',fullPage:true});
 await page.locator('[data-sound="i"]').click();await page.locator('[data-step="2"]').click();await page.waitForTimeout(100);
-state=await page.evaluate(()=>window.labSnapshot());assert(state.pose.voiced);assert(state.morphMeshes>0);
+state=await page.evaluate(()=>window.labSnapshot());assert(state.pose.voiced);assert(state.morphMeshes>0);assert.equal(state.skinMorphMeshes,2);
 await page.locator('#air-toggle').uncheck();await page.waitForTimeout(100);assert(!(await page.evaluate(()=>window.labSnapshot())).airVisible);
 await page.locator('[data-view="mouth"]').click();await page.screenshot({path:'qa/06-mouth-closeup.png',fullPage:true});
 await page.locator('#loop').uncheck();await page.locator('#timeline').fill('995');await page.locator('#timeline').dispatchEvent('input');await page.locator('#play').click();await page.waitForTimeout(250);
@@ -37,6 +46,38 @@ state=await page.evaluate(()=>window.labSnapshot());assert.equal(state.progress,
 await page.locator('#restart').click();state=await page.evaluate(()=>window.labSnapshot());assert.equal(state.progress,0);
 await page.locator('[data-preset="surface"]').click();await page.locator('[data-view="front"]').click();
 await page.screenshot({path:'qa/04-surface.png',fullPage:true});
+await page.locator('[data-view="oblique"]').click();await page.screenshot({path:'qa/08-repaired-surface.png',fullPage:true});
+for(const head of ['mickey','tom','human']){
+ await page.locator('#head-model').selectOption(head);
+ await page.waitForTimeout(150);
+ let selected=await page.evaluate(()=>window.labSnapshot());assert.equal(selected.palette,head);assert.deepEqual(selected.visibleHeadVariants,[head]);assert(selected.visibleHeadMeshes>0);
+ assert.deepEqual(selected.headModels.sort(),['human','mickey','tom']);
+ await page.screenshot({path:`qa/head-${head}.png`,fullPage:true});
+ if(head!=='human'){
+  assert.equal(selected.visibleSolidCoreMeshes,0);assert(selected.visibleHeadMeshes>10);assert.equal(selected.visibleSourceMeshes,0);
+  await page.locator('#restart').click();await page.locator('#clear-focus').click();
+  await page.locator('[data-view="oblique"]').click();await page.screenshot({path:`qa/head-${head}-oblique.png`,fullPage:true});
+  await page.locator('[data-view="front"]').click();
+  await page.locator('#stage').screenshot({path:`qa/character-${head}-front.png`});
+  await page.locator('[data-view="oblique"]').click();for(let i=0;i<13;i++)await page.locator('#viewer').press('ArrowDown');
+  await page.locator('#stage').screenshot({path:`qa/solid-${head}-bottom.png`});await page.locator('[data-view="front"]').click();
+  await page.locator('[data-sound="p"]').click();await page.locator('[data-step="1"]').click();await page.waitForTimeout(100);
+  let closed=await page.evaluate(()=>window.labSnapshot());assert(closed.characterTongue.every(t=>!t.visible));assert(!closed.airVisible);
+  await page.locator('#stage').screenshot({path:`qa/character-${head}-closed.png`});
+  await page.locator('[data-step="2"]').click();await page.waitForTimeout(100);
+  await page.locator('#stage').screenshot({path:`qa/character-${head}-release.png`});
+  await page.locator('[data-sound="theta"]').click();await page.locator('[data-step="1"]').click();await page.waitForTimeout(100);
+  const tonguePose=await page.evaluate(()=>window.labSnapshot());assert(tonguePose.skinMorphMeshes>0);assert(tonguePose.characterTongue.some(t=>t.visible&&t.weights.TipForward>.9));
+  await page.locator('[data-focus="lips"]').click();assert((await page.locator('#selection').innerText()).includes('嘴唇'));
+  await page.locator('#clear-focus').click();
+  await page.locator('[data-preset="cutaway"]').click();await page.locator('[data-view="right"]').click();
+  await page.screenshot({path:`qa/head-${head}-cutaway.png`,fullPage:true});
+  const sections=await page.evaluate(()=>window.labSnapshot());assert(sections.visibleSectionCaps>0);assert(sections.visibleWhiteSections>0);assert.deepEqual(sections.whiteSectionColors,['ffffff']);
+  await page.locator('#stage').screenshot({path:`qa/solid-${head}-section.png`});
+ }
+}
+assert.equal(await page.locator('#head-model option[value="original"]').count(),0);
+await page.locator('#head-model').selectOption('tom');
 await page.setViewportSize({width:390,height:844});await page.waitForTimeout(200);
 assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await page.screenshot({path:'qa/05-mobile.png',fullPage:true});
 assert.equal(errors.length,0,errors.join('\n'));

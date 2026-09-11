@@ -1,0 +1,26 @@
+{
+  "source_sha256": "9921356c995df3a92afc72a8d2dd16eb97e74f6e978a50182f57d602af5a75a2",
+  "layers": 191,
+  "sectors": 160,
+  "body_inset_metres": 0.0015,
+  "end_inset_metres": 0.00025,
+  "interpolated_rays": 415,
+  "oral_recess_bottom_z": 1.505,
+  "closed_base_z": 1.431268808498083,
+  "halves": [
+    {
+      "side": "left",
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "volume_m3": 0.0023968827947251753,
+      "vertices": 16186
+    },
+    {
+      "side": "right",
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "volume_m3": 0.0023967450291859644,
+      "vertices": 16194
+    }
+  ]
+}
