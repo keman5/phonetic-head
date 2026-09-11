@@ -1,0 +1,20 @@
+# Local dependencies and verification output
+node_modules/
+interactive-lab/qa/
+__pycache__/
+*.py[cod]
+.DS_Store
+*.log
+
+# Credentials and machine-local settings
+.env
+.env.*
+!.env.example
+
+# Upstream checkout and reproducible import intermediates
+/anatomy-source/
+/anatomy-import.blend
+/visceral-download.fbx
+
+# Blender automatic backups; named model versions remain tracked
+*.blend[0-9]*
