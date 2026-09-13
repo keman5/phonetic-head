@@ -3,14 +3,14 @@
     "head_width": 0.13399997353553772,
     "head_height_without_ears": 0.13199996948242188,
     "ear_span": 0.2099824845790863,
-    "parts": 17,
+    "parts": 19,
     "reference": "Classic animation head silhouettes; independently modelled 3D interpretation."
   },
   "tom": {
     "head_width": 0.19579065591096878,
     "head_height_without_ears": 0.11996662616729736,
     "ear_span": 0.2136523425579071,
-    "parts": 35,
+    "parts": 37,
     "reference": "Classic animation head silhouettes; independently modelled 3D interpretation."
   }
 }

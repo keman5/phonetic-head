@@ -2,9 +2,11 @@
 Blender --background --python build_character_heads.py
 """
 from pathlib import Path
-import bpy,bmesh,math,json
+import bpy,bmesh,math,json,sys
 from mathutils import Vector
 ROOT=Path(__file__).resolve().parent
+sys.path.insert(0,str(ROOT))
+from articulation import KEYS,extra_deform
 bpy.ops.wm.read_factory_settings(use_empty=True)
 parts=[]
 DARK='#171b24';MICKEY_FACE='#ffe5ba';WHITE='#f7f4e9';BLUE='#7388a1';PINK='#e898ab'
@@ -93,6 +95,8 @@ def mouth_opening(objects,character):
  patch('Mouth cavity',outline,'#422333',lambda x,z,r:-.062,lambda x,z,r:.004,feature='mouth',rings=3)
  tongue=ellipsoid('Tongue',(0,-.069,1.538),(.022,.031,.0065),'#ef758a','tongue',layer='organ',anatomy='Tongue')
  ellipsoid('Soft palate',(0,-.032,1.562),(.026,.022,.0035),'#c79fcf','palate',layer='organ',anatomy='Soft palate')
+ for side in [-1,1]:
+  ellipsoid('Vocal fold',(side*.0035,.002,1.499),(.003,.012,.0025),'#e898ab','voice',layer='organ',anatomy='Character vocal fold')
  # Thin drawn corner accents follow the same deformation as the smile.
  for side in [-1,1]:tube('Smile corner',[(side*w*.91,-.072,1.558),(side*w*1.03,-.065,1.562),(side*w*1.08,-.06,1.564)],DARK,.0007,'mouth')
 
@@ -103,7 +107,7 @@ def smooth(a,b,v):
 def add_motion(o):
  name=o['feature'];base=[v.co.copy() for v in o.data.vertices];targets={}
  if name in ['ear','eye','pupil','brow','hair','stand','nose','whisker']:return
- for key in ['JawOpen','LipClose','LipSpread','TipForward','FrontHigh','BackSeal','VelumRaise']:
+ for key in KEYS:
   result=[]
   for v in base:
    x,y,z=v;dx=dy=dz=0
@@ -127,7 +131,9 @@ def add_motion(o):
     if key=='FrontHigh':dz=.010*tip
     if key=='BackSeal':dz=.014*(1-tip)
    if name=='palate' and key=='VelumRaise':dz=.003*(1-smooth(-.043,-.02,y))
-   result.append(Vector((x+dx,y+dy,z+dz)))
+   co=(x+dx,y+dy,z+dz)
+   if key not in KEYS[:7]:co=extra_deform(o['anatomyName'],o['layer'],key,co,name)
+   result.append(Vector(co))
   if any((a-b).length>1e-6 for a,b in zip(base,result)):targets[key]=result
  if targets:
   o.shape_key_add(name='Basis')

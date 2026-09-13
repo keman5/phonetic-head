@@ -1,13 +1,16 @@
-import bpy,bmesh,os,json,math
+import bpy,bmesh,os,json,math,sys
+from pathlib import Path
 from mathutils import Vector
-ROOT='/Users/kevin/Documents/phonetic-head-blender'
+ROOT=str(Path(__file__).resolve().parent)
+sys.path.insert(0,ROOT)
+from articulation import KEYS,extra_deform
 OUT=ROOT+'/interactive-lab/dist/assets'
 bpy.ops.wm.open_mainfile(filepath=ROOT+'/v04-refined-white/anatomical-head-white-v04.blend')
 scene=bpy.context.scene
 full=bpy.data.collections['01 Source anatomy - full head']
 sources=[o for o in full.all_objects if o.type=='MESH']
 for c in bpy.data.collections:c.hide_viewport=False;c.hide_render=False
-types=json.load(open(ROOT+'/v03-anatomy-base/included-structures.json'))
+types={m['name']:m['layer'] for m in json.load(open(OUT+'/model-manifest.json'))['meshes']}
 dg=bpy.context.evaluated_depsgraph_get()
 copies=[]
 for o in sources:
@@ -61,9 +64,9 @@ def deform(name,kind,key,v):
         if key=='LipClose':dz=(1.534-z)*mouthw*.6;dy=-.0015*mouthw
         if key=='LipSpread':dx=x*.20*mouthw;dz=.0015*mouthw
     if key=='Voice' and any(k in name.lower() for k in ['thyro-arytenoid','crico-arytenoid','arytenoid cartilage','transverse arytenoid']):dx=-x*.16
-    return (x+dx,y+dy,z+dz)
+    return extra_deform(name,kind,key,(x+dx,y+dy,z+dz)) if key not in KEYS[:8] else (x+dx,y+dy,z+dz)
 
-keys=['JawOpen','TipForward','FrontHigh','BackSeal','VelumRaise','LipClose','LipSpread','Voice']
+keys=KEYS
 counts={};stats=[]
 for obj in copies:
     name=obj['anatomyName'];kind=obj['layer'];base=[tuple(v.co) for v in obj.data.vertices]
@@ -84,6 +87,7 @@ for obj in copies:
 bpy.ops.object.select_all(action='DESELECT')
 for o in copies:o.hide_set(False);o.select_set(True)
 bpy.ops.export_scene.gltf(filepath=OUT+'/phonetic-head.glb',export_format='GLB',use_selection=True,export_extras=True,export_animations=False,export_morph=True,export_morph_normal=False,export_morph_tangent=False,export_yup=True,export_cameras=False,export_lights=False)
+bpy.ops.wm.save_as_mainfile(filepath=ROOT+'/phonetic-head-articulated.blend',compress=True)
 with open(OUT+'/model-manifest.json','w') as f:json.dump(dict(source='Z-Anatomy via local V04',license='CC BY-SA 4.0',units='metres',sides='anatomical left +X; right -X',morphs=counts,meshes=stats,notice='Anatomical source base; authored educational deformations, not biomechanical simulation.'),f,indent=2)
 assert all(counts.get(k,0)>0 for k in keys)
 assert os.path.getsize(OUT+'/phonetic-head.glb')>100000

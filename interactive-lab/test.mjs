@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 import {poseAt,effectiveOpacity,DEFAULT_ALPHA,SOUNDS} from './dist/motion.js';
+import {CHANNELS} from './dist/phonemes.js';
+import './phonemes.test.mjs';
 
 test('plosives block airflow during closure and release it afterward',()=>{
   for(const sound of ['p','k']){
@@ -27,7 +29,8 @@ const bin=readFileSync('./dist/assets/phonetic-head.glb');
 assert.equal(bin.readUInt32LE(0),0x46546c67);
 const jsonLength=bin.readUInt32LE(12),gltf=JSON.parse(bin.subarray(20,20+jsonLength).toString());
 const dataStart=20+jsonLength+8;
-function values(index){
+function values(index,document=gltf,bytes=bin){
+  const gltf=document,bin=bytes,dataStart=20+bin.readUInt32LE(12)+8;
   const a=gltf.accessors[index];assert.equal(a.componentType,5126);
   const result=new Array(a.count*3).fill(0);
   if(a.bufferView!==undefined){const v=gltf.bufferViews[a.bufferView],start=dataStart+(v.byteOffset||0)+(a.byteOffset||0);for(let i=0;i<result.length;i++)result[i]=bin.readFloatLE(start+i*4);}
@@ -53,7 +56,7 @@ test('exported anatomy includes actual morph geometry, with correctly split left
     if(node.extras.layer==='skin')skin++;
   }
   assert.equal(skin,2);
-  for(const target of ['JawOpen','TipForward','FrontHigh','BackSeal','VelumRaise','LipClose','LipSpread','Voice'])assert(seen.has(target),target);
+  assert.deepEqual([...seen].sort(),[...CHANNELS].sort());
 });
 
 // A repaired skin asset must never silently replace or alter the source organs.
@@ -69,8 +72,8 @@ test('skin repair preserves source anatomy, scale and authored animation channel
   for(const node of nodes){
     assert.equal(node.extras.layer,'skin');
     const mesh=doc.meshes[node.mesh];
-    assert.deepEqual(mesh.extras.targetNames,['JawOpen','LipClose','LipSpread']);
     const source=gltf.nodes.find(n=>n.extras?.layer==='skin'&&n.extras.side===node.extras.side);
+    assert.deepEqual(mesh.extras.targetNames,gltf.meshes[source.mesh].extras.targetNames);
     const ref=gltf.accessors[gltf.meshes[source.mesh].primitives[0].attributes.POSITION];
     for(const primitive of mesh.primitives){
       const positions=doc.accessors[primitive.attributes.POSITION];
@@ -79,7 +82,7 @@ test('skin repair preserves source anatomy, scale and authored animation channel
         assert(Math.abs(positions.min[axis]-ref.min[axis])<.004);
         assert(Math.abs(positions.max[axis]-ref.max[axis])<.004);
       }
-      assert.equal(primitive.targets.length,3);
+      assert.equal(primitive.targets.length,mesh.extras.targetNames.length);
     }
     for(let axis=0;axis<3;axis++)assert(Math.abs(node.translation[axis]-source.translation[axis])<1e-6);
   }

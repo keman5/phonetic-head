@@ -5,13 +5,29 @@
   "sides": "anatomical left +X; right -X",
   "morphs": {
     "Voice": 12,
+    "GlottisClose": 12,
+    "VocalTension": 12,
+    "GlottisOpen": 12,
+    "BreathPressure": 26,
     "JawOpen": 52,
+    "JawForward": 86,
     "LipClose": 14,
     "LipSpread": 14,
+    "LipRound": 14,
+    "LipProtrude": 14,
+    "LipBite": 14,
     "TipForward": 6,
     "FrontHigh": 6,
     "BackSeal": 6,
-    "VelumRaise": 8
+    "TipAlveolar": 6,
+    "TongueRetroflex": 6,
+    "TongueCenter": 6,
+    "TongueLow": 6,
+    "BackHigh": 6,
+    "TongueGroove": 6,
+    "TongueLateral": 6,
+    "VelumRaise": 8,
+    "VelumLower": 8
   },
   "meshes": [
     {
@@ -34,7 +50,11 @@
       "layer": "bone",
       "vertices": 1892,
       "targets": [
-        "Voice"
+        "Voice",
+        "GlottisClose",
+        "VocalTension",
+        "GlottisOpen",
+        "BreathPressure"
       ]
     },
     {
@@ -43,7 +63,11 @@
       "layer": "bone",
       "vertices": 1892,
       "targets": [
-        "Voice"
+        "Voice",
+        "GlottisClose",
+        "VocalTension",
+        "GlottisOpen",
+        "BreathPressure"
       ]
     },
     {
@@ -206,7 +230,8 @@
       "layer": "bone",
       "vertices": 640,
       "targets": [
-        "JawOpen"
+        "JawOpen",
+        "JawForward"
       ]
     },
     {
@@ -215,7 +240,8 @@
       "layer": "bone",
       "vertices": 640,
       "targets": [
-        "JawOpen"
+        "JawOpen",
+        "JawForward"
       ]
     },
     {
@@ -224,7 +250,8 @@
       "layer": "bone",
       "vertices": 2260,
       "targets": [
-        "JawOpen"
+        "JawOpen",
+        "JawForward"
       ]
     },
     {
@@ -233,7 +260,8 @@
       "layer": "bone",
       "vertices": 2260,
       "targets": [
-        "JawOpen"
+        "JawOpen",
+        "JawForward"
       ]
     },
     {
@@ -242,7 +270,8 @@
       "layer": "bone",
       "vertices": 613,
       "targets": [
-        "JawOpen"
+        "JawOpen",
+        "JawForward"
       ]
     },
     {
@@ -251,7 +280,8 @@
       "layer": "bone",
       "vertices": 613,
       "targets": [
-        "JawOpen"
+        "JawOpen",
+        "JawForward"
       ]
     },
     {
@@ -260,7 +290,8 @@
       "layer": "bone",
       "vertices": 522,
       "targets": [
-        "JawOpen"
+        "JawOpen",
+        "JawForward"
       ]
     },
     {
@@ -269,7 +300,8 @@
       "layer": "bone",
       "vertices": 522,
       "targets": [
-        "JawOpen"
+        "JawOpen",
+        "JawForward"
       ]
     },
     {
@@ -278,7 +310,8 @@
       "layer": "bone",
       "vertices": 494,
       "targets": [
-        "JawOpen"
+        "JawOpen",
+        "JawForward"
       ]
     },
     {
@@ -287,7 +320,8 @@
       "layer": "bone",
       "vertices": 494,
       "targets": [
-        "JawOpen"
+        "JawOpen",
+        "JawForward"
       ]
     },
     {
@@ -296,7 +330,8 @@
       "layer": "bone",
       "vertices": 840,
       "targets": [
-        "JawOpen"
+        "JawOpen",
+        "JawForward"
       ]
     },
     {
@@ -305,7 +340,8 @@
       "layer": "bone",
       "vertices": 840,
       "targets": [
-        "JawOpen"
+        "JawOpen",
+        "JawForward"
       ]
     },
     {
@@ -314,7 +350,8 @@
       "layer": "bone",
       "vertices": 592,
       "targets": [
-        "JawOpen"
+        "JawOpen",
+        "JawForward"
       ]
     },
     {
@@ -323,7 +360,8 @@
       "layer": "bone",
       "vertices": 592,
       "targets": [
-        "JawOpen"
+        "JawOpen",
+        "JawForward"
       ]
     },
     {
@@ -360,7 +398,8 @@
       "layer": "bone",
       "vertices": 4735,
       "targets": [
-        "JawOpen"
+        "JawOpen",
+        "JawForward"
       ]
     },
     {
@@ -369,7 +408,8 @@
       "layer": "bone",
       "vertices": 4690,
       "targets": [
-        "JawOpen"
+        "JawOpen",
+        "JawForward"
       ]
     },
     {
@@ -812,7 +852,8 @@
       "layer": "muscle",
       "vertices": 198,
       "targets": [
-        "JawOpen"
+        "JawOpen",
+        "JawForward"
       ]
     },
     {
@@ -821,7 +862,8 @@
       "layer": "muscle",
       "vertices": 198,
       "targets": [
-        "JawOpen"
+        "JawOpen",
+        "JawForward"
       ]
     },
     {
@@ -829,28 +871,36 @@
       "side": "left",
       "layer": "muscle",
       "vertices": 513,
-      "targets": []
+      "targets": [
+        "JawForward"
+      ]
     },
     {
       "name": "Ary-epiglottic part of oblique arytenoid muscle.r",
       "side": "right",
       "layer": "muscle",
       "vertices": 513,
-      "targets": []
+      "targets": [
+        "JawForward"
+      ]
     },
     {
       "name": "Bucinator.l",
       "side": "left",
       "layer": "muscle",
       "vertices": 444,
-      "targets": []
+      "targets": [
+        "JawForward"
+      ]
     },
     {
       "name": "Bucinator.r",
       "side": "right",
       "layer": "muscle",
       "vertices": 444,
-      "targets": []
+      "targets": [
+        "JawForward"
+      ]
     },
     {
       "name": "Common tendinous ring.l",
@@ -886,7 +936,8 @@
       "layer": "muscle",
       "vertices": 497,
       "targets": [
-        "JawOpen"
+        "JawOpen",
+        "JawForward"
       ]
     },
     {
@@ -895,7 +946,8 @@
       "layer": "muscle",
       "vertices": 497,
       "targets": [
-        "JawOpen"
+        "JawOpen",
+        "JawForward"
       ]
     },
     {
@@ -904,7 +956,8 @@
       "layer": "muscle",
       "vertices": 299,
       "targets": [
-        "JawOpen"
+        "JawOpen",
+        "JawForward"
       ]
     },
     {
@@ -913,7 +966,8 @@
       "layer": "muscle",
       "vertices": 299,
       "targets": [
-        "JawOpen"
+        "JawOpen",
+        "JawForward"
       ]
     },
     {
@@ -924,7 +978,12 @@
       "targets": [
         "JawOpen",
         "LipClose",
-        "LipSpread"
+        "LipSpread",
+        "JawForward",
+        "LipRound",
+        "LipProtrude",
+        "LipBite",
+        "BreathPressure"
       ]
     },
     {
@@ -935,7 +994,12 @@
       "targets": [
         "JawOpen",
         "LipClose",
-        "LipSpread"
+        "LipSpread",
+        "JawForward",
+        "LipRound",
+        "LipProtrude",
+        "LipBite",
+        "BreathPressure"
       ]
     },
     {
@@ -944,7 +1008,8 @@
       "layer": "muscle",
       "vertices": 140,
       "targets": [
-        "JawOpen"
+        "JawOpen",
+        "JawForward"
       ]
     },
     {
@@ -953,7 +1018,8 @@
       "layer": "muscle",
       "vertices": 140,
       "targets": [
-        "JawOpen"
+        "JawOpen",
+        "JawForward"
       ]
     },
     {
@@ -976,7 +1042,12 @@
       "layer": "muscle",
       "vertices": 1120,
       "targets": [
-        "Voice"
+        "Voice",
+        "JawForward",
+        "GlottisClose",
+        "VocalTension",
+        "GlottisOpen",
+        "BreathPressure"
       ]
     },
     {
@@ -985,7 +1056,12 @@
       "layer": "muscle",
       "vertices": 1120,
       "targets": [
-        "Voice"
+        "Voice",
+        "JawForward",
+        "GlottisClose",
+        "VocalTension",
+        "GlottisOpen",
+        "BreathPressure"
       ]
     },
     {
@@ -1011,7 +1087,15 @@
         "JawOpen",
         "TipForward",
         "FrontHigh",
-        "BackSeal"
+        "BackSeal",
+        "JawForward",
+        "TipAlveolar",
+        "TongueRetroflex",
+        "TongueCenter",
+        "TongueLow",
+        "BackHigh",
+        "TongueGroove",
+        "TongueLateral"
       ]
     },
     {
@@ -1023,7 +1107,15 @@
         "JawOpen",
         "TipForward",
         "FrontHigh",
-        "BackSeal"
+        "BackSeal",
+        "JawForward",
+        "TipAlveolar",
+        "TongueRetroflex",
+        "TongueCenter",
+        "TongueLow",
+        "BackHigh",
+        "TongueGroove",
+        "TongueLateral"
       ]
     },
     {
@@ -1031,14 +1123,18 @@
       "side": "left",
       "layer": "muscle",
       "vertices": 267,
-      "targets": []
+      "targets": [
+        "JawForward"
+      ]
     },
     {
       "name": "Geniohyoid muscle.r",
       "side": "right",
       "layer": "muscle",
       "vertices": 267,
-      "targets": []
+      "targets": [
+        "JawForward"
+      ]
     },
     {
       "name": "Hyoglossus muscle.l",
@@ -1049,7 +1145,15 @@
         "JawOpen",
         "TipForward",
         "FrontHigh",
-        "BackSeal"
+        "BackSeal",
+        "JawForward",
+        "TipAlveolar",
+        "TongueRetroflex",
+        "TongueCenter",
+        "TongueLow",
+        "BackHigh",
+        "TongueGroove",
+        "TongueLateral"
       ]
     },
     {
@@ -1061,7 +1165,15 @@
         "JawOpen",
         "TipForward",
         "FrontHigh",
-        "BackSeal"
+        "BackSeal",
+        "JawForward",
+        "TipAlveolar",
+        "TongueRetroflex",
+        "TongueCenter",
+        "TongueLow",
+        "BackHigh",
+        "TongueGroove",
+        "TongueLateral"
       ]
     },
     {
@@ -1130,7 +1242,8 @@
       "layer": "muscle",
       "vertices": 116,
       "targets": [
-        "JawOpen"
+        "JawOpen",
+        "JawForward"
       ]
     },
     {
@@ -1139,7 +1252,8 @@
       "layer": "muscle",
       "vertices": 116,
       "targets": [
-        "JawOpen"
+        "JawOpen",
+        "JawForward"
       ]
     },
     {
@@ -1162,7 +1276,11 @@
       "layer": "muscle",
       "vertices": 815,
       "targets": [
-        "Voice"
+        "Voice",
+        "GlottisClose",
+        "VocalTension",
+        "GlottisOpen",
+        "BreathPressure"
       ]
     },
     {
@@ -1171,7 +1289,11 @@
       "layer": "muscle",
       "vertices": 815,
       "targets": [
-        "Voice"
+        "Voice",
+        "GlottisClose",
+        "VocalTension",
+        "GlottisOpen",
+        "BreathPressure"
       ]
     },
     {
@@ -1193,14 +1315,18 @@
       "side": "left",
       "layer": "muscle",
       "vertices": 165,
-      "targets": []
+      "targets": [
+        "JawForward"
+      ]
     },
     {
       "name": "Levator anguli oris.r",
       "side": "right",
       "layer": "muscle",
       "vertices": 165,
-      "targets": []
+      "targets": [
+        "JawForward"
+      ]
     },
     {
       "name": "Levator labii superioris.l",
@@ -1209,7 +1335,12 @@
       "vertices": 272,
       "targets": [
         "LipClose",
-        "LipSpread"
+        "LipSpread",
+        "JawForward",
+        "LipRound",
+        "LipProtrude",
+        "LipBite",
+        "BreathPressure"
       ]
     },
     {
@@ -1219,7 +1350,12 @@
       "vertices": 272,
       "targets": [
         "LipClose",
-        "LipSpread"
+        "LipSpread",
+        "JawForward",
+        "LipRound",
+        "LipProtrude",
+        "LipBite",
+        "BreathPressure"
       ]
     },
     {
@@ -1256,7 +1392,8 @@
       "layer": "muscle",
       "vertices": 226,
       "targets": [
-        "JawOpen"
+        "JawOpen",
+        "JawForward"
       ]
     },
     {
@@ -1265,7 +1402,8 @@
       "layer": "muscle",
       "vertices": 226,
       "targets": [
-        "JawOpen"
+        "JawOpen",
+        "JawForward"
       ]
     },
     {
@@ -1274,7 +1412,8 @@
       "layer": "muscle",
       "vertices": 249,
       "targets": [
-        "JawOpen"
+        "JawOpen",
+        "JawForward"
       ]
     },
     {
@@ -1283,7 +1422,8 @@
       "layer": "muscle",
       "vertices": 249,
       "targets": [
-        "JawOpen"
+        "JawOpen",
+        "JawForward"
       ]
     },
     {
@@ -1305,14 +1445,18 @@
       "side": "left",
       "layer": "muscle",
       "vertices": 1476,
-      "targets": []
+      "targets": [
+        "JawForward"
+      ]
     },
     {
       "name": "Middle pharyngeal constrictor.r",
       "side": "right",
       "layer": "muscle",
       "vertices": 1476,
-      "targets": []
+      "targets": [
+        "JawForward"
+      ]
     },
     {
       "name": "Multifidus colli muscle.l",
@@ -1334,7 +1478,8 @@
       "layer": "muscle",
       "vertices": 561,
       "targets": [
-        "JawOpen"
+        "JawOpen",
+        "JawForward"
       ]
     },
     {
@@ -1343,7 +1488,8 @@
       "layer": "muscle",
       "vertices": 561,
       "targets": [
-        "JawOpen"
+        "JawOpen",
+        "JawForward"
       ]
     },
     {
@@ -1424,7 +1570,12 @@
       "targets": [
         "JawOpen",
         "LipClose",
-        "LipSpread"
+        "LipSpread",
+        "JawForward",
+        "LipRound",
+        "LipProtrude",
+        "LipBite",
+        "BreathPressure"
       ]
     },
     {
@@ -1435,7 +1586,12 @@
       "targets": [
         "JawOpen",
         "LipClose",
-        "LipSpread"
+        "LipSpread",
+        "JawForward",
+        "LipRound",
+        "LipProtrude",
+        "LipBite",
+        "BreathPressure"
       ]
     },
     {
@@ -1458,7 +1614,9 @@
       "layer": "muscle",
       "vertices": 7622,
       "targets": [
-        "VelumRaise"
+        "VelumRaise",
+        "JawForward",
+        "VelumLower"
       ]
     },
     {
@@ -1467,7 +1625,9 @@
       "layer": "muscle",
       "vertices": 182,
       "targets": [
-        "VelumRaise"
+        "VelumRaise",
+        "JawForward",
+        "VelumLower"
       ]
     },
     {
@@ -1476,7 +1636,9 @@
       "layer": "muscle",
       "vertices": 182,
       "targets": [
-        "VelumRaise"
+        "VelumRaise",
+        "JawForward",
+        "VelumLower"
       ]
     },
     {
@@ -1485,7 +1647,9 @@
       "layer": "muscle",
       "vertices": 7622,
       "targets": [
-        "VelumRaise"
+        "VelumRaise",
+        "JawForward",
+        "VelumLower"
       ]
     },
     {
@@ -1508,7 +1672,8 @@
       "layer": "muscle",
       "vertices": 638,
       "targets": [
-        "JawOpen"
+        "JawOpen",
+        "JawForward"
       ]
     },
     {
@@ -1517,7 +1682,8 @@
       "layer": "muscle",
       "vertices": 638,
       "targets": [
-        "JawOpen"
+        "JawOpen",
+        "JawForward"
       ]
     },
     {
@@ -1526,7 +1692,11 @@
       "layer": "muscle",
       "vertices": 908,
       "targets": [
-        "Voice"
+        "Voice",
+        "GlottisClose",
+        "VocalTension",
+        "GlottisOpen",
+        "BreathPressure"
       ]
     },
     {
@@ -1535,7 +1705,11 @@
       "layer": "muscle",
       "vertices": 908,
       "targets": [
-        "Voice"
+        "Voice",
+        "GlottisClose",
+        "VocalTension",
+        "GlottisOpen",
+        "BreathPressure"
       ]
     },
     {
@@ -1615,7 +1789,12 @@
       "vertices": 296,
       "targets": [
         "LipClose",
-        "LipSpread"
+        "LipSpread",
+        "JawForward",
+        "LipRound",
+        "LipProtrude",
+        "LipBite",
+        "BreathPressure"
       ]
     },
     {
@@ -1625,7 +1804,12 @@
       "vertices": 296,
       "targets": [
         "LipClose",
-        "LipSpread"
+        "LipSpread",
+        "JawForward",
+        "LipRound",
+        "LipProtrude",
+        "LipBite",
+        "BreathPressure"
       ]
     },
     {
@@ -1647,42 +1831,54 @@
       "side": "left",
       "layer": "muscle",
       "vertices": 592,
-      "targets": []
+      "targets": [
+        "JawForward"
+      ]
     },
     {
       "name": "Straight part of cricothyroid muscle.r",
       "side": "right",
       "layer": "muscle",
       "vertices": 592,
-      "targets": []
+      "targets": [
+        "JawForward"
+      ]
     },
     {
       "name": "Stylohyoid muscle.l",
       "side": "left",
       "layer": "muscle",
       "vertices": 349,
-      "targets": []
+      "targets": [
+        "JawForward"
+      ]
     },
     {
       "name": "Stylohyoid muscle.r",
       "side": "right",
       "layer": "muscle",
       "vertices": 349,
-      "targets": []
+      "targets": [
+        "JawForward"
+      ]
     },
     {
       "name": "Stylopharyngeus muscle.l",
       "side": "left",
       "layer": "muscle",
       "vertices": 4740,
-      "targets": []
+      "targets": [
+        "JawForward"
+      ]
     },
     {
       "name": "Stylopharyngeus muscle.r",
       "side": "right",
       "layer": "muscle",
       "vertices": 4740,
-      "targets": []
+      "targets": [
+        "JawForward"
+      ]
     },
     {
       "name": "Superficial layer of temporal fascia.l",
@@ -1704,7 +1900,8 @@
       "layer": "muscle",
       "vertices": 702,
       "targets": [
-        "JawOpen"
+        "JawOpen",
+        "JawForward"
       ]
     },
     {
@@ -1713,7 +1910,8 @@
       "layer": "muscle",
       "vertices": 702,
       "targets": [
-        "JawOpen"
+        "JawOpen",
+        "JawForward"
       ]
     },
     {
@@ -1749,14 +1947,18 @@
       "side": "left",
       "layer": "muscle",
       "vertices": 2669,
-      "targets": []
+      "targets": [
+        "JawForward"
+      ]
     },
     {
       "name": "Superior pharyngeal constrictor.r",
       "side": "right",
       "layer": "muscle",
       "vertices": 2669,
-      "targets": []
+      "targets": [
+        "JawForward"
+      ]
     },
     {
       "name": "Superior rectus muscle.l",
@@ -1777,14 +1979,18 @@
       "side": "left",
       "layer": "muscle",
       "vertices": 5126,
-      "targets": []
+      "targets": [
+        "JawForward"
+      ]
     },
     {
       "name": "Temporalis muscle.r",
       "side": "right",
       "layer": "muscle",
       "vertices": 5126,
-      "targets": []
+      "targets": [
+        "JawForward"
+      ]
     },
     {
       "name": "Temporoparietalis muscle.l",
@@ -1806,7 +2012,12 @@
       "layer": "muscle",
       "vertices": 1557,
       "targets": [
-        "Voice"
+        "Voice",
+        "JawForward",
+        "GlottisClose",
+        "VocalTension",
+        "GlottisOpen",
+        "BreathPressure"
       ]
     },
     {
@@ -1815,7 +2026,12 @@
       "layer": "muscle",
       "vertices": 1557,
       "targets": [
-        "Voice"
+        "Voice",
+        "JawForward",
+        "GlottisClose",
+        "VocalTension",
+        "GlottisOpen",
+        "BreathPressure"
       ]
     },
     {
@@ -1823,14 +2039,18 @@
       "side": "left",
       "layer": "muscle",
       "vertices": 352,
-      "targets": []
+      "targets": [
+        "JawForward"
+      ]
     },
     {
       "name": "Thyrohyoid muscle.r",
       "side": "right",
       "layer": "muscle",
       "vertices": 352,
-      "targets": []
+      "targets": [
+        "JawForward"
+      ]
     },
     {
       "name": "Transverse arytenoid muscle",
@@ -1838,7 +2058,11 @@
       "layer": "muscle",
       "vertices": 560,
       "targets": [
-        "Voice"
+        "Voice",
+        "GlottisClose",
+        "VocalTension",
+        "GlottisOpen",
+        "BreathPressure"
       ]
     },
     {
@@ -1847,7 +2071,11 @@
       "layer": "muscle",
       "vertices": 625,
       "targets": [
-        "Voice"
+        "Voice",
+        "GlottisClose",
+        "VocalTension",
+        "GlottisOpen",
+        "BreathPressure"
       ]
     },
     {
@@ -1857,7 +2085,12 @@
       "vertices": 397,
       "targets": [
         "LipClose",
-        "LipSpread"
+        "LipSpread",
+        "JawForward",
+        "LipRound",
+        "LipProtrude",
+        "LipBite",
+        "BreathPressure"
       ]
     },
     {
@@ -1867,7 +2100,12 @@
       "vertices": 397,
       "targets": [
         "LipClose",
-        "LipSpread"
+        "LipSpread",
+        "JawForward",
+        "LipRound",
+        "LipProtrude",
+        "LipBite",
+        "BreathPressure"
       ]
     },
     {
@@ -1877,7 +2115,12 @@
       "vertices": 218,
       "targets": [
         "LipClose",
-        "LipSpread"
+        "LipSpread",
+        "JawForward",
+        "LipRound",
+        "LipProtrude",
+        "LipBite",
+        "BreathPressure"
       ]
     },
     {
@@ -1887,7 +2130,12 @@
       "vertices": 218,
       "targets": [
         "LipClose",
-        "LipSpread"
+        "LipSpread",
+        "JawForward",
+        "LipRound",
+        "LipProtrude",
+        "LipBite",
+        "BreathPressure"
       ]
     },
     {
@@ -1984,7 +2232,8 @@
       "layer": "organ",
       "vertices": 974,
       "targets": [
-        "VelumRaise"
+        "VelumRaise",
+        "VelumLower"
       ]
     },
     {
@@ -1993,7 +2242,8 @@
       "layer": "organ",
       "vertices": 974,
       "targets": [
-        "VelumRaise"
+        "VelumRaise",
+        "VelumLower"
       ]
     },
     {
@@ -2005,7 +2255,15 @@
         "JawOpen",
         "TipForward",
         "FrontHigh",
-        "BackSeal"
+        "BackSeal",
+        "JawForward",
+        "TipAlveolar",
+        "TongueRetroflex",
+        "TongueCenter",
+        "TongueLow",
+        "BackHigh",
+        "TongueGroove",
+        "TongueLateral"
       ]
     },
     {
@@ -2017,7 +2275,15 @@
         "JawOpen",
         "TipForward",
         "FrontHigh",
-        "BackSeal"
+        "BackSeal",
+        "JawForward",
+        "TipAlveolar",
+        "TongueRetroflex",
+        "TongueCenter",
+        "TongueLow",
+        "BackHigh",
+        "TongueGroove",
+        "TongueLateral"
       ]
     },
     {
@@ -2040,7 +2306,8 @@
       "layer": "organ",
       "vertices": 454,
       "targets": [
-        "VelumRaise"
+        "VelumRaise",
+        "VelumLower"
       ]
     },
     {
@@ -2049,7 +2316,8 @@
       "layer": "organ",
       "vertices": 453,
       "targets": [
-        "VelumRaise"
+        "VelumRaise",
+        "VelumLower"
       ]
     },
     {
@@ -2060,7 +2328,12 @@
       "targets": [
         "JawOpen",
         "LipClose",
-        "LipSpread"
+        "LipSpread",
+        "JawForward",
+        "LipRound",
+        "LipProtrude",
+        "LipBite",
+        "BreathPressure"
       ]
     },
     {
@@ -2071,7 +2344,12 @@
       "targets": [
         "JawOpen",
         "LipClose",
-        "LipSpread"
+        "LipSpread",
+        "JawForward",
+        "LipRound",
+        "LipProtrude",
+        "LipBite",
+        "BreathPressure"
       ]
     },
     {

@@ -95,6 +95,13 @@ for side,positive in [('left',True),('right',False)]:
  bm=bmesh.new();bm.from_mesh(clone.data)
  bmesh.ops.bisect_plane(bm,geom=list(bm.verts)+list(bm.edges)+list(bm.faces),dist=1e-7,plane_co=(0,0,0),plane_no=(1,0,0),clear_inner=positive,clear_outer=not positive)
  bm.to_mesh(clone.data);bm.free()
+ # Resolve any duplicate edges/faces introduced at the median plane before export.
+ # Blender's exporter otherwise performs this correction implicitly with a warning.
+ corrected=clone.data.validate(verbose=True)
+ clone.data.update()
+ assert not clone.data.validate(), 'Skin mesh remains invalid after correction'
+ assert all(len(k.data)==len(clone.data.vertices) for k in clone.data.shape_keys.key_blocks)
+ print('SKIN_VALIDATED',side,'corrected',corrected,flush=True)
  clone.name='Repaired skin__'+side;clone['side']=side;clone['layer']='skin';clone['anatomyName']='Skin - stitched atlas regions';clone['lumen']=False
  clone.data.polygons.foreach_set('use_smooth',[True]*len(clone.data.polygons))
  outputs.append(clone)

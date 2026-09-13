@@ -10,11 +10,11 @@
 - 米奇按经典圆头轮廓重建，包含大圆耳、连贯的心形脸部色块、椭圆鼻、纵向眼睛和弧形笑口。
 - 汤姆猫采用独立的宽颊轮廓、外展尖耳、额毛与颊毛、斜长黄绿色眼睛、双瓣口鼻、三根胡须和白色胸毛。
 
-角色由 `../build_character_heads.py` 在 Blender 中独立建模，输出 `dist/assets/character-heads.glb`（约 8–12 MB，随网格及形变法线变化）和可编辑的 `../character-heads.blend`。Blender 文件以 Mickey / Tom 两个集合组织，默认显示 Tom，可切换集合查看米奇。`character-proportions.json` 记录输出网格的轮廓尺寸；它是本项目的测量结果，不是官方角色设定表。造型参考经典动画中常见的圆耳米奇与灰蓝汤姆轮廓，是二维角色的三维教学重建，并非官方生产模型。
+角色由 `../build_character_heads.py` 在 Blender 中独立建模，输出 `dist/assets/character-heads.glb`（当前约 18 MiB，随网格及形变法线变化）和可编辑的 `../character-heads.blend`。Blender 文件以 Mickey / Tom 两个集合组织，默认显示 Tom，可切换集合查看米奇。`character-proportions.json` 记录输出网格的轮廓尺寸；它是本项目的测量结果，不是官方角色设定表。造型参考经典动画中常见的圆耳米奇与灰蓝汤姆轮廓，是二维角色的三维教学重建，并非官方生产模型。
 
 两个角色有独立的口腔、舌头和腭部网格，支持下颌张开、嘴唇闭合、嘴角展开、舌尖前伸、舌前部抬高及舌后部抬高的形变，包含随形变更新的法线。胡须与鼻部保持锚定。完整外观不混用真人牙列或器官；角色舌位为简化教学示意，正常人头模式仍可查看原始解剖结构。左右拆分、分层透明度、半侧剖面、播放进度与气流控制继续可用。
 
-皮肤接缝由 `../repair_skin_seams.py` 修补：焊接、清理法线、局部体素重建、交界区域平滑与减面，再插值回填原始发音形变。输出独立的 `dist/assets/repaired-skin.glb`；最初的 `phonetic-head.glb` 保持字节不变。参数及尺寸偏差见 `dist/assets/skin-repair-report.json`。两项生成脚本均可用 `/Applications/Blender.app/Contents/MacOS/Blender -b --python <脚本路径>` 复现。
+皮肤接缝由 `../repair_skin_seams.py` 修补：焊接、清理法线、局部体素重建、交界区域平滑与减面，再插值回填发音形变。输出独立的 `dist/assets/repaired-skin.glb`；修补步骤不改写输入 `phonetic-head.glb`。24 通道升级由人体导出脚本生成新的输入资产，再依次重建修补皮肤和实体内芯。参数及尺寸偏差见 `dist/assets/skin-repair-report.json`。
 
 发音形变仍需专业语音教学人员验证。
 
@@ -28,7 +28,7 @@
 
 ## 使用
 
-- 选择 `/p/`、`/θ/`、`/iː/` 或 `/k/`，播放或逐步查看。进度条支持暂停定位，速度可选 0.5× / 1× / 1.5×，可关闭循环。
+- 学习模式可选择原四音教学、48 音标分类库、A–Z 字母名称。音标按类别筛选，字母名称使用单个下拉框，并提供 A–Z 连续播放。进度条支持暂停定位，速度可选 0.5× / 1× / 1.5×，可关闭循环。
 - 拖动旋转，滚轮或双指缩放；画布获得焦点后可用方向键转动。“口腔特写”直接靠近舌腭区域。
 - “模型左半侧 / 右半侧”各自控制整个半侧的透明度。采用解剖左右：源模型 +X 为左，-X 为右，正面看时与观察者的左右相反。100% 表示完全透明。可一键交换。
 - 皮肤、骨骼、肌肉、发音器官的层透明度叠加于半侧透明度，最终不透明度 = (1 - 半侧透明度) × (1 - 层透明度)。无需绑死为某一侧剖面。
@@ -37,9 +37,44 @@
 
 ## 模型与动画
 
-加载本地 V04 Blender 白模派生的 GLB，包含 268 个左右拆分网格。八类实际 morph target：下颌打开、舌尖前伸、舌前部抬高、舌后部抬高、软腭抬起、双唇闭合、嘴角展开、喉部肌群内收。皮肤、口轮匝肌、颏舌肌、舌骨舌肌、咬肌/下颌及相关口周肌肉按各自区域和附着端权重联动。
+加载本地 V04 Blender 白模派生的 GLB，包含 268 个左右拆分网格。人体及两个角色各自覆盖 24 个非零几何控制通道；单个结构只携带与自身相关的通道，不为每块骨骼填充空形变。皮肤、口轮匝肌、颏舌肌、舌骨舌肌、咬肌/下颌及相关口周肌肉按各自区域和附着端权重联动。新增可编辑人体文件 `../phonetic-head-articulated.blend` 保留原 V04 白模。
 
-这些形变由程序根据发音动作手工设定，不是肌肉力学求解。气流是沿路径移动的示意，不是 CFD；喉部变化是放慢展示的肌群内收，不等于真实声带振动波形。未加入麦克风评测、发音打分、示范音频或完整音标库。四个音的效果需要专业语音教学人员进一步校准。
+这些形变由程序根据发音动作手工设定，不是肌肉力学求解。气流是口腔或鼻腔路径示意，不是 CFD；BreathPressure 仅代表教学用相对送气强度，其几何表现为轻微口周扩张和喉部位移，不是压强测量。Voice、GlottisClose 和 VocalTension 是独立的喉部形变，不合成真实音频，也不等于真实声带振动波形。本轮未加入示范音频、麦克风评测、打分、歌词/歌曲音频对齐。
+
+## 国内常见48音标教学集合
+
+采用英式非卷舌教学口径的 44 核心音素：12 单元音、8 双元音、24 辅音；另单列 /ts/ /dz/ /tr/ /dr/ 四项连续辅音组合，共计 20 元音、28 辅音。这是“国内常见48音标教学集合”，并非唯一 IPA 划分，也不声称四个组合是所有英语分析中的独立音素。
+
+保留传统 /ɪə eə ʊə/ 教学符号；现代英式口音中某些词已发生合流或单元音化。/r/ 为教材宽式记号，动画采用英语近音 [ɹ] 的后收舌形，不是颤音 [r]；实际英语 /r/ 也可采用舌体聚拢构形。A–Z 字母采用英式名称：R /ɑː/，Z /zed/，W /dʌbəljuː/。没有加入美式 zee 或卷舌 R 的切换。
+
+`dist/phonemes.js` 保存每项 IPA、分类、示例词、说明、focus 和姿态轨迹。清浊对共享口腔姿态，通过 Voice/GlottisClose/GlottisOpen/VocalTension/BreathPressure 区分；鼻音降低软腭；双元音具有起止姿态；塞擦音和四个复合辅音具有闭塞与连续释放构形。字母名称只引用存在的核心音素。
+
+连续时间轴使用 90 ms 对称协同过渡窗口、平滑插值和整段起止包络，中间音素不归零。单音教学放慢至 3 秒，原四音仍保持 6 秒曲线；字母按音素长度播放。时间是教学编排，不是语料强制对齐；A–Z 连播直接串联字母音素。尚未对任意高权重组合进行碰撞、软组织体积守恒或接触约束求解，尤其舌齿接触、/r/、唇齿音和角色比例需要语音教师及三维解剖人员校准。通过测试表示数据和几何链路有效，不代表临床或生物力学精确。
+
+### 24 个组合通道
+
+| 部位 | 通道 |
+| --- | --- |
+| 下颌 | JawOpen、JawForward |
+| 口唇 | LipClose、LipSpread、LipRound、LipProtrude、LipBite |
+| 舌体 | TipForward、TipAlveolar、TongueRetroflex、FrontHigh、TongueCenter、TongueLow、BackHigh、BackSeal、TongueGroove、TongueLateral |
+| 软腭 | VelumRaise、VelumLower |
+| 喉部与气息 | Voice、GlottisClose、GlottisOpen、VocalTension、BreathPressure |
+
+原八键名称保持兼容。新几何位移函数集中于 `../articulation.py`，人体与角色导出共同使用；角色喉部为简化独立声带网格。皮肤修补、实体内芯继承全部 8 个皮肤相关通道。
+
+### 重建顺序
+
+在仓库根目录依次运行：
+
+```sh
+/Applications/Blender.app/Contents/MacOS/Blender -b --python export_interactive.py
+/Applications/Blender.app/Contents/MacOS/Blender -b --python repair_skin_seams.py
+/Applications/Blender.app/Contents/MacOS/Blender -b --python build_solid_core.py
+/Applications/Blender.app/Contents/MacOS/Blender -b --python build_character_heads.py
+```
+
+人体导出使用已随仓库保存的 `model-manifest.json` 结构分类和 V04 文件，无需迁移前的绝对路径。
 
 来源：Z-Anatomy / Gauthier Kervyn 及贡献者，CC BY-SA 4.0。详见 dist/assets/ATTRIBUTION.md。原白模文件保留，动态导出脚本位于父目录 export_interactive.py。
 
@@ -47,10 +82,10 @@
 
 在本目录运行 `npm start`（或 `python3 -m http.server 4173 --bind 127.0.0.1 --directory dist`）。网页及 three.js 均为本地资产，无 CDN 依赖。运行时不需要构建。
 
-`npm test` 验证动作阶段、气流闭塞、独立透明度及实际 GLB 稀疏 morph 数据。
+`npm test` 验证 48/20/28 数量、IPA 唯一、26 字母引用、清浊与鼻音/双元音/塞擦音行为、相邻过渡、原四音，以及人体和每个角色的全部 24 个非零 GLB morph 位移（含稀疏数据）。同时检查修补皮肤、内芯、分层透明度与截面材质。
 `node check-browser.mjs` 使用独立无头 Chrome 检查模型加载、播放暂停、进度拖动、气流前进、左右切换、循环停止、高亮和移动端布局；结果在 qa/。
 
-当前初始加载包含原始约 23 MB 模型、独立皮肤修补资产和两个角色资产，低性能设备首次加载可能稍慢。浏览器缺少 WebGL 时会显示错误和重试入口。
+当前初始加载包含人体模型、独立皮肤、实体内芯和两个角色资产；24 通道会增加下载量及形变计算成本，低性能设备首次加载可能较慢。浏览器缺少 WebGL 时会显示错误和重试入口。
 
 ## 白膜剖面
 

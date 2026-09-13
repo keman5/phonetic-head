@@ -1,10 +1,22 @@
 import {chromium} from 'playwright';
 import assert from 'node:assert/strict';
 import {mkdir,writeFile} from 'node:fs/promises';
+import {PHONEMES,LETTERS,CATEGORIES} from './dist/phonemes.js';
 await mkdir('qa',{recursive:true});
 const browser=await chromium.launch({executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',headless:true,args:['--use-angle=metal']});
 const page=await browser.newPage({viewport:{width:1440,height:1000},deviceScaleFactor:1});
 const errors=[];page.on('console',m=>{if(m.type()==='error'&&m.text().includes('THREE.'))errors.push(m.text());});page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.status()>=400)errors.push(r.status()+' '+r.url());});
+async function checkCanvas(){
+ const bytes=await page.locator('#viewer').screenshot();
+ const probe=await page.evaluate(async bytes=>{
+  const bitmap=await createImageBitmap(new Blob([new Uint8Array(bytes)],{type:'image/png'}));
+  const c=new OffscreenCanvas(bitmap.width,bitmap.height),ctx=c.getContext('2d');ctx.drawImage(bitmap,0,0);
+  const {data}=ctx.getImageData(Math.floor(c.width*.25),Math.floor(c.height*.25),Math.floor(c.width*.5),Math.floor(c.height*.5));
+  const colors=new Set();let dark=0;for(let i=0;i<data.length;i+=16){colors.add(`${data[i]>>3},${data[i+1]>>3},${data[i+2]>>3}`);if(Math.min(data[i],data[i+1],data[i+2])<160)dark++;}
+  return {colors:colors.size,dark};
+ },Array.from(bytes));
+ assert(probe.colors>30&&probe.dark>100,JSON.stringify(probe));return probe;
+}
 try{
 await page.goto('http://127.0.0.1:4173/');
 await page.waitForFunction(()=>window.labSnapshot?.().ready,{},{timeout:60000});
@@ -80,10 +92,44 @@ for(const head of ['mickey','tom','human']){
  }
 }
 assert.equal(await page.locator('#head-model option[value="original"]').count(),0);
+await page.locator('#head-model').selectOption('human');
+await page.locator('[data-preset="cutaway"]').click();await page.locator('[data-view="right"]').click();
+await page.locator('#library-mode').selectOption('ipa');
+let visited=0;
+for(const category of Object.keys(CATEGORIES)){
+ await page.locator('#category').selectOption(category);
+ for(const p of Object.values(PHONEMES).filter(p=>p.category===category)){
+  await page.locator('#entry-select').selectOption('ipa:'+p.id);
+  await page.locator('#timeline').fill('500');await page.locator('#timeline').dispatchEvent('input');
+  await page.waitForFunction(id=>window.labSnapshot().sound==='ipa:'+id&&window.labSnapshot().morphMeshes>0,p.id);
+  assert.equal(await page.locator('#entry-select option').count(),Object.values(PHONEMES).filter(x=>x.category===category).length);
+  visited++;
+ }
+}
+assert.equal(visited,48);
+await page.locator('#category').selectOption('nasal');await page.locator('#entry-select').selectOption('ipa:ng');
+await page.locator('#air-toggle').check();await page.locator('[data-step="1"]').click();await page.waitForTimeout(150);
+assert.equal((await page.evaluate(()=>window.labSnapshot())).pose.nasal,1);
+await page.screenshot({path:'qa/48-nasal-desktop.png',fullPage:true});const nasalPixels=await checkCanvas();
+await page.locator('#library-mode').selectOption('letters');
+for(const letter of Object.keys(LETTERS)){
+ await page.locator('#entry-select').selectOption('letter:'+letter);await page.locator('[data-step="1"]').click();
+ assert.equal((await page.evaluate(()=>window.labSnapshot())).sound,'letter:'+letter);
+}
+await page.locator('#entry-select').selectOption('letter:W');await page.locator('#play').click();await page.waitForTimeout(350);
+assert((await page.evaluate(()=>window.labSnapshot())).progress>0);await page.locator('#play').click();
+await page.locator('[data-step="1"]').click();await page.waitForTimeout(100);
+await page.screenshot({path:'qa/26-letter-desktop.png',fullPage:true});await checkCanvas();
+await page.locator('#entry-select').selectOption('alphabet');await page.locator('#play').click();await page.waitForTimeout(200);assert((await page.evaluate(()=>window.labSnapshot())).progress>0);await page.locator('#play').click();
 await page.locator('#head-model').selectOption('tom');
 await page.setViewportSize({width:390,height:844});await page.waitForTimeout(200);
 assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await page.screenshot({path:'qa/05-mobile.png',fullPage:true});
+await page.locator('#entry-select').selectOption('letter:W');await page.locator('[data-step="1"]').click();await page.waitForTimeout(100);
+await page.screenshot({path:'qa/26-letter-mobile.png',fullPage:true});await checkCanvas();
+await page.locator('#library-mode').selectOption('ipa');await page.locator('#category').selectOption('cluster');await page.locator('#entry-select').selectOption('ipa:dr');await page.locator('[data-step="2"]').click();await page.waitForTimeout(100);
+assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await page.screenshot({path:'qa/48-cluster-mobile.png',fullPage:true});await checkCanvas();
 assert.equal(errors.length,0,errors.join('\n'));
-await writeFile('qa/checks.json',JSON.stringify({initial,final:state,checks:['WebGL loaded','play advances','pause stable','scrub morphs','side swap','independent alpha','plosive closure blocks','release flow','muscle selection','vowel voicing','hide airflow','mobile no overflow'],errors},null,2));
-console.log('BROWSER_CHECKS_PASSED',initial.meshCount);
+state=await page.evaluate(()=>window.labSnapshot());
+await writeFile('qa/checks.json',JSON.stringify({initial,final:state,phonemesVisited:visited,lettersVisited:Object.keys(LETTERS).length,nasalPixels,checks:['WebGL loaded','play advances','pause stable','scrub morphs','side swap','independent alpha','plosive closure blocks','release flow','muscle selection','vowel voicing','hide airflow','48 phonemes selectable','26 letters selectable','alphabet playback','nasal routing','desktop and mobile canvas pixels','mobile no overflow'],errors},null,2));
+console.log('BROWSER_CHECKS_PASSED',initial.meshCount,'48 phonemes, 26 letters, alphabet playback, desktop/mobile pixels',nasalPixels);
 }finally{await browser.close();}

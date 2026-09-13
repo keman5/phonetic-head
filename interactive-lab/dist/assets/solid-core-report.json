@@ -1,5 +1,5 @@
 {
-  "source_sha256": "9921356c995df3a92afc72a8d2dd16eb97e74f6e978a50182f57d602af5a75a2",
+  "source_sha256": "c8893ab1c85695014da1ec86ca12b390954baf7624f863c6b17877db4c255cf2",
   "layers": 191,
   "sectors": 160,
   "body_inset_metres": 0.0015,
@@ -12,14 +12,14 @@
       "side": "left",
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume_m3": 0.0023968827947251753,
+      "volume_m3": 0.0023968827947045113,
       "vertices": 16186
     },
     {
       "side": "right",
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume_m3": 0.0023967450291859644,
+      "volume_m3": 0.002396745021348193,
       "vertices": 16194
     }
   ]

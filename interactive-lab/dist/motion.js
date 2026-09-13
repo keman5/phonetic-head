@@ -1,3 +1,4 @@
+import {CHANNELS,PHONEMES,LETTERS,CATEGORIES,makeTimeline,timelinePose} from './phonemes.js';
 export const DURATION = 6;
 export const SOUNDS = {
   p: {ipa:'/p/',word:'pen',title:'双唇爆破音',color:'#db825c',copy:'嘴唇先合拢，短暂挡住气息，然后轻轻打开。',tip:'手放在嘴前，感觉打开双唇时的一小股气。',steps:['合拢双唇','保持闭合','打开释放'],focus:['lips','jaw','velum'],},
@@ -12,19 +13,40 @@ export const FOCUS = {
   jaw:{label:'咬肌与下颌',match:n=>n.includes('masseter')||n==='Mandible',desc:'下颌绕关节附近转动；咬肌下端随下颌移动，上端保持相对稳定。',keys:['JawOpen']},
   velum:{label:'软腭与腭咽肌',match:n=>n==='Soft palate'||n==='Uvula of palate'||n.includes('Palatopharyngeus'),desc:'这些口腔音中，软腭抬起。观察其后缘与咽部的关系。',keys:['VelumRaise']},
   smile:{label:'笑肌与颧肌',match:n=>n.includes('Risorius')||n.includes('Zygomaticus'),desc:'演示嘴角向两侧展开时，口周肌肉的协同变化。',keys:['LipSpread']},
-  voice:{label:'喉部发声肌群',match:n=>/thyro-arytenoid|crico-arytenoid|Transverse arytenoid/.test(n),desc:'元音发声时以慢动作演示喉部肌群变化；动画频率不代表真实声带频率。',keys:['Voice']},
+  voice:{label:'喉部发声肌群',match:n=>/thyro-arytenoid|crico-arytenoid|Transverse arytenoid|Character vocal fold/.test(n),desc:'元音发声时以慢动作演示喉部肌群变化；动画频率不代表真实声带频率。',keys:['Voice']},
 };
+for(const focus of ['tongue','genio'])FOCUS[focus].keys.push('TipAlveolar','TongueRetroflex','TongueCenter','TongueLow','BackHigh','TongueGroove','TongueLateral');
+FOCUS.lips.keys.push('LipSpread','LipRound','LipProtrude','LipBite','BreathPressure');
+FOCUS.velum.keys.push('VelumLower');
+FOCUS.voice.keys.push('GlottisClose','GlottisOpen','VocalTension');
+for(const [id,p] of Object.entries(PHONEMES)){
+ SOUNDS['ipa:'+id]={ipa:`/${p.ipa}/`,word:p.word,title:CATEGORIES[p.category],color:'#4885ca',copy:p.copy,tip:'观察舌位、口唇、软腭与气流的配合。',steps:['准备构形','保持 / 过渡','释放 / 收尾'],focus:p.focus,timeline:makeTimeline([id]),duration:3};
+}
+for(const [id,l] of Object.entries(LETTERS)){
+ const timeline=makeTimeline(l.sequence);
+ SOUNDS['letter:'+id]={ipa:`/${l.ipa}/`,word:id,title:`字母 ${id}`,color:'#298b83',copy:l.sequence.map(p=>`/${PHONEMES[p].ipa}/`).join(' → '),tip:'英式字母名称；动画按连续音素播放。',steps:['起音','连续构形','收尾'],focus:['tongue','lips','velum','voice'],timeline,duration:timeline.duration+1};
+}
+const alphabet=makeTimeline(Object.values(LETTERS).flatMap(l=>l.sequence));
+let letterClip=0;
+for(const l of Object.values(LETTERS))for(const id of l.sequence)alphabet.clips[letterClip++].letter=l.id;
+SOUNDS.alphabet={...SOUNDS['letter:A'],title:'A–Z 连续播放',word:'A–Z',ipa:'A–Z',copy:'按 A 到 Z 的顺序连续演示，画面标明当前字母和音素。',timeline:alphabet,duration:alphabet.duration+1};
+export const durationFor=id=>SOUNDS[id]?.duration||DURATION;
 export function smooth(a,b,x){const t=Math.max(0,Math.min(1,(x-a)/(b-a)));return t*t*(3-2*t);}
+const LEGACY_MOTIONS={
+ p:{weights:({t,seal,relax})=>({LipClose:seal,JawOpen:.38*smooth(.62,.76,t)*relax}),air:({t})=>smooth(.63,.66,t)*(1-smooth(.74,.83,t))},
+ k:{weights:({hold,seal})=>({JawOpen:.65*hold,BackSeal:seal}),air:({t})=>smooth(.67,.70,t)*(1-smooth(.80,.88,t))},
+ theta:{weights:({hold})=>({JawOpen:.5*hold,TipForward:hold}),air:({t})=>smooth(.35,.43,t)*(1-smooth(.85,.92,t))},
+ i:{weights:({t,hold,voiceEnvelope})=>({JawOpen:.22*hold,FrontHigh:hold,LipSpread:hold,Voice:voiceEnvelope*(.5+.5*Math.sin(t*DURATION*Math.PI*8))}),air:({voiceEnvelope})=>voiceEnvelope},
+};
 export function poseAt(sound,t){
+  if(!SOUNDS[sound])throw new RangeError('Unknown sound: '+sound);
   t=Math.max(0,Math.min(1,t));
+  if(SOUNDS[sound].timeline)return timelinePose(SOUNDS[sound].timeline,t*SOUNDS[sound].timeline.duration);
   const rise=smooth(.03,.30,t),relax=1-smooth(.88,1,t),seal=rise*(1-smooth(.62,.76,t));
   const hold=rise*relax,voiceEnvelope=smooth(.40,.48,t)*(1-smooth(.85,.92,t));
-  const weights={JawOpen:0,TipForward:0,FrontHigh:0,BackSeal:0,VelumRaise:.8*hold,LipClose:0,LipSpread:0,Voice:0};
-  let air=0;
-  if(sound==='p'){weights.LipClose=seal;weights.JawOpen=.38*smooth(.62,.76,t)*relax;air=smooth(.63,.66,t)*(1-smooth(.74,.83,t));}
-  if(sound==='k'){weights.JawOpen=.65*hold;weights.BackSeal=seal;air=smooth(.67,.70,t)*(1-smooth(.80,.88,t));}
-  if(sound==='theta'){weights.JawOpen=.5*hold;weights.TipForward=hold;air=smooth(.35,.43,t)*(1-smooth(.85,.92,t));}
-  if(sound==='i'){weights.JawOpen=.22*hold;weights.FrontHigh=hold;weights.LipSpread=hold;weights.Voice=voiceEnvelope*(.5+.5*Math.sin(t*DURATION*Math.PI*8));air=voiceEnvelope;}
+  const weights={...Object.fromEntries(CHANNELS.map(k=>[k,0])),VelumRaise:.8*hold};
+  const context={t,seal,relax,hold,voiceEnvelope},motion=LEGACY_MOTIONS[sound];
+  Object.assign(weights,motion.weights(context));const air=motion.air(context);
   const step=t<.3?0:t<.62?1:2;
   return {weights,air,step,t,voiced:sound==='i'&&voiceEnvelope>.1};
 }

@@ -3,7 +3,8 @@ import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {buildSectionGeometry,smoothMedianNormals,createSectionFillMaterial} from './sections.js';
 import {PALETTES,createTeachingMaterial} from './palette.js';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
-import {DURATION,SOUNDS,FOCUS,poseAt,DEFAULT_ALPHA,effectiveOpacity} from './motion.js';
+import {SOUNDS,FOCUS,poseAt,durationFor,DEFAULT_ALPHA,effectiveOpacity} from './motion.js';
+import {PHONEMES,LETTERS,CATEGORIES} from './phonemes.js';
 
 const $=s=>document.querySelector(s);
 const state={sound:'theta',progress:0,playing:false,speed:1,loop:true,air:true,palette:'human',alpha:{left:0,right:0,skin:0,bone:0,muscle:0,organ:0},focus:null};
@@ -25,11 +26,31 @@ const path=new THREE.CatmullRomCurve3([
   new THREE.Vector3(0,-.11,.013),new THREE.Vector3(0,-.058,.018),new THREE.Vector3(0,-.018,.02),
   new THREE.Vector3(0,-.007,.045),new THREE.Vector3(0,-.011,.071),new THREE.Vector3(0,-.017,.098),new THREE.Vector3(0,-.015,.145),
 ]);
+const nasalPath=new THREE.CatmullRomCurve3([
+ new THREE.Vector3(0,-.11,.013),new THREE.Vector3(0,-.058,.018),new THREE.Vector3(0,-.007,.02),
+ new THREE.Vector3(0,.019,.035),new THREE.Vector3(0,.023,.078),new THREE.Vector3(0,.02,.135),
+]);
 function fail(error){console.error(error);$('#load-state').hidden=false;$('#load-state b').textContent='模型暂时无法显示';$('#load-detail').textContent='请保持本地服务运行，然后重新加载。';$('.spinner').hidden=true;$('#retry').hidden=false;state.playing=false;}
 $('#retry').onclick=()=>location.reload();
 
 function buildUI(){
-  $('#sounds').innerHTML=Object.entries(SOUNDS).map(([id,s])=>`<button class="sound ${id===state.sound?'chosen':''}" data-sound="${id}" style="--accent:${s.color}"><b>${s.ipa}</b><span><strong>${s.title}</strong><small>${s.word}</small></span></button>`).join('');
+  $('.eyebrow').textContent='国内常见48音标教学集合';
+  const chooser=document.createElement('div');chooser.className='library-chooser';
+  chooser.innerHTML='<label for="library-mode">学习模式</label><select id="library-mode"><option value="legacy">原四音教学</option><option value="ipa">48 音标教学集合</option><option value="letters">A–Z 字母名称</option></select><label for="category" hidden>音标分类</label><select id="category" hidden></select><label for="entry-select" hidden>选择发音</label><select id="entry-select" hidden></select>';
+  $('#sounds').before(chooser);
+  $('#category').innerHTML=Object.entries(CATEGORIES).map(([id,label])=>`<option value="${id}">${label}</option>`).join('');
+  const refreshEntries=()=>{
+    const mode=$('#library-mode').value;
+    $('#sounds').hidden=mode!=='legacy';
+    for(const id of ['category','entry-select']){const hidden=id==='category'?mode!=='ipa':mode==='legacy';$('#'+id).hidden=hidden;$(`label[for="${id}"]`).hidden=hidden;}
+    if(mode==='legacy'){selectSound('theta');return;}
+    const entries=mode==='ipa'?Object.values(PHONEMES).filter(p=>p.category===$('#category').value).map(p=>['ipa:'+p.id,`/${p.ipa}/ · ${p.word}`]):[...Object.values(LETTERS).map(l=>['letter:'+l.id,`${l.id} /${l.ipa}/`]),['alphabet','A–Z 连续播放']];
+    $('#entry-select').replaceChildren(...entries.map(([id,label])=>new Option(label,id)));
+    selectSound(entries[0][0]);
+  };
+  $('#library-mode').onchange=refreshEntries;$('#category').onchange=refreshEntries;
+  $('#entry-select').onchange=e=>selectSound(e.target.value);
+  $('#sounds').innerHTML=['p','theta','i','k'].map(id=>{const s=SOUNDS[id];return `<button class="sound ${id===state.sound?'chosen':''}" data-sound="${id}" style="--accent:${s.color}"><b>${s.ipa}</b><span><strong>${s.title}</strong><small>${s.word}</small></span></button>`;}).join('');
   document.querySelectorAll('[data-sound]').forEach(b=>b.onclick=()=>selectSound(b.dataset.sound));
   $('#layer-controls').innerHTML=Object.entries({skin:'皮肤与眼球',bone:'骨骼与牙齿',muscle:'肌肉',organ:'舌、腭与气道'}).map(([id,label])=>`<div class="layer"><label for="layer-${id}">${label}<output id="value-${id}"></output></label><input type="range" min="0" max="100" id="layer-${id}" value="${state.alpha[id]}"></div>`).join('');
   for(const key of ['left','right','skin','bone','muscle','organ']){
@@ -44,7 +65,7 @@ function selectSound(id){
   $('#sound-title').textContent=sound.title;$('#sound-copy').textContent=sound.copy;$('#sound-tip').textContent=sound.tip;
   $('#steps').innerHTML=sound.steps.map((s,i)=>`<button class="step" data-step="${i}"><span>${i+1}</span>${s}</button>`).join('');
   document.querySelectorAll('[data-step]').forEach(b=>b.onclick=()=>{state.progress=[.15,.50,.72][Number(b.dataset.step)];state.playing=false;syncPlay();});
-  $('#focus-list').innerHTML=sound.focus.filter(id=>state.palette==='human'||!['genio','smile','voice'].includes(id)).map(id=>`<button class="focus-item" data-focus="${id}"><span>${focusLabel(id)}</span><em>观察</em><i></i></button>`).join('');
+  $('#focus-list').innerHTML=sound.focus.filter(id=>state.palette==='human'||!['genio','smile'].includes(id)).map(id=>`<button class="focus-item" data-focus="${id}"><span>${focusLabel(id)}</span><em>观察</em><i></i></button>`).join('');
   document.querySelectorAll('[data-focus]').forEach(b=>b.onclick=()=>focusOn(b.dataset.focus));
   $('#selection').innerHTML='<strong>选择器官查看动作</strong><p>点击模型或上方列表，查看当前音中的运动。</p>';
   syncPlay();
@@ -137,9 +158,10 @@ function animateAir(pose){
   airGroup.visible=state.air&&pose.air>.02;
   if(!airGroup.visible)return;
   airMat.opacity=.92*pose.air;
-  const travel=state.progress*DURATION*(state.sound==='k'||state.sound==='p'?1.35:.65);
+  const travel=state.progress*durationFor(state.sound)*(state.sound==='k'||state.sound==='p'?1.35:.65);
+  const flowPath=pose.nasal>.5?nasalPath:path;
   for(let i=0;i<particles.count;i++){
-    const t=(i/particles.count+travel)%1,p=path.getPointAt(t);
+    const t=(i/particles.count+travel)%1,p=flowPath.getPointAt(t);
     if(state.palette!=='human')p.y+=.014;
     // Flow remains close to the median plane; a small spread separates streamlines.
     p.x+=Math.sin(i*2.4)*.0015;p.y+=Math.cos(i*1.7)*.0008;
@@ -147,17 +169,20 @@ function animateAir(pose){
   }
   particles.instanceMatrix.needsUpdate=true;
   for(let i=0;i<arrow.count;i++){
-    const t=(i/arrow.count+travel)%1;dummy.position.copy(path.getPointAt(t));if(state.palette!=='human')dummy.position.y+=.014;dummy.quaternion.setFromUnitVectors(up,path.getTangentAt(t).normalize());dummy.scale.setScalar(1);dummy.updateMatrix();arrow.setMatrixAt(i,dummy.matrix);
+    const t=(i/arrow.count+travel)%1;dummy.position.copy(flowPath.getPointAt(t));if(state.palette!=='human')dummy.position.y+=.014;dummy.quaternion.setFromUnitVectors(up,flowPath.getTangentAt(t).normalize());dummy.scale.setScalar(1);dummy.updateMatrix();arrow.setMatrixAt(i,dummy.matrix);
   }
   arrow.instanceMatrix.needsUpdate=true;
 }
 function tick(now){
   frame=requestAnimationFrame(tick);const dt=Math.min((now-last)/1000,.06);last=now;
-  if(state.playing){state.progress+=dt*state.speed/DURATION;if(state.progress>=1){if(state.loop)state.progress%=1;else{state.progress=1;state.playing=false;syncPlay();}}}
+  const duration=durationFor(state.sound);
+  if(state.playing){state.progress+=dt*state.speed/duration;if(state.progress>=1){if(state.loop)state.progress%=1;else{state.progress=1;state.playing=false;syncPlay();}}}
   const pose=poseAt(state.sound,state.progress);animatePose(pose);animateAir(pose);
-  $('#timeline').value=Math.round(state.progress*1000);$('#time-label').textContent=(state.progress*DURATION).toFixed(1)+' / 6.0 秒';
+  $('#timeline').value=Math.round(state.progress*1000);$('#time-label').textContent=(state.progress*duration).toFixed(1)+' / '+duration.toFixed(1)+' 秒';
   $('#phase-label').textContent=SOUNDS[state.sound].steps[pose.step];document.querySelectorAll('[data-step]').forEach(b=>b.classList.toggle('active',Number(b.dataset.step)===pose.step));
   $('#air-status').textContent=!state.air?'气流已隐藏':pose.air>.02?pose.voiced?'口腔送气 · 喉部发声':'口腔送气':state.progress>.30&&state.progress<.65&&(state.sound==='p'||state.sound==='k')?'闭塞阶段 · 气流受阻':'准备呼气';
+  if(state.air&&pose.air>.02&&pose.nasal>.5)$('#air-status').textContent='鼻腔送气 · 喉部发声';
+  if(pose.phoneme)$('#phase-label').textContent=`${pose.letter?pose.letter+' · ':''}/${PHONEMES[pose.phoneme].ipa}/ · ${SOUNDS[state.sound].steps[pose.step]}`;
   controls.update();renderer.render(scene,camera);
 }
 buildUI();
