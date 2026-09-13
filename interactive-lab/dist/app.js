@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
-import {buildSectionGeometry,smoothMedianNormals,createWhiteSectionMaterial} from './sections.js';
+import {buildSectionGeometry,smoothMedianNormals,createSectionFillMaterial} from './sections.js';
 import {PALETTES,createTeachingMaterial} from './palette.js';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {DURATION,SOUNDS,FOCUS,poseAt,DEFAULT_ALPHA,effectiveOpacity} from './motion.js';
@@ -73,7 +73,7 @@ function syncSections(){
     cap.visible=variant===state.palette&&state.alpha[side==='left'?'right':'left']>state.alpha[side]+1&&(white||cap.sourceMesh.visible);
     if(cap.userData.sourceMaterial!==source){
       if(cap.userData.sourceMaterial)cap.material.dispose();
-      cap.material=white?createWhiteSectionMaterial(variant!=='human'):source.clone();
+      cap.material=white?createSectionFillMaterial(source,variant!=='human'):source.clone();
       if(!white){cap.material.onBeforeCompile=source.onBeforeCompile;cap.material.customProgramCacheKey=source.customProgramCacheKey;}
       cap.material.polygonOffset=true;cap.material.polygonOffsetFactor=-cap.renderOrder;cap.material.polygonOffsetUnits=-cap.renderOrder;
       cap.userData.sourceMaterial=source;
@@ -118,8 +118,7 @@ function animatePose(pose){
     if(match&&m.visible&&(!pinned||m.material.opacity>pinned.material.opacity))pinned=m;
   }
   for(const cap of sectionCaps){
-    if(cap.userData.whiteSection)continue;
-    cap.visible=cap.sourceMesh.visible&&state.alpha[cap.userData.side==='left'?'right':'left']>state.alpha[cap.userData.side]+1;
+    if(!cap.userData.whiteSection)cap.visible=cap.sourceMesh.visible&&state.alpha[cap.userData.side==='left'?'right':'left']>state.alpha[cap.userData.side]+1;
     cap.material.color.copy(cap.sourceMesh.material.color);
     cap.material.emissive.copy(cap.sourceMesh.material.emissive);cap.material.emissiveIntensity=cap.sourceMesh.material.emissiveIntensity;
   }
@@ -231,4 +230,5 @@ mount.addEventListener('pointerup',e=>{
   if(hit){const n=hit.object.userData.anatomyName,id=Object.keys(FOCUS).find(k=>FOCUS[k].match(n));focusOn(id,n);}
 });
 // Read-only diagnostic snapshot for local checks; no UI simulation or random scoring.
+window.sectionMaterials=()=>sectionCaps.filter(c=>c.visible).map(c=>({name:c.sourceMesh.userData.anatomyName,color:c.material.color.getHexString(),source:c.sourceMesh.material.color.getHexString(),type:c.material.type,sourceType:c.sourceMesh.material.type,emissive:c.material.emissive?.getHexString(),sourceEmissive:c.sourceMesh.material.emissive?.getHexString()}));
 window.labSnapshot=()=>({ready,solidCoreMeshes:meshes.filter(m=>m.userData.solidVolume).length,visibleSolidCoreMeshes:meshes.filter(m=>m.userData.solidVolume&&m.visible).length,medianNormalGroups,sectionCapCount:sectionCaps.length,visibleWhiteSections:sectionCaps.filter(c=>c.visible&&c.userData.whiteSection).length,whiteSectionColors:[...new Set(sectionCaps.filter(c=>c.visible&&c.userData.whiteSection).map(c=>c.material.color.getHexString()))],humanEyeColors:meshes.filter(m=>m.userData.layer==='eye').map(m=>m.material.color.getHexString()),visibleSectionCaps:sectionCaps.filter(c=>c.visible).length,visibleMuscleCaps:sectionCaps.filter(c=>c.visible&&c.userData.layer==='muscle').length,palette:state.palette,visibleSourceMeshes:meshes.filter(m=>m.visible&&!m.userData.variant).length,characterTongue:meshes.filter(m=>m.userData.variant===state.palette&&m.userData.feature==='tongue').map(m=>({visible:m.visible,weights:Object.fromEntries(Object.entries(m.morphTargetDictionary||{}).map(([key,index])=>[key,m.morphTargetInfluences[index]]))})),repairedSkinMeshes:meshes.filter(m=>m.userData.layer==='skin'&&m.userData.variant==='human'&&!m.userData.solidVolume).length,visibleHeadVariants:[...new Set(meshes.filter(m=>m.visible&&m.userData.variant).map(m=>m.userData.variant))],visibleHeadMeshes:meshes.filter(m=>m.userData.variant===state.palette&&m.visible).length,headModels:[...new Set(meshes.map(m=>m.userData.variant).filter(Boolean))],skinMorphMeshes:meshes.filter(m=>m.userData.layer==='skin'&&!m.userData.solidVolume&&m.userData.variant===state.palette&&m.morphTargetInfluences?.some(w=>w>0)).length,playing:state.playing,sound:state.sound,progress:state.progress,alpha:{...state.alpha},meshCount:meshes.length,pose:poseAt(state.sound,state.progress),airVisible:airGroup.visible,airPosition:particles.instanceMatrix.array.slice(12,15),visibleSides:{left:meshes.filter(m=>m.userData.side==='left'&&m.visible).length,right:meshes.filter(m=>m.userData.side==='right'&&m.visible).length},morphMeshes:meshes.filter(m=>m.morphTargetInfluences?.some(w=>w>0)).length});

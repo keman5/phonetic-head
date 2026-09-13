@@ -149,12 +149,26 @@ test('left/right surface normals meet smoothly without moving geometry',async()=
  assert.equal(meshes[0].geometry.attributes.normal.getY(1),1);
 });
 
+test('section fill inherits tissue material and core follows skin palette instead of white metadata',async()=>{
+ const {createTeachingMaterial,PALETTES}=await import('./dist/palette.js');
+ const {createSectionFillMaterial}=await import('./dist/sections.js');
+ for(const palette of Object.keys(PALETTES)){
+  for(const layer of ['skin','eye','muscle','organ','bone']){
+   const {material}=createTeachingMaterial({layer,variant:palette,anatomyName:layer==='organ'?'Tongue':'tissue'},palette);
+   const cap=createSectionFillMaterial(material,palette!=='human');
+   assert.notEqual(cap,material);assert.equal(cap.type,material.type);assert.equal(cap.color.getHex(),material.color.getHex());assert.equal(cap.toneMapped,material.toneMapped);
+  }
+  const core=createTeachingMaterial({layer:'skin',solidVolume:true,color:'#ffffff'},palette);
+  assert.equal(core.color,PALETTES[palette].skin);
+ }
+});
+
 test('human eyes use plain white material without a pupil shader',async()=>{
  const {createTeachingMaterial}=await import('./dist/palette.js');
  for(const side of ['left','right']){const {color,material}=createTeachingMaterial({layer:'eye',variant:'human',side,anatomyName:'Fitted eyeball'},'human');assert.equal(color,'#ffffff');assert.equal(material.color.getHexString(),'ffffff');assert(!material.onBeforeCompile.toString().includes('irisDistance'));}
 });
 
-test('human white backing spans the hollow head and neck instead of only the skin ribbon',async()=>{
+test('human tissue backing spans the hollow head and neck instead of only the skin ribbon',async()=>{
  const THREE=await import('three');const {GLTFLoader}=await import('three/addons/loaders/GLTFLoader.js');const {buildSectionGeometry}=await import('./dist/sections.js');
  const bytes=readFileSync('./dist/assets/repaired-skin.glb');const loaded=await new GLTFLoader().parseAsync(bytes.buffer.slice(bytes.byteOffset,bytes.byteOffset+bytes.byteLength),'');
  const skin=loaded.scene.children.find(m=>m.isMesh&&m.userData.side==='left');assert(skin);

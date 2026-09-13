@@ -72,7 +72,10 @@ for(const head of ['mickey','tom','human']){
   await page.locator('#clear-focus').click();
   await page.locator('[data-preset="cutaway"]').click();await page.locator('[data-view="right"]').click();
   await page.screenshot({path:`qa/head-${head}-cutaway.png`,fullPage:true});
-  const sections=await page.evaluate(()=>window.labSnapshot());assert(sections.visibleSectionCaps>0);assert(sections.visibleWhiteSections>0);assert.deepEqual(sections.whiteSectionColors,['ffffff']);
+  const sections=await page.evaluate(()=>window.labSnapshot());assert(sections.visibleSectionCaps>0);assert(sections.visibleWhiteSections>0);
+  await page.waitForTimeout(80);
+  const fills=await page.evaluate(()=>window.sectionMaterials());assert(fills.length>0);
+  for(const fill of fills){assert.equal(fill.color,fill.source,fill.name);assert.equal(fill.type,fill.sourceType,fill.name);assert.equal(fill.emissive,fill.sourceEmissive,fill.name);}
   await page.locator('#stage').screenshot({path:`qa/solid-${head}-section.png`});
  }
 }

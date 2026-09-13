@@ -140,10 +140,12 @@ export function smoothMedianNormals(meshes){
   return joined;
 }
 
-// White solid teaching backing. Mouth and airway remain open in the section view.
-export function createWhiteSectionMaterial(character=false){
- const material=new THREE.MeshBasicMaterial({color:'#ffffff',side:THREE.DoubleSide,toneMapped:false});
- material.onBeforeCompile=shader=>{
+// Match the owning tissue, while keeping mouth and airway openings in the backing.
+export function createSectionFillMaterial(source,character=false){
+ const material=source.clone();
+ const compile=source.onBeforeCompile;
+ material.onBeforeCompile=(shader,renderer)=>{
+  compile.call(material,shader,renderer);
   shader.vertexShader='varying vec3 sectionWorld;\n'+shader.vertexShader;
   shader.vertexShader=shader.vertexShader.replace('#include <project_vertex>','#include <project_vertex>\nsectionWorld=(modelMatrix*vec4(transformed,1.0)).xyz;');
   shader.fragmentShader='varying vec3 sectionWorld;\n'+shader.fragmentShader;
@@ -154,6 +156,6 @@ export function createWhiteSectionMaterial(character=false){
     if(${character?'false':'mouth||airway'}) discard;
   `);
  };
- material.customProgramCacheKey=()=> 'white-section-'+character;
+ material.customProgramCacheKey=()=> 'tissue-section-'+character+'-'+source.customProgramCacheKey();
  return material;
 }

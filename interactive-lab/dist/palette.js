@@ -9,7 +9,11 @@ export const PALETTES={
 const ramp=new THREE.DataTexture(new Uint8Array([150,180,210,240]),4,1,THREE.RedFormat);
 ramp.minFilter=THREE.LinearFilter;ramp.magFilter=THREE.LinearFilter;ramp.needsUpdate=true;
 export function createTeachingMaterial(meta,palette){
-  if(meta.solidVolume)return {color:'#ffffff',material:new THREE.MeshBasicMaterial({color:'#ffffff',side:THREE.DoubleSide,toneMapped:false,polygonOffset:true,polygonOffsetFactor:4,polygonOffsetUnits:4})};
+  if(meta.solidVolume){
+    const result=createTeachingMaterial({...meta,solidVolume:false,color:PALETTES[palette][meta.layer]||PALETTES[palette].skin},palette);
+    Object.assign(result.material,{polygonOffset:true,polygonOffsetFactor:4,polygonOffsetUnits:4});
+    return result;
+  }
   const p=PALETTES[palette],name=meta.anatomyName;
   const color=meta.layer==='eye'?'#ffffff':meta.color|| (name==='Tongue'?p.tongue:/Soft palate|Uvula of palate/.test(name)?p.palate:name==='Trachea'?p.trachea:p[meta.layer]);
   const character=meta.variant&&meta.variant!=='human';
