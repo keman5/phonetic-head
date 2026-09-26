@@ -5,6 +5,9 @@ __pycache__/
 *.py[cod]
 .DS_Store
 *.log
+*.tmp
+.pytest_cache/
+.venv/
 
 # Credentials and machine-local settings
 .env

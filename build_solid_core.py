@@ -31,7 +31,7 @@ for j in range(layers):
   angle=2*math.pi*k/sectors;direction=Vector((math.cos(angle),math.sin(angle),0));centre=Vector((0,cy,z))
   hit,_,_,_=bvh.ray_cast(centre+direction*.25,-direction,.5)
   radius=(hit-centre).dot(direction) if hit is not None else None
-  inset=.00025 if j<4 or j>=layers-4 else .0015
+  inset=.00025 if j<4 or j>=layers-4 else .003
   radii.append(max(.0002,radius-inset) if radius is not None and radius>0 else None)
  known=[k for k,r in enumerate(radii) if r is not None]
  if len(known)<sectors*.25:continue
@@ -86,6 +86,28 @@ for side,positive in [('left',True),('right',False)]:
 bpy.ops.object.select_all(action='DESELECT')
 for o in outputs:o.select_set(True)
 bpy.ops.export_scene.gltf(filepath=str(ASSETS/'solid-human-core.glb'),export_format='GLB',use_selection=True,export_extras=True,export_animations=False,export_morph=True,export_morph_normal=True,export_yup=True,export_cameras=False,export_lights=False)
-report=dict(source_sha256=hashlib.sha256(source_file.read_bytes()).hexdigest(),layers=layers,sectors=sectors,body_inset_metres=.0015,end_inset_metres=.00025,interpolated_rays=missed,oral_recess_bottom_z=1.505,closed_base_z=zmin,halves=reports)
+report=dict(source_sha256=hashlib.sha256(source_file.read_bytes()).hexdigest(),layers=layers,sectors=sectors,body_inset_metres=.003,end_inset_metres=.00025,interpolated_rays=missed,oral_recess_bottom_z=1.505,closed_base_z=zmin,halves=reports)
 (ASSETS/'solid-core-report.json').write_text(json.dumps(report,indent=2)+'\n')
 print('SOLID_CORE',json.dumps(report),flush=True)
+
+# Save the same repaired exterior used by the browser, with editable vowel clips.
+import sys
+sys.path.insert(0,str(ROOT))
+from articulation import author_vowel_actions
+bpy.data.objects.remove(core,do_unlink=True)
+existing=set(bpy.data.objects)
+bpy.ops.import_scene.gltf(filepath=str(ASSETS/'phonetic-head.glb'))
+for o in list(bpy.data.objects):
+ if o not in existing and o.type=='MESH' and o.get('layer')=='skin':bpy.data.objects.remove(o,do_unlink=True)
+review_meshes=[o for o in bpy.data.objects if o.type=='MESH']
+for o in review_meshes:
+ if o.get('lumen'):o.hide_render=True;o.hide_set(True)
+author_vowel_actions(review_meshes,ROOT)
+bpy.ops.object.camera_add(location=(0,-.65,.025))
+camera=bpy.context.object;camera.rotation_euler=(Vector((0,0,.025))-camera.location).to_track_quat('-Z','Y').to_euler()
+camera.data.type='ORTHO';camera.data.ortho_scale=.32;bpy.context.scene.camera=camera
+bpy.context.scene.render.engine='BLENDER_WORKBENCH'
+bpy.context.scene.display.shading.light='STUDIO'
+bpy.context.scene.display.shading.color_type='MATERIAL'
+bpy.context.scene['preview_note']='20 vowel clips, 120 frames each, timeline markers identify IPA and example words.'
+bpy.ops.wm.save_as_mainfile(filepath=str(ROOT/'phonetic-head-articulated.blend'),compress=True)

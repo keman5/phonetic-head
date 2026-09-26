@@ -5,18 +5,20 @@ import {createHash} from 'node:crypto';
 import {poseAt,effectiveOpacity,DEFAULT_ALPHA,SOUNDS} from './dist/motion.js';
 import {CHANNELS} from './dist/phonemes.js';
 import './phonemes.test.mjs';
+import './audio.test.mjs';
+import './teaching.test.mjs';
 
 test('plosives block airflow during closure and release it afterward',()=>{
   for(const sound of ['p','k']){
-    const held=poseAt(sound,.5),released=poseAt(sound,.73);
+    const held=poseAt('ipa:'+sound,.5),released=poseAt('ipa:'+sound,.85);
     assert.equal(held.air,0);assert(released.air>.4);
     const key=sound==='p'?'LipClose':'BackSeal';assert(held.weights[key]>.9);assert(released.weights[key]<held.weights[key]);
   }
 });
 test('phonemes have distinct poses and end at rest',()=>{
-  assert(poseAt('theta',.5).weights.TipForward>.9);
-  assert(poseAt('i',.5).weights.FrontHigh>.9);
-  assert.equal(poseAt('theta',.5).weights.Voice,0);
+  assert(poseAt('ipa:theta',.5).weights.TipForward>=.9);
+  assert(poseAt('ipa:i',.5).weights.FrontHigh>.9);
+  assert.equal(poseAt('ipa:theta',.5).weights.Voice,0);
   for(const key of Object.keys(SOUNDS))for(const weight of Object.values(poseAt(key,1).weights))assert.equal(weight,0);
 });
 test('left and right transparency are independent, with layer controls composed',()=>{

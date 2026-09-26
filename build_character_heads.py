@@ -6,7 +6,7 @@ import bpy,bmesh,math,json,sys
 from mathutils import Vector
 ROOT=Path(__file__).resolve().parent
 sys.path.insert(0,str(ROOT))
-from articulation import KEYS,extra_deform
+from articulation import KEYS,extra_deform,author_vowel_actions
 bpy.ops.wm.read_factory_settings(use_empty=True)
 parts=[]
 DARK='#171b24';MICKEY_FACE='#ffe5ba';WHITE='#f7f4e9';BLUE='#7388a1';PINK='#e898ab'
@@ -232,6 +232,7 @@ if bpy.context.scene.world is None:bpy.context.scene.world=bpy.data.worlds.new('
 bpy.context.scene.world.color=(.6,.6,.6)
 bpy.ops.object.light_add(type='AREA',location=(-.25,-.4,.4));light=bpy.context.object;light.data.energy=15;light.data.shape='DISK';light.data.size=.4;light.rotation_euler=(Vector((0,0,.02))-light.location).to_track_quat('-Z','Y').to_euler()
 bpy.context.preferences.filepaths.save_version=0
+author_vowel_actions(outputs, ROOT)
 bpy.ops.wm.save_as_mainfile(filepath=str(ROOT/'character-heads.blend'),compress=True)
 (assets/'character-proportions.json').write_text(json.dumps(report,indent=2)+'\n')
 print('CHARACTER_HEADS',len(outputs),json.dumps(report),flush=True)

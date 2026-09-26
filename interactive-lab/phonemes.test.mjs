@@ -61,6 +61,20 @@ test('nasals lower the velum; diphthongs glide; affricates and teaching clusters
  for(const id of ['ts','dz','tr','dr'])assert.equal(PHONEMES[id].components.length,2);
 });
 
+test('vowel demonstrations sustain their onset, glide to the endpoint and return to rest',()=>{
+ for(const p of Object.values(PHONEMES).filter(p=>['vowel','diphthong'].includes(p.category))){
+  const sample=t=>poseAt('ipa:'+p.id,t).weights;
+  for(const k of CHANNELS){
+   assert(Math.abs(sample(.25)[k]-(p.poses[0][k]||0))<1e-6,p.id+' onset '+k);
+   assert(Math.abs(sample(.85)[k]-(p.poses.at(-1)[k]||0))<1e-6,p.id+' endpoint '+k);
+   assert.equal(sample(0)[k],0);assert.equal(sample(1)[k],0);
+  }
+  assert(SOUNDS['ipa:'+p.id].focus.includes('jaw'));
+ }
+ assert(poseAt('ipa:ah',.5).weights.JawOpen>poseAt('ipa:i',.5).weights.JawOpen);
+ assert(poseAt('ipa:u',.5).weights.LipRound>poseAt('ipa:i',.5).weights.LipRound);
+});
+
 function readGLB(path){
  const data=readFileSync(path),length=data.readUInt32LE(12),doc=JSON.parse(data.subarray(20,20+length));
  const start=28+length;
@@ -72,6 +86,21 @@ function readGLB(path){
   return out;
  };return {doc,read};
 }
+test('human open vowel exposes an actual lip aperture rather than a sealed moving surface',async()=>{
+ const THREE=await import('three');const {GLTFLoader}=await import('three/addons/loaders/GLTFLoader.js');
+ const bytes=readFileSync('./dist/assets/repaired-skin.glb');
+ const gltf=await new GLTFLoader().parseAsync(bytes.buffer.slice(bytes.byteOffset,bytes.byteOffset+bytes.byteLength),'');
+ gltf.scene.updateMatrixWorld(true);
+ const meshes=[];gltf.scene.traverse(m=>{if(m.isMesh)meshes.push(m);});
+ const hit=id=>{
+  const weights=poseAt('ipa:'+id,.5).weights;
+  for(const m of meshes)for(const [key,index] of Object.entries(m.morphTargetDictionary))m.morphTargetInfluences[index]=weights[key];
+  return new THREE.Raycaster(new THREE.Vector3(.003,-.028,.3),new THREE.Vector3(0,0,-1)).intersectObjects(meshes,false)[0]?.point.z??-Infinity;
+ };
+ assert(hit('i')>.08,'Narrow vowel retains the lower lip');
+ assert(hit('ah')<.075,'Open vowel must expose the mouth, not stretch intact skin across it');
+ assert(hit('u')>.08,'Rounded vowel returns to a smaller aperture');
+});
 test('all 24 real geometry targets survive human and each character GLB export; skin/core retain skin channels',()=>{
  const checked={};
  for(const file of ['phonetic-head','character-heads','repaired-skin','solid-human-core']){

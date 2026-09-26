@@ -1,10 +1,10 @@
 {
-  "source_sha256": "c8893ab1c85695014da1ec86ca12b390954baf7624f863c6b17877db4c255cf2",
+  "source_sha256": "5150cdf53e9591b7c738910779eccd19f508765f0484b2fd0dc928fc77d00b4e",
   "layers": 191,
   "sectors": 160,
-  "body_inset_metres": 0.0015,
+  "body_inset_metres": 0.003,
   "end_inset_metres": 0.00025,
-  "interpolated_rays": 415,
+  "interpolated_rays": 447,
   "oral_recess_bottom_z": 1.505,
   "closed_base_z": 1.431268808498083,
   "halves": [
@@ -12,15 +12,15 @@
       "side": "left",
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume_m3": 0.0023968827947045113,
-      "vertices": 16186
+      "volume_m3": 0.002306559266247264,
+      "vertices": 16152
     },
     {
       "side": "right",
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume_m3": 0.002396745021348193,
-      "vertices": 16194
+      "volume_m3": 0.0023064239015575944,
+      "vertices": 16163
     }
   ]
 }

@@ -141,21 +141,40 @@ export function smoothMedianNormals(meshes){
 }
 
 // Match the owning tissue, while keeping mouth and airway openings in the backing.
-export function createSectionFillMaterial(source,character=false){
+export function createSectionFillMaterial(source,character=false,childMode=false,fillContour=false){
  const material=source.clone();
+ material.userData.filledContour=fillContour;
  const compile=source.onBeforeCompile;
  material.onBeforeCompile=(shader,renderer)=>{
-  compile.call(material,shader,renderer);
+  if(!fillContour)compile.call(material,shader,renderer);
   shader.vertexShader='varying vec3 sectionWorld;\n'+shader.vertexShader;
   shader.vertexShader=shader.vertexShader.replace('#include <project_vertex>','#include <project_vertex>\nsectionWorld=(modelMatrix*vec4(transformed,1.0)).xyz;');
   shader.fragmentShader='varying vec3 sectionWorld;\n'+shader.fragmentShader;
   shader.fragmentShader=shader.fragmentShader.replace('#include <clipping_planes_fragment>',`#include <clipping_planes_fragment>
-    vec2 oral=(sectionWorld.yz-vec2(${character?'0.001':'-0.016'},0.057))/vec2(0.023,0.047);
+    vec2 oral=(sectionWorld.yz-vec2(${character?'0.001':childMode?'-0.021':'-0.016'},0.057))/vec2(${childMode&&!character?'0.036':'0.023'},0.047);
     bool mouth=dot(oral,oral)<1.0 && sectionWorld.z>0.013;
     bool airway=abs(sectionWorld.z-0.016)<0.006 && sectionWorld.y>-0.096 && sectionWorld.y<${character?'0.006':'-0.009'};
-    if(${character?'false':'mouth||airway'}) discard;
+    vec2 nasal=(sectionWorld.yz-vec2(0.026,0.053))/vec2(0.015,0.036);
+    bool nose=dot(nasal,nasal)<1.0;
+    bool nasalGate=sectionWorld.z>0.013 && sectionWorld.z<0.030 && sectionWorld.y>-0.004 && sectionWorld.y<0.028;
+    if(${fillContour||character?'false':childMode?'mouth||airway||nose||nasalGate':'mouth||airway'}) discard;
   `);
+  if(fillContour){
+    shader.uniforms.nasalFill={value:new THREE.Color('#a8dbdc')};
+    shader.uniforms.oralFill={value:new THREE.Color('#ffe9df')};
+    shader.uniforms.palateFill={value:new THREE.Color('#ae95e8')};
+    shader.fragmentShader='uniform vec3 nasalFill; uniform vec3 oralFill; uniform vec3 palateFill;\n'+shader.fragmentShader;
+    shader.fragmentShader=shader.fragmentShader.replace('#include <color_fragment>',`#include <color_fragment>
+      vec3 contourColor=diffuseColor.rgb;
+      if(mouth)contourColor=oralFill;
+      if(nose||nasalGate||airway)contourColor=nasalFill;
+      float roof=0.001+0.005*smoothstep(0.03,0.06,sectionWorld.z)-0.004*smoothstep(0.07,0.09,sectionWorld.z);
+      if(abs(sectionWorld.y-roof)<0.002 && sectionWorld.z>0.033 && sectionWorld.z<0.089)contourColor=palateFill;
+      diffuseColor.rgb=contourColor;
+    `);
+    shader.fragmentShader=shader.fragmentShader.replace('#include <emissivemap_fragment>','#include <emissivemap_fragment>\ntotalEmissiveRadiance=contourColor*0.22;');
+  }
  };
- material.customProgramCacheKey=()=> 'tissue-section-'+character+'-'+source.customProgramCacheKey();
+ material.customProgramCacheKey=()=> 'tissue-section-'+character+'-'+childMode+'-'+fillContour+'-'+source.customProgramCacheKey();
  return material;
 }

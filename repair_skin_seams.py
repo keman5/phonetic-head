@@ -1,12 +1,13 @@
-"""Repair the original skin's region seams and transfer authored motion.
+"""Repair the original skin's region seams and reapply authored motion.
 Run: Blender --background --python repair_skin_seams.py
 """
 from pathlib import Path
-import bpy, bmesh, json, hashlib
+import bpy, bmesh, json, hashlib, sys
 from mathutils.kdtree import KDTree
 from mathutils.bvhtree import BVHTree
-from mathutils.geometry import barycentric_transform
 ROOT=Path(__file__).resolve().parent
+sys.path.insert(0,str(ROOT))
+from articulation import skin_deform
 ASSETS=ROOT/'interactive-lab/dist/assets'
 SOURCE=ASSETS/'phonetic-head.glb'
 bpy.ops.wm.read_factory_settings(use_empty=True)
@@ -18,8 +19,7 @@ for o in skins:o.select_set(True)
 bpy.context.view_layer.objects.active=skins[0]
 bpy.ops.object.join()
 skin=bpy.context.object
-original=[v.co.copy() for v in skin.data.vertices]
-original_morphs={k.name:[v.co.copy() for v in k.data] for k in skin.data.shape_keys.key_blocks}
+original_morphs=[k.name for k in skin.data.shape_keys.key_blocks]
 before=len(skin.data.vertices)
 # GLB vertices split at region/normal boundaries; merge coincident points only (0.01 mm).
 bpy.ops.object.mode_set(mode='EDIT');bpy.ops.mesh.select_all(action='SELECT')
@@ -35,7 +35,6 @@ skin.data.update()
 skin.data.calc_loop_triangles()
 source_points=[v.co.copy() for v in skin.data.vertices]
 triangles=[tuple(t.vertices) for t in skin.data.loop_triangles]
-source_shapes={k.name:[v.co.copy() for v in k.data] for k in skin.data.shape_keys.key_blocks}
 bvh=BVHTree.FromPolygons(source_points,triangles,all_triangles=True)
 welded_count=len(source_points)
 seam_bm=bmesh.new();seam_bm.from_mesh(skin.data)
@@ -69,20 +68,38 @@ bpy.ops.object.modifier_apply(modifier=smooth.name)
 decimate=skin.modifiers.new('Interactive surface budget','DECIMATE');decimate.ratio=.16;decimate.use_collapse_triangulate=True
 bpy.ops.object.modifier_apply(modifier=decimate.name)
 print('REPAIR_STAGE simplified',len(skin.data.vertices),flush=True)
-# Restore authored displacements by barycentric sampling of the original surface.
-# Sampling deltas (not absolute positions) keeps the repaired base shape for every key.
-nearest=[];distances=[]
+# Voxel repair seals the lip slit. Reopen it before transferring the lower-lip
+# motion, so JawOpen separates two real rims instead of stretching a closed face.
+bm=bmesh.new();bm.from_mesh(skin.data)
+# Trim both layers of the repaired skin in local coordinates. A volumetric
+# Boolean is unstable on this atlas's overlapping inner shells.
+mouth_faces=[]
+for face in bm.faces:
+ point=face.calc_center_median()
+ if point.y<-.075 and (point.x/.025)**2+((point.z-1.5315)/.0018)**2<1:
+  mouth_faces.append(face)
+assert 0<len(mouth_faces)<len(bm.faces)*.02, 'Lip aperture did not intersect skin'
+bmesh.ops.delete(bm,geom=mouth_faces,context='FACES')
+# Project the new rim to a smooth oval instead of keeping a staircase of faces.
+for v in bm.verts:
+ if v.is_boundary and v.co.y<-.075 and abs(v.co.x)<.028 and abs(v.co.z-1.5315)<.004:
+  x,z=v.co.x/.025,(v.co.z-1.5315)/.0018
+  radius=(x*x+z*z)**.5
+  if radius>0:v.co.x=.025*x/radius;v.co.z=1.5315+.0018*z/radius
+bm.to_mesh(skin.data);bm.free();skin.data.update()
+print('REPAIR_STAGE lip aperture',len(mouth_faces),'faces',flush=True)
+# Measure base-surface deviation, then evaluate the shared skin motion field on
+# the repaired vertices. Old sealed-lip triangles must not drive the new rim.
+distances=[]
 for v in skin.data.vertices:
  point,normal,face,distance=bvh.find_nearest(v.co)
- nearest.append((point,triangles[face]));distances.append(distance)
+ distances.append(distance)
 skin.shape_key_add(name='Basis')
-for name,coords in source_shapes.items():
+for name in original_morphs:
  if name=='Basis':continue
  key=skin.shape_key_add(name=name)
- for v,(point,tri) in zip(skin.data.vertices,nearest):
-  a,b,c=tri
-  displacement=barycentric_transform(point,source_points[a],source_points[b],source_points[c],coords[a]-source_points[a],coords[b]-source_points[b],coords[c]-source_points[c])
-  key.data[v.index].co=v.co+displacement
+ for v in skin.data.vertices:
+  key.data[v.index].co=skin_deform(name,v.co)
 skin.data.polygons.foreach_set('use_smooth',[True]*len(skin.data.polygons))
 skin.data.update()
 max_distance=max(distances)
@@ -108,6 +125,6 @@ for side,positive in [('left',True),('right',False)]:
 bpy.ops.object.select_all(action='DESELECT')
 for o in outputs:o.select_set(True)
 bpy.ops.export_scene.gltf(filepath=str(ASSETS/'repaired-skin.glb'),export_format='GLB',use_selection=True,export_extras=True,export_animations=False,export_morph=True,export_morph_normal=True,export_yup=True,export_cameras=False,export_lights=False)
-report={'source_sha256':hashlib.sha256(SOURCE.read_bytes()).hexdigest(),'weld_tolerance_metres':.00001,'skin_vertices_before':before,'skin_vertices_after_weld':welded_count,'skin_vertices_after_repair':len(skin.data.vertices),'voxel_size_metres':.0007,'decimation_ratio':.16,'inward_shell_metres':.0012,'max_surface_distance_metres':max_distance,'p99_surface_distance_metres':sorted(distances)[int(len(distances)*.99)],'morph_transfer':'Barycentric source displacement sampling','morphs':list(original_morphs),'internal_anatomy':'Original GLB untouched; output contains skin only.'}
+report={'source_sha256':hashlib.sha256(SOURCE.read_bytes()).hexdigest(),'weld_tolerance_metres':.00001,'skin_vertices_before':before,'skin_vertices_after_weld':welded_count,'skin_vertices_after_repair':len(skin.data.vertices),'voxel_size_metres':.0007,'decimation_ratio':.16,'inward_shell_metres':.0012,'max_surface_distance_metres':max_distance,'p99_surface_distance_metres':sorted(distances)[int(len(distances)*.99)],'morph_transfer':'Shared analytic skin deformation field','morphs':list(original_morphs),'internal_anatomy':'Original GLB untouched; output contains skin only.'}
 (ASSETS/'skin-repair-report.json').write_text(json.dumps(report,indent=2)+'\n')
 print('SKIN_REPAIR',json.dumps(report),flush=True)

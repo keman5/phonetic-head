@@ -3,7 +3,7 @@ from pathlib import Path
 from mathutils import Vector
 ROOT=str(Path(__file__).resolve().parent)
 sys.path.insert(0,ROOT)
-from articulation import KEYS,extra_deform
+from articulation import KEYS,extra_deform,skin_deform,author_vowel_actions
 OUT=ROOT+'/interactive-lab/dist/assets'
 bpy.ops.wm.open_mainfile(filepath=ROOT+'/v04-refined-white/anatomical-head-white-v04.blend')
 scene=bpy.context.scene
@@ -40,17 +40,18 @@ for o in list(bpy.data.objects):
 def smooth(a,b,v):
     t=max(0,min(1,(v-a)/(b-a)));return t*t*(3-2*t)
 def deform(name,kind,key,v):
+    if kind=='skin':return skin_deform(key,v)
     x,y,z=v;dx=dy=dz=0
     tongue=name=='Tongue' or 'Genioglossus' in name or 'Hyoglossus' in name
     jaw=name=='Mandible' or name.startswith('Lower ')
-    mouthw=math.exp(-((y+.09)/.024)**2-((z-1.535)/.018)**2)*max(0,1-(abs(x)/.049)**4)
+    mouthw=math.exp(-((y+.09)/.024)**2-((z-1.5315)/.018)**2)*max(0,1-(abs(x)/.049)**4)
     if key=='JawOpen':
         w=1 if jaw else 0
-        if kind=='skin':w=(1-smooth(1.521,1.545,z))*smooth(-.014,-.08,y)*smooth(1.46,1.50,z)
+        if kind=='skin':w=(1-smooth(1.529,1.533,z))*smooth(-.014,-.08,y)*smooth(1.46,1.50,z)
         if tongue:w=.35*smooth(1.499,1.52,z)
         if kind=='muscle' and any(k in name.lower() for k in ['masseter','pterygoid','digastric','mylohyoid','orbicularis oris','depressor']):w=1-smooth(1.515,1.565,z)
         if name=='Gingiva':w=1-smooth(1.522,1.531,z)
-        a=.12*w;yy=y+.008;zz=z-1.557
+        a=.24*w;yy=y+.008;zz=z-1.557
         dy=yy*math.cos(a)-zz*math.sin(a)-yy;dz=yy*math.sin(a)+zz*math.cos(a)-zz
     if tongue:
         anchor=smooth(1.503,1.523,z)
@@ -61,7 +62,7 @@ def deform(name,kind,key,v):
     if key=='VelumRaise' and (name in ['Soft palate','Uvula of palate'] or 'Palatopharyngeus' in name):
         w=smooth(-.045,-.016,y)*smooth(1.525,1.54,z);dz=.006*w;dy=.002*w
     if kind=='skin' or 'Orbicularis oris' in name or any(k in name for k in ['Risorius','Zygomaticus','Levator labii','Depressor labii']):
-        if key=='LipClose':dz=(1.534-z)*mouthw*.6;dy=-.0015*mouthw
+        if key=='LipClose':dz=(1.5315-z)*mouthw*.95;dy=-.0015*mouthw
         if key=='LipSpread':dx=x*.20*mouthw;dz=.0015*mouthw
     if key=='Voice' and any(k in name.lower() for k in ['thyro-arytenoid','crico-arytenoid','arytenoid cartilage','transverse arytenoid']):dx=-x*.16
     return extra_deform(name,kind,key,(x+dx,y+dy,z+dz)) if key not in KEYS[:8] else (x+dx,y+dy,z+dz)
@@ -87,6 +88,7 @@ for obj in copies:
 bpy.ops.object.select_all(action='DESELECT')
 for o in copies:o.hide_set(False);o.select_set(True)
 bpy.ops.export_scene.gltf(filepath=OUT+'/phonetic-head.glb',export_format='GLB',use_selection=True,export_extras=True,export_animations=False,export_morph=True,export_morph_normal=False,export_morph_tangent=False,export_yup=True,export_cameras=False,export_lights=False)
+author_vowel_actions(copies, ROOT)
 bpy.ops.wm.save_as_mainfile(filepath=ROOT+'/phonetic-head-articulated.blend',compress=True)
 with open(OUT+'/model-manifest.json','w') as f:json.dump(dict(source='Z-Anatomy via local V04',license='CC BY-SA 4.0',units='metres',sides='anatomical left +X; right -X',morphs=counts,meshes=stats,notice='Anatomical source base; authored educational deformations, not biomechanical simulation.'),f,indent=2)
 assert all(counts.get(k,0)>0 for k in keys)
