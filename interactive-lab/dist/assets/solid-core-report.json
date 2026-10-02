@@ -1,26 +1,26 @@
 {
-  "source_sha256": "5150cdf53e9591b7c738910779eccd19f508765f0484b2fd0dc928fc77d00b4e",
+  "source_sha256": "f2c106891cdb7393b740b1246e98bd33aff0451c5fa228176c68d7e9e882ca88",
   "layers": 191,
   "sectors": 160,
   "body_inset_metres": 0.003,
   "end_inset_metres": 0.00025,
-  "interpolated_rays": 447,
+  "interpolated_rays": 343,
   "oral_recess_bottom_z": 1.505,
-  "closed_base_z": 1.431268808498083,
+  "closed_base_z": 1.431909783741217,
   "halves": [
     {
       "side": "left",
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume_m3": 0.002306559266247264,
-      "vertices": 16152
+      "volume_m3": 0.0022958242890967224,
+      "vertices": 16151
     },
     {
       "side": "right",
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume_m3": 0.0023064239015575944,
-      "vertices": 16163
+      "volume_m3": 0.002295718181526072,
+      "vertices": 16151
     }
   ]
 }

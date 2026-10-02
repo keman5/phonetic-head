@@ -71,6 +71,24 @@ export function buildSectionGeometry(geometry,side,{fillShell=false,solidEnvelop
         chain.push(vertices.length);vertices.push({point,weights});
       }
     }
+    // A real lip opening removes the anterior skin intersection for a few rows.
+    // Using the remaining posterior shell as the "front" cuts a horizontal
+    // notch through the entire neck. Bridge only short, bounded missing spans;
+    // the tissue shader still opens the actual mouth, not the back of the head.
+    const wide=front.map((id,i)=>vertices[id].point.z-vertices[back[i]].point.z>.03);
+    for(let i=0;i<front.length;i++){
+      if(wide[i])continue;
+      let a=i-1,b=i+1;
+      while(a>=0&&!wide[a])a--;
+      while(b<front.length&&!wide[b])b++;
+      if(a<0||b>=front.length)continue;
+      const va=vertices[front[a]],vb=vertices[front[b]],v=vertices[front[i]];
+      const span=vb.point.y-va.point.y;
+      if(span<=0||span>.012)continue;
+      const t=(v.point.y-va.point.y)/span;
+      v.point.copy(va.point).lerp(vb.point,t);
+      v.weights=[...va.weights.map(([index,w])=>[index,w*(1-t)]),...vb.weights.map(([index,w])=>[index,w*t])];
+    }
     const envelope=[...back,...front.reverse()];
     if(envelope.length>=3){loops.length=0;loops.push(envelope);}
   }

@@ -7,6 +7,8 @@ import {CHANNELS} from './dist/phonemes.js';
 import './phonemes.test.mjs';
 import './audio.test.mjs';
 import './teaching.test.mjs';
+import './learning.test.mjs';
+import './render-utils.test.mjs';
 
 test('plosives block airflow during closure and release it afterward',()=>{
   for(const sound of ['p','k']){
@@ -168,9 +170,13 @@ test('section fill inherits tissue material and core follows skin palette instea
  }
 });
 
-test('human eyes use plain white material without a pupil shader',async()=>{
- const {createTeachingMaterial}=await import('./dist/palette.js');
- for(const side of ['left','right']){const {color,material}=createTeachingMaterial({layer:'eye',variant:'human',side,anatomyName:'Fitted eyeball'},'human');assert.equal(color,'#ffffff');assert.equal(material.color.getHexString(),'ffffff');assert(!material.onBeforeCompile.toString().includes('irisDistance'));}
+test('eyes and lips share the neutral skin material in both viewing modes',async()=>{
+ const {createTeachingMaterial,PALETTES}=await import('./dist/palette.js');
+ for(const child of [true,false])for(const side of ['left','right'])for(const layer of ['eye','skin']){
+  const {color,material}=createTeachingMaterial({layer,variant:'human',side,color:'#ffffff',anatomyName:layer==='eye'?'Fitted eyeball':'Skin'},'human',child);
+  assert.equal(color,PALETTES.human.skin);assert.equal(material.color.getHexString(),PALETTES.human.skin.slice(1));
+  assert(!/irisDistance|lipDistance|childAccent/.test(material.onBeforeCompile.toString()));assert(material.forceSinglePass);
+ }
 });
 
 test('human tissue backing spans the hollow head and neck instead of only the skin ribbon',async()=>{

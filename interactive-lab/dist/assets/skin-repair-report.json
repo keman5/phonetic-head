@@ -3,12 +3,14 @@
   "weld_tolerance_metres": 1e-05,
   "skin_vertices_before": 169350,
   "skin_vertices_after_weld": 149701,
-  "skin_vertices_after_repair": 159446,
+  "skin_vertices_after_repair": 161045,
   "voxel_size_metres": 0.0007,
   "decimation_ratio": 0.16,
   "inward_shell_metres": 0.0012,
-  "max_surface_distance_metres": 0.001996682258322835,
-  "p99_surface_distance_metres": 0.0013545873807743192,
+  "max_surface_distance_metres": 0.0030404317658394575,
+  "p99_surface_distance_metres": 0.001978050684556365,
+  "distance_scope": "Retained skin, excluding deliberately added eye closure volumes",
+  "eye_closure_max_distance_metres": 0.02070736140012741,
   "morph_transfer": "Shared analytic skin deformation field",
   "morphs": [
     "Basis",
@@ -21,5 +23,10 @@
     "LipBite",
     "BreathPressure"
   ],
-  "internal_anatomy": "Original GLB untouched; output contains skin only."
+  "internal_anatomy": "Original GLB untouched; output contains skin only.",
+  "closed_eyelids": true,
+  "seam_blend_radius_metres": 0.012,
+  "seam_smoothing_iterations": 180,
+  "unexpected_boundary_edges_before_split": 0,
+  "overlapping_edges_before_split": 0
 }

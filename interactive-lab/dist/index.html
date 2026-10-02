@@ -1,31 +1,84 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>发音探索乐园 · 本地交互</title><link rel="stylesheet" href="./style.css"><link rel="stylesheet" href="./teaching.css"><script type="importmap">{"imports":{"three":"./vendor/three.module.js","three/addons/":"./vendor/addons/"}}</script></head>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f7f8fc"><title>发音探索乐园 · 看见声音</title>
+<link rel="stylesheet" href="./style.css"><link rel="stylesheet" href="./teaching.css"><link rel="stylesheet" href="./learning.css">
+<script type="importmap">{"imports":{"three":"./vendor/three.module.js","three/addons/":"./vendor/addons/"}}</script>
+</head>
 <body>
-<header><div class="identity"><span class="logo">ə</span><div><strong>发音探索乐园</strong><small>选一个学习伙伴，一起看懂发音</small></div></div><span class="local">三种头部模型 · 发音演示</span></header>
+<header class="app-header">
+  <div class="identity"><span class="logo" aria-hidden="true">ə</span><div><strong>发音探索乐园</strong><small>让每一个声音，都看得见。</small></div></div>
+  <div class="header-context"><span class="header-section">发音实验室</span><span class="local"><i aria-hidden="true"></i>本地运行</span></div>
+</header>
 <main>
-<aside class="lessons"><p class="eyebrow">选择一个音</p><div class="lesson-note"><span class="line-mark"></span><h2 id="sound-title"></h2><p id="sound-copy"></p><p class="tip" id="sound-tip"></p></div><div class="legend"><span><i class="muscle"></i>动作肌群</span><span><i class="organ"></i>舌与腭</span><span><i class="air"></i>气流方向</span></div></aside>
+<aside class="lessons" aria-label="发音选择">
+  <details id="sound-library" open>
+    <summary class="library-heading"><span><span class="section-index" aria-hidden="true">01</span>声音图书馆</span><span class="library-hint">选择发音 <i aria-hidden="true"></i></span></summary>
+    <div class="library-body">
+      <p class="eyebrow">音标与字母</p>
+      <details class="lesson-note"><summary>这个音怎么发？</summary><p id="sound-copy"></p><p class="tip" id="sound-tip"></p></details>
+    </div>
+  </details>
+  <p class="library-footnote">从一个声音开始，<br>发现嘴巴里的小秘密。</p>
+</aside>
 <section class="workspace" aria-label="三维模型和播放控制">
-<div class="palette-toolbar"><label for="head-model">头部模型</label><lab-select id="head-model" disabled><option value="human">正常人头</option><option value="mickey">米奇</option><option value="tom">汤姆猫（猫和老鼠）</option></lab-select><span id="character-note" hidden>角色舌位为简化示意 · 人头模式可作解剖对照</span></div><div class="stage" id="stage"><div id="viewer" aria-label="可旋转和缩放的三维舌与腭" tabindex="0"></div><div class="stage-top"><div class="view-buttons" aria-label="观察视角"><button data-view="oblique" class="chosen">斜视</button><button data-view="front">正面</button><button data-view="right">右侧</button><button data-view="left">左侧</button></div><button id="reset-view" class="quiet">重置视角</button></div><div id="load-state" role="status"><span class="spinner"></span><b>正在加载教学模型</b><span id="load-detail">准备原始结构与接缝修补…</span><button id="retry" hidden>重新加载</button></div><div class="organ-pin" id="organ-pin" hidden></div><div class="stage-bottom"><span>拖动旋转 · 滚轮缩放 · 方向键转动</span><span id="air-status">气流待启动</span></div><div class="phase-chip"><i></i><span id="phase-label">准备动作</span></div></div>
-<div class="transport"><div class="audio-toolbar"><label for="voice">示范声音</label><lab-select id="voice" aria-label="示范声音"><option value="female">女声 · 英式</option><option value="male">男声 · 英式</option></lab-select><label><input id="sound-toggle" type="checkbox" checked> 声音</label><span id="audio-status" role="status">本地合成示范音</span></div><div class="steps" id="steps"></div><div class="scrub"><input id="timeline" type="range" min="0" max="1000" step="1" value="0" aria-label="发音动作进度"><output id="time-label">0.0 / 6.0 秒</output></div><div class="play-row"><button id="play" class="primary" disabled>▶ 播放发音</button><button id="restart" class="quiet" disabled>从头开始</button><div class="speed"><label for="speed">速度</label><span class="speed-bound">0.2</span><input id="speed" type="range" min="0.2" max="3" step="0.01" value="1" aria-label="播放速度" aria-valuetext="1.00 倍"><span class="speed-bound">3</span><output id="speed-value" for="speed">1.00 ×</output></div><label><input id="loop" type="checkbox" > 循环</label><label><input id="air-toggle" type="checkbox" checked> 气流</label></div></div>
+  <div class="workspace-heading">
+    <div class="current-sound"><p id="sound-title"></p><div class="sound-display"><h1 id="lesson-symbol">/iː/</h1><span id="lesson-word">see</span><span class="sound-tag">发音探索</span></div></div>
+    <div class="palette-toolbar"><span>儿童教学人头 · 素模</span></div>
+  </div>
+  <div class="attention-controls" aria-label="选择观察重点"><span>这次看哪里？</span><button type="button" data-attention="lips" aria-pressed="false">嘴唇</button><button type="button" data-attention="tongue" aria-pressed="false">舌头</button><button type="button" data-attention="air" aria-pressed="false">气息</button><label><input id="reduce-motion" type="checkbox"> 减少动效</label></div>
+  <div class="stage" id="stage">
+    <div id="viewer" aria-label="可旋转和缩放的三维舌与腭" tabindex="0"></div>
+    <div class="stage-top"><div class="view-buttons" aria-label="观察视角"><button data-view="oblique" class="chosen">斜视</button><button data-view="front">正面</button><button data-view="right">右侧</button><button data-view="left">左侧</button></div><button id="reset-view" class="quiet">重置视角</button></div>
+    <div id="load-state" role="status"><span class="spinner"></span><b>正在加载教学模型</b><span id="load-detail">准备原始结构与接缝修补…</span><button id="retry" hidden>重新加载</button></div>
+    <div class="organ-pin" id="organ-pin" hidden></div>
+    <div id="attention-halo" hidden aria-hidden="true"></div>
+    <div class="stage-bottom"><span>拖动旋转 · 滚轮缩放 · 方向键转动</span><span id="air-status">气流待启动</span></div>
+    <div class="phase-chip"><i></i><span id="phase-label">准备动作</span></div>
+    <div class="voice-meter" id="voice-meter"><div aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><span id="voice-meter-label">声音准备好啦</span></div>
+  </div>
+  <section class="learning-dock" id="learning-dock" aria-label="三步发音小探索">
+    <div class="attention-story"><span class="sound-buddy" aria-hidden="true"><i></i><i></i><b></b></span><div><strong id="attention-title">找到粉色的舌头</strong><p id="attention-copy">选一个声音，一起发现嘴巴里的小秘密。</p></div></div>
+    <div class="practice-track"><div class="exploration-stars" aria-hidden="true"><span data-practice-star="watch">☆</span><span data-practice-star="listen">☆</span><span data-practice-star="try">☆</span></div><span id="practice-progress">0 / 3 个小任务</span><button type="button" id="practice-next" disabled>开始小探索 →</button></div>
+    <p id="practice-message" role="status" aria-live="polite">先看动作，再听声音，最后自己试一试。</p>
+    <small class="practice-disclaimer">星星记录练习过程，不代表发音评分。</small>
+  </section>
+  <div class="transport">
+    <div class="transport-heading"><span class="section-index" aria-hidden="true">02</span><h2>听一听，看一看</h2><span>让口型慢下来</span></div>
+    <div class="steps" id="steps"></div>
+    <div class="scrub"><input id="timeline" type="range" min="0" max="1000" step="1" value="0" aria-label="发音动作进度"><output id="time-label">0.0 / 6.0 秒</output></div>
+    <div class="play-row"><button id="play" class="primary" disabled>▶ 播放发音</button><button id="restart" class="quiet" disabled>从头开始</button><div class="speed"><label for="speed">速度</label><span class="speed-bound">0.2</span><input id="speed" type="range" min="0.2" max="3" step="0.01" value="1" aria-label="播放速度" aria-valuetext="1.00 倍"><span class="speed-bound">3</span><output id="speed-value" for="speed">1.00 ×</output></div><label><input id="loop" type="checkbox"> 循环</label><label><input id="air-toggle" type="checkbox" checked> 气流</label></div>
+    <div class="audio-toolbar"><label for="voice">示范声音</label><lab-select id="voice" aria-label="示范声音"><option value="female">女声 · 英式</option><option value="male">男声 · 英式</option></lab-select><label><input id="sound-toggle" type="checkbox" checked> 声音</label><span id="audio-status" role="status">本地合成示范音</span></div>
+  </div>
 </section>
-<aside class="controls">
-<section class="lesson-coach" aria-label="发音练习卡">
-  <p class="coach-kicker">今天，和嘴巴一起做练习</p>
-  <div class="coach-title"><strong id="lesson-symbol">/iː/</strong><span id="lesson-word">see</span></div>
-  <div class="coach-actions"><button id="watch-demo">① 看慢动作</button><button id="listen-demo">② 听示范音</button><button id="try-demo">③ 我来试试</button></div>
-  <dl class="lesson-cues"><div><dt>嘴唇</dt><dd id="cue-mouth"></dd></div><div><dt>舌头</dt><dd id="cue-tongue"></dd></div><div><dt>气息</dt><dd id="cue-air"></dd></div></dl>
-  <div id="voice-cue" class="voice-cue">声带会振动</div>
-  <p id="cue-reminder" class="cue-reminder"></p>
-  <button id="contrast-sound" class="contrast-button">比一比</button>
-  <details id="practice-checks"><summary>我的练习小清单</summary><p>对着镜子或请老师帮忙；这里只做自查，不会自动判断发音。</p><label><input type="checkbox"> 嘴唇和舌头放对了</label><label><input type="checkbox"> 气息轻松，没有用力挤</label><label><input type="checkbox"> 和示范音对照，再试一次</label></details>
-</section>
-<div class="panel-heading"><h2>观察发音部位</h2><button id="reset-opacity" class="link-button">还原</button></div><p class="help" id="display-mode">儿童简化模型</p><div class="presets"><button data-preset="cutaway" class="chosen">看里面</button><button data-preset="xray">透视看</button><button data-preset="surface">看嘴型</button></div>
-<div class="teaching-legend" aria-label="颜色说明"><span><i style="background:#f47791"></i>舌头</span><span><i style="background:#ae95e8"></i>上腭</span><span><i style="background:#64cabc"></i>气道</span><span><i style="background:#24a8c8"></i>气流箭头</span></div>
-<details id="teacher-tools"><summary>教师工具 · 结构与透明度</summary><label class="detail-toggle"><input id="anatomy-details" type="checkbox"> 显示骨骼与肌肉细节</label><p class="help">保留原始结构供对照。左右以模型自身为准；透明度越高，结构越透明。</p>
-<div class="side-control"><label for="left-alpha">模型左半侧 <output id="left-value">0%</output></label><input id="left-alpha" type="range" min="0" max="100" value="0"><label for="right-alpha">模型右半侧 <output id="right-value">100%</output></label><input id="right-alpha" type="range" min="0" max="100" value="100"><button id="swap-sides" class="swap">⇄ 交换左右透明度</button></div>
-<div class="layers"><h3>各层透明度</h3><div id="layer-controls"></div></div>
-</details>
-<div class="muscles-panel"><h3><span id="focus-heading">观察肌肉配合</span> <small>点击高亮</small></h3><div id="focus-list"></div><button id="clear-focus" class="link-button">取消高亮</button></div><div class="selection" id="selection"><strong>选择器官查看动作</strong><p>点击模型或上方列表，查看当前音中的运动。</p></div></aside>
+<aside class="controls" aria-label="学习与模型设置">
+  <div class="inspector-tabs" role="tablist" aria-label="学习面板"><button id="tab-practice" type="button" role="tab" aria-selected="true" aria-controls="panel-practice">跟着练</button><button id="tab-model" type="button" role="tab" aria-selected="false" aria-controls="panel-model" tabindex="-1">探索模型</button></div>
+  <section id="panel-practice" role="tabpanel" aria-labelledby="tab-practice" tabindex="0">
+    <div class="lesson-coach" aria-label="发音练习卡">
+      <p class="coach-kicker">一步一步，找到发音的感觉</p><h2 class="coach-heading">准备好一起练习了吗？</h2>
+      <div class="coach-actions"><button id="watch-demo" disabled><span>01</span>看慢动作<span aria-hidden="true">↗</span></button><button id="listen-demo" disabled><span>02</span>听示范音<span aria-hidden="true">↗</span></button><button id="try-demo" disabled><span>03</span>我来试试<span aria-hidden="true">↗</span></button></div>
+      <h3 class="cue-heading">三个发音小提示</h3>
+      <dl class="lesson-cues"><div><dt>嘴唇</dt><dd id="cue-mouth"></dd></div><div><dt>舌头</dt><dd id="cue-tongue"></dd></div><div><dt>气息</dt><dd id="cue-air"></dd></div></dl>
+      <div id="voice-cue" class="voice-cue">声带会振动</div><p id="cue-reminder" class="cue-reminder"></p>
+      <button id="contrast-sound" class="contrast-button">比一比</button>
+      <details id="practice-checks"><summary>我的练习小清单</summary><p>对着镜子或请老师帮忙；这里只做自查，不会自动判断发音。</p><label><input type="checkbox"> 嘴唇和舌头放对了</label><label><input type="checkbox"> 气息轻松，没有用力挤</label><label><input type="checkbox"> 和示范音对照，再试一次</label></details>
+    </div>
+  </section>
+  <section id="panel-model" role="tabpanel" aria-labelledby="tab-model" tabindex="0" hidden>
+    <div class="panel-heading"><h2>观察发音部位</h2><button id="reset-opacity" class="link-button">还原</button></div><p class="help" id="display-mode">儿童简化模型</p>
+    <div class="presets"><button data-preset="cutaway" class="chosen">看里面</button><button data-preset="xray">透视看</button><button data-preset="surface">看嘴型</button></div>
+    <div class="teaching-legend" aria-label="颜色说明"><span><i style="background:#f47791"></i>舌头</span><span><i style="background:#ae95e8"></i>上腭</span><span><i style="background:#64cabc"></i>气道</span><span><i style="background:#24a8c8"></i>气流箭头</span></div>
+    <details id="teacher-tools"><summary>教师工具 · 结构与透明度</summary><label class="detail-toggle"><input id="anatomy-details" type="checkbox"> 显示骨骼与肌肉细节</label><p class="help">保留原始结构供对照。左右以模型自身为准；透明度越高，结构越透明。</p>
+      <div class="side-control"><label for="left-alpha">模型左半侧 <output id="left-value">0%</output></label><input id="left-alpha" type="range" min="0" max="100" value="0"><label for="right-alpha">模型右半侧 <output id="right-value">100%</output></label><input id="right-alpha" type="range" min="0" max="100" value="100"><button id="swap-sides" class="swap">⇄ 交换左右透明度</button></div>
+      <div class="layers"><h3>各层透明度</h3><div id="layer-controls"></div></div>
+    </details>
+    <div class="muscles-panel"><h3><span id="focus-heading">观察肌肉配合</span> <small>点击高亮</small></h3><div id="focus-list"></div><button id="clear-focus" class="link-button">取消高亮</button></div>
+    <div class="selection" id="selection"><strong>选择器官查看动作</strong><p>点击模型或上方列表，查看当前音中的运动。</p></div>
+  </section>
+</aside>
 </main>
-<footer>解剖底模：<a href="https://github.com/LluisV/Z-Anatomy-Sample" target="_blank" rel="noreferrer">Z-Anatomy</a> · <a href="./assets/ATTRIBUTION.md">CC BY-SA 4.0</a><span>教学原型 · 英式44音素＋4组辅音组合；合成音仅供辅助，口型与气流为示意，需教师校准。</span></footer>
-<script type="module" src="./app.js"></script></body></html>
+<footer><div>解剖底模：<a href="https://github.com/LluisV/Z-Anatomy-Sample" target="_blank" rel="noreferrer">Z-Anatomy</a> · <a href="./assets/ATTRIBUTION.md">CC BY-SA 4.0</a></div><span>教学原型 · 英式44音素＋4组辅音组合；合成音仅供辅助，口型与气流为示意，需教师校准。</span></footer>
+<script type="module" src="./app.js"></script>
+</body>
+</html>

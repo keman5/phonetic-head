@@ -1,0 +1,66 @@
+/* Local, functional teaching UI; no external assets or design-draft dependencies. */
+.attention-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; margin: 0 0 12px; font-size: 12px; color: var(--muted); }
+.attention-controls > span { margin-right: 3px; }
+.attention-controls button { min-height: 40px; border: 1px solid var(--line); background: white; color: var(--ink); padding: 8px 15px; border-radius: 24px; }
+.attention-controls button[aria-pressed=true] { border-color: var(--blue); color: var(--blue); background: var(--soft); box-shadow: 0 0 0 2px #6654d910; }
+.attention-controls label { margin-left: auto; display: flex; align-items: center; gap: 5px; font-size: 11px; }
+.stage { scroll-margin-top: 12px; }
+.phase-chip { font-size: 12px; }
+.lesson-playing .phase-chip i { box-shadow: 0 0 0 4px #ab96eb26; }
+#attention-halo { position: absolute; width: 54px; height: 54px; border: 2px solid #c37a28; border-radius: 50%; box-shadow: 0 0 0 6px #ffcd662b; transform: translate(-50%, -50%); pointer-events: none; }
+.lesson-playing #attention-halo { animation: attention-breathe 2s ease-in-out infinite; }
+@keyframes attention-breathe { 50% { box-shadow: 0 0 0 12px #ffcd6610; } }
+.voice-meter { position: absolute; bottom: 53px; right: 14px; background: #ffffffee; border: 1px solid #e3eaf0; border-radius: 12px; padding: 8px 10px; color: #617681; font-size: 10px; pointer-events: none; display: flex; align-items: center; gap: 8px; }
+.voice-meter > div { display: flex; align-items: center; gap: 3px; height: 22px; }
+.voice-meter i { width: 3px; height: 6px; border-radius: 3px; background: #73a396; }
+.voice-meter.is-sounding i { animation: sound-wave .7s ease-in-out infinite alternate; }
+.voice-meter i:nth-child(2) { animation-delay: -.2s; }
+.voice-meter i:nth-child(3) { animation-delay: -.4s; }
+.voice-meter i:nth-child(4) { animation-delay: -.1s; }
+.voice-meter i:nth-child(5) { animation-delay: -.5s; }
+@keyframes sound-wave { to { transform: scaleY(3); } }
+.learning-dock { margin-top: 12px; border-radius: 18px; background: #f0edff; border: 1px solid #e2dcfc; padding: 17px 18px 13px; }
+.attention-story { display: flex; align-items: center; gap: 13px; min-height: 55px; }
+.attention-story strong { font-size: 16px; letter-spacing: -.02em; color: #453982; }
+.attention-story p { margin: 4px 0 0; color: #675f81; font-size: 13px; line-height: 1.7; }
+.sound-buddy { width: 46px; height: 48px; border-radius: 20px 20px 17px 8px; flex-shrink: 0; background: #8270de; position: relative; box-shadow: inset -5px -4px 0 #49398620; }
+.sound-buddy i { width: 4px; height: 6px; border-radius: 50%; background: white; position: absolute; left: 14px; top: 16px; }
+.sound-buddy i:nth-child(2) { left: 29px; }
+.sound-buddy b { width: 12px; height: 7px; border-bottom: 2px solid white; border-radius: 0 0 10px 10px; position: absolute; left: 18px; top: 26px; }
+.practice-track { display: flex; gap: 10px; align-items: center; margin-top: 15px; padding-top: 13px; border-top: 1px solid #dfd9f3; flex-wrap: wrap; }
+.exploration-stars { display: flex; gap: 5px; font-size: 22px; color: #9a91b4; }
+.exploration-stars .earned { color: #a96c12; animation: star-arrive .4s ease-out; }
+@keyframes star-arrive { from { transform: scale(.65) rotate(-15deg); } to { transform: scale(1); } }
+#practice-progress { font-size: 11px; color: #6b6284; }
+#practice-next { margin-left: auto; border: 0; background: var(--blue); color: white; border-radius: 10px; padding: 11px 15px; min-height: 44px; font-size: 13px; font-weight: 600; }
+#practice-message { color: #61577c; font-size: 12px; line-height: 1.7; margin: 11px 0 0; }
+.practice-disclaimer { display: block; color: #766d8b; font-size: 10px; margin-top: 4px; }
+.all-done { background: #edf7f1; border-color: #d4e9dc; }
+.all-done .attention-story strong { color: #356851; }
+.all-done #practice-next { background: #39735b; }
+.coach-actions button:first-child:not(.is-current) { background: white; border-color: var(--line); color: var(--ink); }
+.coach-actions button.is-current { background: var(--soft); border-color: #c7bcf3; color: var(--blue); }
+.coach-actions button.is-done > span:first-child { background: #e3f3e9; color: #39735b; }
+.coach-actions button.is-done > span:last-child { color: #39735b; }
+.coach-actions button { min-height: 48px; }
+.lesson-cues { font-size: 14px; }
+#practice-checks label { min-height: 40px; cursor: pointer; }
+#practice-checks input { width: 18px; height: 18px; }
+html[data-reduce-motion=true] *, html[data-reduce-motion=true] *::before, html[data-reduce-motion=true] *::after { animation: none !important; transition: none !important; }
+html[data-reduce-motion=true] .voice-meter.is-sounding i:nth-child(odd) { height: 16px; }
+@media (max-width: 760px) {
+  .attention-controls { gap: 6px; }
+  .attention-controls > span { flex-basis: 100%; font-size: 11px; }
+  .attention-controls button { min-height: 44px; padding: 8px 14px; }
+  .learning-dock { padding: 15px 13px; }
+  .attention-story strong { font-size: 15px; }
+  .attention-story p { font-size: 12px; }
+  .sound-buddy { width: 43px; }
+  .practice-track { gap: 8px; }
+  #practice-next { padding: 10px 12px; font-size: 12px; }
+  #practice-progress { font-size: 10px; }
+  .voice-meter { bottom: 65px; font-size: 9px; }
+  .stage { height: 420px; }
+}
+@media (max-width: 360px) { #practice-next { width: 100%; } }
+@media (prefers-reduced-motion: reduce) { .learning-dock *, .stage * { animation: none !important; } }

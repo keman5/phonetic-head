@@ -76,6 +76,13 @@ for side,positive in [('left',True),('right',False)]:
  o=core.copy();o.data=core.data.copy();bpy.context.collection.objects.link(o)
  bm=bmesh.new();bm.from_mesh(o.data)
  bmesh.ops.bisect_plane(bm,geom=list(bm.verts)+list(bm.edges)+list(bm.faces),dist=1e-7,plane_co=(0,0,0),plane_no=(1,0,0),clear_inner=positive,clear_outer=not positive)
+ # Nearest-surface transfer can put asymmetric cheek deltas on interior points.
+ # Keep the cut face on the sagittal plane in EVERY pose; otherwise the core
+ # protrudes through the outer section cap as a horizontal stripe when speaking.
+ median=[v for v in bm.verts if abs(v.co.x)<1e-6]
+ for v in median:
+  v.co.x=0
+  for layer in bm.verts.layers.shape.values():v[layer].x=0
  cut=[e for e in bm.edges if e.is_boundary and all(abs(v.co.x)<1e-6 for v in e.verts)]
  bmesh.ops.holes_fill(bm,edges=cut,sides=0);bmesh.ops.recalc_face_normals(bm,faces=list(bm.faces))
  boundary=sum(e.is_boundary for e in bm.edges);nonmanifold=sum(not e.is_manifold for e in bm.edges);volume=abs(bm.calc_volume(signed=True))

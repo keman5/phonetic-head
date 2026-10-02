@@ -2,9 +2,10 @@
 Run: Blender --background --python repair_skin_seams.py
 """
 from pathlib import Path
-import bpy, bmesh, json, hashlib, sys
+import bpy, bmesh, json, hashlib, sys, math
 from mathutils.kdtree import KDTree
 from mathutils.bvhtree import BVHTree
+from mathutils import Vector
 ROOT=Path(__file__).resolve().parent
 sys.path.insert(0,str(ROOT))
 from articulation import skin_deform
@@ -38,7 +39,7 @@ triangles=[tuple(t.vertices) for t in skin.data.loop_triangles]
 bvh=BVHTree.FromPolygons(source_points,triangles,all_triangles=True)
 welded_count=len(source_points)
 seam_bm=bmesh.new();seam_bm.from_mesh(skin.data)
-seam_points=[v.co.copy() for v in seam_bm.verts if any(len(e.link_faces)>2 for e in v.link_edges)]
+seam_points=[v.co.copy() for v in seam_bm.verts if any(not e.is_manifold for e in v.link_edges)]
 seam_bm.free()
 seam_kd=KDTree(len(seam_points))
 for i,point in enumerate(seam_points):seam_kd.insert(point,i)
@@ -49,20 +50,38 @@ solid=skin.modifiers.new('Close atlas seams inward','SOLIDIFY');solid.thickness=
 bpy.ops.object.modifier_apply(modifier=solid.name)
 assert max(v.co.length for v in skin.data.vertices)<2.0, 'Invalid seam shell bounds'
 print('REPAIR_STAGE shell',len(skin.data.vertices),flush=True)
+# Closed mannequin eyelids are part of the skin, not separate floating eyeballs.
+# Overlap the complete socket rim before voxel union; the surrounding smoothing
+# blends the transition instead of leaving a ring-shaped contact seam.
+for x in [-.030,.030]:
+ bpy.ops.mesh.primitive_uv_sphere_add(segments=64,ring_count=40,location=skin.matrix_world @ Vector((x,-.070,1.591)))
+ lid=bpy.context.object;lid.scale=(.015,.015,.0125)
+ bpy.ops.object.transform_apply(location=False,rotation=False,scale=True)
+ bpy.ops.object.select_all(action='DESELECT');lid.select_set(True);skin.select_set(True)
+ bpy.context.view_layer.objects.active=skin;bpy.ops.object.join()
 skin.data.remesh_voxel_size=.0007;skin.data.remesh_voxel_adaptivity=0
 bpy.ops.object.voxel_remesh()
 print('REPAIR_STAGE remesh',len(skin.data.vertices),flush=True)
-# Smooth only the overlapping atlas borders more strongly. Protect lips, eye rims and ears.
+# Broader seam blend, including the previously excluded temple/eye/ear junctions.
+# Protect the functional lip rim, not a whole rectangular patch of the face.
 seam_group=skin.vertex_groups.new(name='Atlas seam blend')
 if seam_points:
  for v in skin.data.vertices:
   x,y,z=v.co
-  if (abs(x)<.03 and y<-.075 and 1.510<z<1.555) or (abs(abs(x)-.03)<.019 and y<-.055 and 1.573<z<1.607) or abs(x)>.064:continue
+  lip_protection=1-math.exp(-((z-1.5315)/.004)**2) if abs(x)<.03 and y<-.075 else 1
+  nose_protection=1-.95*math.exp(-(x/.023)**4-((z-1.553)/.016)**4) if y<-.09 else 1
   _,_,distance=seam_kd.find(v.co)
-  if distance<.006:seam_group.add([v.index],(1-distance/.006)**.5,'REPLACE')
-blend=skin.modifiers.new('Blend atlas border ridges','SMOOTH');blend.factor=1;blend.iterations=48;blend.vertex_group=seam_group.name
+  if distance<.012:seam_group.add([v.index],(1-distance/.012)**.5*lip_protection*nose_protection,'REPLACE')
+blend=skin.modifiers.new('Blend atlas border ridges','SMOOTH');blend.factor=1;blend.iterations=180;blend.vertex_group=seam_group.name
 bpy.ops.object.modifier_apply(modifier=blend.name)
-smooth=skin.modifiers.new('Soften seam ridges','SMOOTH');smooth.factor=.7;smooth.iterations=6
+eye_group=skin.vertex_groups.new(name='Continuous eyelid transitions')
+for v in skin.data.vertices:
+ x,y,z=v.co
+ radius=((abs(x)-.03)/.024)**2+((z-1.591)/.018)**2
+ if y<-.052 and radius<1:eye_group.add([v.index],(1-radius)**.5,'REPLACE')
+eye_smooth=skin.modifiers.new('Blend closed eyelids','SMOOTH');eye_smooth.factor=1;eye_smooth.iterations=65;eye_smooth.vertex_group=eye_group.name
+bpy.ops.object.modifier_apply(modifier=eye_smooth.name)
+smooth=skin.modifiers.new('Soften seam ridges','SMOOTH');smooth.factor=.7;smooth.iterations=16
 bpy.ops.object.modifier_apply(modifier=smooth.name)
 # Keep interactive cost comparable to the source skin instead of shipping the dense voxel mesh.
 decimate=skin.modifiers.new('Interactive surface budget','DECIMATE');decimate.ratio=.16;decimate.use_collapse_triangulate=True
@@ -71,6 +90,10 @@ print('REPAIR_STAGE simplified',len(skin.data.vertices),flush=True)
 # Voxel repair seals the lip slit. Reopen it before transferring the lower-lip
 # motion, so JawOpen separates two real rims instead of stretching a closed face.
 bm=bmesh.new();bm.from_mesh(skin.data)
+# Decimation may leave tiny isolated triangular pinholes. Fill those before
+# authoring the one intentional lip opening, not the entire mouth/airway.
+small_holes=[e for e in bm.edges if e.is_boundary]
+bmesh.ops.holes_fill(bm,edges=small_holes,sides=12)
 # Trim both layers of the repaired skin in local coordinates. A volumetric
 # Boolean is unstable on this atlas's overlapping inner shells.
 mouth_faces=[]
@@ -88,12 +111,22 @@ for v in bm.verts:
   if radius>0:v.co.x=.025*x/radius;v.co.z=1.5315+.0018*z/radius
 bm.to_mesh(skin.data);bm.free();skin.data.update()
 print('REPAIR_STAGE lip aperture',len(mouth_faces),'faces',flush=True)
+audit=bmesh.new();audit.from_mesh(skin.data)
+unexpected=[e for e in audit.edges if e.is_boundary and not all(v.co.y<-.074 and abs(v.co.x)<.029 and abs(v.co.z-1.5315)<.005 for v in e.verts)]
+assert not unexpected, 'Unexpected open edges outside lip aperture: '+str(len(unexpected))
+nonmanifold=sum(len(e.link_faces)>2 for e in audit.edges)
+assert nonmanifold==0, 'Overlapping surface sheets remain'
+audit.free()
 # Measure base-surface deviation, then evaluate the shared skin motion field on
 # the repaired vertices. Old sealed-lip triangles must not drive the new rim.
-distances=[]
+distances=[];eyelid_distances=[]
 for v in skin.data.vertices:
  point,normal,face,distance=bvh.find_nearest(v.co)
- distances.append(distance)
+ x,y,z=v.co
+ # The new eyelid's inward closing volume has no counterpart on the old open
+ # socket. Report that deliberate addition separately from retained face drift.
+ in_eye=abs(abs(x)-.030)<.018 and -.088<y<-.052 and 1.576<z<1.606
+ (eyelid_distances if in_eye else distances).append(distance)
 skin.shape_key_add(name='Basis')
 for name in original_morphs:
  if name=='Basis':continue
@@ -121,10 +154,15 @@ for side,positive in [('left',True),('right',False)]:
  print('SKIN_VALIDATED',side,'corrected',corrected,flush=True)
  clone.name='Repaired skin__'+side;clone['side']=side;clone['layer']='skin';clone['anatomyName']='Skin - stitched atlas regions';clone['lumen']=False
  clone.data.polygons.foreach_set('use_smooth',[True]*len(clone.data.polygons))
+ # Eyelid unions use the same surface material; avoid multi-primitive groups
+ # that detach runtime side/layer metadata from the actual render meshes.
+ for polygon in clone.data.polygons:polygon.material_index=0
  outputs.append(clone)
 bpy.ops.object.select_all(action='DESELECT')
 for o in outputs:o.select_set(True)
 bpy.ops.export_scene.gltf(filepath=str(ASSETS/'repaired-skin.glb'),export_format='GLB',use_selection=True,export_extras=True,export_animations=False,export_morph=True,export_morph_normal=True,export_yup=True,export_cameras=False,export_lights=False)
-report={'source_sha256':hashlib.sha256(SOURCE.read_bytes()).hexdigest(),'weld_tolerance_metres':.00001,'skin_vertices_before':before,'skin_vertices_after_weld':welded_count,'skin_vertices_after_repair':len(skin.data.vertices),'voxel_size_metres':.0007,'decimation_ratio':.16,'inward_shell_metres':.0012,'max_surface_distance_metres':max_distance,'p99_surface_distance_metres':sorted(distances)[int(len(distances)*.99)],'morph_transfer':'Shared analytic skin deformation field','morphs':list(original_morphs),'internal_anatomy':'Original GLB untouched; output contains skin only.'}
+report={'source_sha256':hashlib.sha256(SOURCE.read_bytes()).hexdigest(),'weld_tolerance_metres':.00001,'skin_vertices_before':before,'skin_vertices_after_weld':welded_count,'skin_vertices_after_repair':len(skin.data.vertices),'voxel_size_metres':.0007,'decimation_ratio':.16,'inward_shell_metres':.0012,'max_surface_distance_metres':max_distance,'p99_surface_distance_metres':sorted(distances)[int(len(distances)*.99)],'distance_scope':'Retained skin, excluding deliberately added eye closure volumes','eye_closure_max_distance_metres':max(eyelid_distances,default=0),'morph_transfer':'Shared analytic skin deformation field','morphs':list(original_morphs),'internal_anatomy':'Original GLB untouched; output contains skin only.','closed_eyelids':True,'seam_blend_radius_metres':.012,'seam_smoothing_iterations':180}
+report['unexpected_boundary_edges_before_split']=len(unexpected)
+report['overlapping_edges_before_split']=nonmanifold
 (ASSETS/'skin-repair-report.json').write_text(json.dumps(report,indent=2)+'\n')
 print('SKIN_REPAIR',json.dumps(report),flush=True)

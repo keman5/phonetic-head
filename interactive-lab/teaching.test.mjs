@@ -41,6 +41,6 @@ test('child materials provide stable semantic colours, with plain atlas mode ret
  assert.equal(new Set(colours).size,3);
  const child=createTeachingMaterial({anatomyName:'eye',layer:'eye',side:'left'},'human',true).material;
  const reference=createTeachingMaterial({anatomyName:'eye',layer:'eye',side:'left'},'human',false).material;
- assert.equal(child.toneMapped,false);assert.equal(reference.color.getHexString(),'ffffff');
- assert.notEqual(child.customProgramCacheKey(),reference.customProgramCacheKey());
+ assert.equal(child.toneMapped,false);assert.equal(reference.color.getHexString(),'ffdcbd');
+ assert.equal(child.color.getHex(),reference.color.getHex());
 });

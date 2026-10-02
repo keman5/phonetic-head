@@ -1,0 +1,55 @@
+{
+  "source_sha256": "904706929226cc6bad874632ffcce56f615f2acc4c2d3f0dfa54804e402e8340",
+  "organs": [
+    {
+      "name": "Tongue",
+      "vertices_before": 343,
+      "vertices_after": 8186,
+      "subdivision_levels": 2,
+      "morphs": [
+        "JawOpen",
+        "TipForward",
+        "FrontHigh",
+        "BackSeal",
+        "JawForward",
+        "TipAlveolar",
+        "TongueRetroflex",
+        "TongueCenter",
+        "TongueLow",
+        "BackHigh",
+        "TongueGroove",
+        "TongueLateral"
+      ]
+    },
+    {
+      "name": "Soft palate",
+      "vertices_before": 1884,
+      "vertices_after": 11294,
+      "subdivision_levels": 1,
+      "morphs": [
+        "VelumRaise",
+        "VelumLower"
+      ]
+    },
+    {
+      "name": "Uvula of palate",
+      "vertices_before": 830,
+      "vertices_after": 4970,
+      "subdivision_levels": 1,
+      "morphs": [
+        "VelumRaise",
+        "VelumLower"
+      ]
+    },
+    {
+      "name": "Gingiva",
+      "vertices_before": 12304,
+      "vertices_after": 73794,
+      "subdivision_levels": 1,
+      "morphs": [
+        "JawOpen"
+      ]
+    }
+  ],
+  "method": "Join and weld sagittal halves before subdivision; evaluate identical topology for every shape key; split after refinement."
+}

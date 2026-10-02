@@ -1,4 +1,5 @@
 import './dropdown.js';
+import {showInspector} from './interface.js';
 import {PronunciationAudio,audioCatalog} from './audio.js';
 import * as THREE from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
@@ -8,6 +9,8 @@ import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {SOUNDS,FOCUS,poseAt,durationFor,DEFAULT_ALPHA,effectiveOpacity} from './motion.js';
 import {PHONEMES,LETTERS,CATEGORIES} from './phonemes.js';
 import {teachingRole,lessonFor,CHILD_LABELS} from './teaching.js';
+import {createLearningCoach} from './learning.js';
+import {setOpacity,pickClosest,surfaceLabel} from './render-utils.js';
 
 const $=s=>document.querySelector(s);
 const state={sound:'ipa:i',progress:0,playing:false,speed:1,loop:false,air:true,palette:'human',alpha:{left:0,right:0,skin:0,bone:0,muscle:0,organ:0},focus:null,voice:'female'};
@@ -18,8 +21,13 @@ $('#stage').append(guides);
 guides.querySelectorAll('button').forEach(button=>button.onclick=()=>focusOn(button.dataset.guide));
 let motionOnly=false,previewing=false,childMode=true,lessonKey='';
 let playbackAttempt=0;
+let coach, cameraTween=null;
+let renderDirty=true,alphaPending=false,renderCount=0;
+const invalidate=()=>{renderDirty=true;};
+// Native controls and coach actions can change the scene while playback is idle.
+for(const event of ['input','change','click'])document.addEventListener(event,invalidate,true);
 let voiceCatalog;
-audioCatalog.then(value=>{voiceCatalog=value.voices;}).catch(()=>{});
+audioCatalog.then(value=>{voiceCatalog=value.voices;invalidate();}).catch(()=>{});
 function currentPose(){
   const entry=voiceCatalog?.[state.voice]?.entries.alphabet;
   if(state.sound!=='alphabet'||!entry)return poseAt(state.sound,state.progress);
@@ -31,24 +39,27 @@ function currentPose(){
 
 const player=new PronunciationAudio(()=>{
   state.progress=1;state.playing=false;syncPlay();
+  coach?.finish('listen');
   if(state.loop){state.progress=0;startPlayback();}
 },audioFailure);
+player.audio.addEventListener('durationchange',invalidate);
 function audioFailure(error){
   if(motionOnly){$('#audio-status').textContent='口型慢动作（示范音暂不可用）';return;}
   player.pause();state.playing=false;syncPlay();
+  coach?.fail();
   $('#audio-status').textContent=error.message||'无法播放，请重试。';
 }
-function pausePlayback(){playbackAttempt++;player.pause();state.playing=false;syncPlay();}
+function pausePlayback(){playbackAttempt++;player.pause();state.playing=false;syncPlay();coach?.interrupt();}
 async function startPlayback(){
   if(!ready)return;
   const attempt=++playbackAttempt;
   if(state.progress>=1||previewing)state.progress=0;
   previewing=false;
-  if(motionOnly){state.playing=true;syncPlay();$('#audio-status').textContent='口型慢动作';return;}
+  if(motionOnly){state.playing=true;syncPlay();coach?.resume('watch');$('#audio-status').textContent='口型慢动作';return;}
   state.playing=true;syncPlay();$('#audio-status').textContent='正在准备声音…';
   try{
     await player.play(state.progress);
-    if(attempt===playbackAttempt&&state.playing)$('#audio-status').textContent='本地合成示范音';
+    if(attempt===playbackAttempt&&state.playing){$('#audio-status').textContent='本地合成示范音';coach?.resume('listen');}
   }catch(error){if(attempt===playbackAttempt)audioFailure(error);}
 }
 
@@ -65,6 +76,7 @@ const airMat=new THREE.MeshStandardMaterial({color:'#24a8c8',emissive:'#128ba9',
 const particles=new THREE.InstancedMesh(new THREE.SphereGeometry(.0014,8,6),airMat,56);particles.frustumCulled=false;airGroup.add(particles);
 const arrow=new THREE.InstancedMesh(new THREE.ConeGeometry(.0021,.0045,9),airMat,6);arrow.frustumCulled=false;airGroup.add(arrow);
 const dummy=new THREE.Object3D(),up=new THREE.Vector3(0,1,0);
+const activeColor=new THREE.Color(PALETTES.human.active);
 const path=new THREE.CatmullRomCurve3([
   new THREE.Vector3(0,-.11,.013),new THREE.Vector3(0,-.058,.018),new THREE.Vector3(0,-.018,.02),
   new THREE.Vector3(0,-.007,.045),new THREE.Vector3(0,-.011,.071),new THREE.Vector3(0,-.017,.098),new THREE.Vector3(0,-.015,.145),
@@ -73,7 +85,7 @@ const nasalPath=new THREE.CatmullRomCurve3([
  new THREE.Vector3(0,-.11,.013),new THREE.Vector3(0,-.058,.018),new THREE.Vector3(0,-.007,.02),
  new THREE.Vector3(0,.019,.035),new THREE.Vector3(0,.023,.078),new THREE.Vector3(0,.02,.135),
 ]);
-function fail(error){console.error(error);$('#load-state').hidden=false;$('#load-state b').textContent='模型暂时无法显示';$('#load-detail').textContent='请保持本地服务运行，然后重新加载。';$('.spinner').hidden=true;$('#retry').hidden=false;pausePlayback();}
+function fail(error){console.error(error);ready=false;coach?.ready(false);$('#play').disabled=true;$('#restart').disabled=true;$('#load-state').hidden=false;$('#load-state b').textContent='模型暂时无法显示';$('#load-detail').textContent='请保持本地服务运行，然后重新加载。';$('.spinner').hidden=true;$('#retry').hidden=false;pausePlayback();}
 $('#retry').onclick=()=>location.reload();
 
 function buildUI(){
@@ -93,8 +105,7 @@ function buildUI(){
     $('#entry-select').value='ipa:'+button.dataset.vowel;selectSound('ipa:'+button.dataset.vowel);
   });
   $('#category').setOptions(Object.entries(CATEGORIES));
-  $('#head-model').setOptions($('#head-model').options.map(o=>o.value==='human'?{...o,label:'儿童教学人头'}:o));
-  $('#head-model').value='human';$('#focus-heading').textContent='观察发音动作';
+  $('#focus-heading').textContent='观察发音动作';
   const refreshEntries=()=>{
     const mode=$('#library-mode').value;
     $('#category').hidden=mode!=='ipa';$('label[for="category"]').hidden=mode!=='ipa';
@@ -108,7 +119,7 @@ function buildUI(){
   $('#layer-controls').innerHTML=Object.entries({skin:'皮肤与眼球',bone:'骨骼与牙齿',muscle:'肌肉',organ:'舌、腭与气道'}).map(([id,label])=>`<div class="layer"><label for="layer-${id}">${label}<output id="value-${id}"></output></label><input type="range" min="0" max="100" id="layer-${id}" value="${state.alpha[id]}"></div>`).join('');
   for(const key of ['left','right','skin','bone','muscle','organ']){
     const input=$(key==='left'||key==='right'?`#${key}-alpha`:`#layer-${key}`);
-    input.addEventListener('input',()=>{state.alpha[key]=Number(input.value);syncAlpha();clearPreset();});
+    input.addEventListener('input',()=>{state.alpha[key]=Number(input.value);alphaPending=true;invalidate();clearPreset();});
   }
   refreshEntries();syncAlpha();
 }
@@ -134,6 +145,7 @@ function refreshMaterials(){
 }
 function selectSound(id){
   pausePlayback();state.sound=id;state.progress=0;state.focus=null;
+  coach?.reset();
   previewing=id.startsWith('ipa:')&&['vowel','diphthong'].includes(PHONEMES[id.slice(4)]?.category);
   if(previewing)state.progress=.5;
   lessonKey='';showLesson(currentPose().phoneme);
@@ -149,7 +161,7 @@ function selectSound(id){
   $('#selection').innerHTML='<strong>选择器官查看动作</strong><p>点击模型或上方列表，查看当前音中的运动。</p>';
   syncPlay();
 }
-function syncPlay(){$('#play').textContent=state.playing?'Ⅱ 暂停':motionOnly?'▶ 播放口型':'▶ 播放发音';$('#play').setAttribute('aria-pressed',String(state.playing));}
+function syncPlay(){invalidate();$('#play').textContent=state.playing?'Ⅱ 暂停':motionOnly?'▶ 播放口型':'▶ 播放发音';$('#play').setAttribute('aria-pressed',String(state.playing));}
 function focusLabel(id){return childMode?CHILD_LABELS[id]:state.palette==='human'?FOCUS[id].label:({tongue:'舌头',lips:'嘴唇',jaw:'下巴',velum:'腭部',voice:'喉部发声'}[id]||FOCUS[id].label);}
 function focusMatch(id){
   if(childMode&&state.palette==='human'&&['lips','jaw'].includes(id))return n=>id==='lips'?n==='Skin - stitched atlas regions':n.startsWith('Lower ');
@@ -157,6 +169,7 @@ function focusMatch(id){
 }
 
 function syncAlpha(){
+  alphaPending=false;invalidate();
   for(const key of ['left','right','skin','bone','muscle','organ']){
     const side=key==='left'||key==='right';$(side?`#${key}-alpha`:`#layer-${key}`).value=state.alpha[key];$(side?`#${key}-value`:`#value-${key}`).textContent=state.alpha[key]+'%';
   }
@@ -167,8 +180,7 @@ function syncAlpha(){
     if(m.userData.layer==='muscle'&&state.alpha.skin===0&&!section)m.visible=false;
     if(childMode&&teachingRole(m.userData)==='detail')m.visible=false;
     if(childMode&&section&&m.userData.layer==='eye')m.visible=false;
-    m.material.opacity=a;m.material.transparent=a<.995;m.material.depthWrite=a>=.995;
-    m.material.needsUpdate=true;
+    setOpacity(m.material,a);
   }
   syncSections();
 }
@@ -189,7 +201,7 @@ function syncSections(){
       cap.userData.sourceMaterial=source;
     }
     const opacity=white?1-state.alpha[side]/100:source.opacity;
-    cap.material.opacity=opacity;cap.material.transparent=opacity<.995;cap.material.depthWrite=opacity>=.995;cap.material.needsUpdate=true;
+    setOpacity(cap.material,opacity);
   }
 }
 function clearPreset(){document.querySelectorAll('[data-preset]').forEach(b=>b.classList.remove('chosen'));}
@@ -199,30 +211,35 @@ function preset(id){
   if(id==='surface')state.alpha={left:0,right:0,skin:0,bone:0,muscle:0,organ:0};
   syncAlpha();document.querySelectorAll('[data-preset]').forEach(b=>b.classList.toggle('chosen',b.dataset.preset===id));
 }
-function focusOn(id,rawName){
-  state.focus=id?{id,match:focusMatch(id),label:focusLabel(id)}:rawName?{match:n=>n===rawName,label:rawName}:null;
+function focusOn(id,rawName,reveal=true){
+  invalidate();
+  if(reveal)coach?.clearFocus();
+  if(reveal&&(id||rawName))showInspector('tab-model');
+  state.focus=id?{id,match:focusMatch(id),label:focusLabel(id)}:rawName?{match:n=>n===rawName,label:surfaceLabel(meshes.find(m=>m.userData.anatomyName===rawName)?.userData||{})}:null;
   document.querySelectorAll('[data-focus]').forEach(b=>b.classList.toggle('selected',b.dataset.focus===id));
   $('#selection').replaceChildren();const strong=document.createElement('strong'),p=document.createElement('p');
   strong.textContent=state.focus?.label||'选择器官查看动作';p.textContent=id?(state.palette!=='human'&&['lips','jaw'].includes(id)?'观察角色嘴巴的张开与合拢，配合口腔内部的舌位一起练习。':FOCUS[id].desc):rawName?'当前选中的源模型结构。可旋转模型或调整透明度观察。':'点击模型或上方列表，查看当前音中的运动。';
   $('#selection').append(strong,p);
 }
-function setView(view){
+function setView(view,smooth=false){
   const distance=view==='lips'?(state.palette==='human'?.24:.34):view==='mouth'?.26:mount.clientWidth<450?.7:.59;
   const target=['mouth','lips'].includes(view)?new THREE.Vector3(0,state.palette==='human'?-.025:0,.065):new THREE.Vector3(0,.023,.013);
   const dirs={lips:new THREE.Vector3(0,0,1),mouth:new THREE.Vector3(-1,.12,.28),oblique:new THREE.Vector3(-.85,.23,.9),front:new THREE.Vector3(0,.04,1),right:new THREE.Vector3(-1,.015,0),left:new THREE.Vector3(1,.015,0)};
-  camera.position.copy(target).add(dirs[view].normalize().multiplyScalar(distance));controls.target.copy(target);controls.update();
+  const position=target.clone().add(dirs[view].normalize().multiplyScalar(distance));
+  cameraTween=smooth&&!coach?.reducedMotion?{from:camera.position.clone(),targetFrom:controls.target.clone(),position,target,start:performance.now()}:null;
+  if(!cameraTween){camera.position.copy(position);controls.target.copy(target);controls.update();}
   document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('chosen',b.dataset.view===view));
 }
 function animatePose(pose){
   let pinned=null;
   for(const m of meshes){
-    if(m.morphTargetDictionary)for(const [key,index] of Object.entries(m.morphTargetDictionary))m.morphTargetInfluences[index]=pose.weights[key]||0;
+    for(const [key,index] of m.userData.morphBindings)m.morphTargetInfluences[index]=pose.weights[key]||0;
     if(m.userData.solidVolume)continue;
     const name=m.userData.anatomyName;
     const match=state.focus?.match(name);
-    const active=Object.values(FOCUS).filter(f=>f.match(name)).reduce((v,f)=>Math.max(v,...f.keys.map(k=>pose.weights[k]||0)),0);
+    const active=m.userData.motionKeys.reduce((v,k)=>Math.max(v,pose.weights[k]||0),0);
     m.material.color.copy(m.userData.baseColor);
-    if(m.userData.layer==='muscle')m.material.color.lerp(new THREE.Color(PALETTES[state.palette].active),active*.35);
+    if(m.userData.layer==='muscle')m.material.color.lerp(activeColor,active*.35);
     m.material.emissive.set(match?'#c17935':childMode||m.userData.variant&&m.userData.variant!=='human'?m.userData.baseColor:'#000000');m.material.emissiveIntensity=match?.35:childMode?.22:m.userData.variant&&m.userData.variant!=='human'?.08:0;
     if(m.userData.feature==='tongue'&&m.userData.variant===state.palette)m.visible=effectiveOpacity(m.userData.side,m.userData.layer,state.alpha)>.005&&pose.weights.LipClose<.85;
     if(match&&m.visible&&(!pinned||m.material.opacity>pinned.material.opacity))pinned=m;
@@ -278,21 +295,63 @@ function updateGuides(){
     const start=18+button.offsetWidth;line.setAttribute('d',`M ${start} ${labelY+15} L ${Math.max(start+12,x-18)} ${labelY+15} L ${x} ${y}`);
   });
 }
+function updateAttention(){
+  const halo=$('#attention-halo'),part=coach?.focus;
+  halo.hidden=!part||!childMode;
+  if(halo.hidden)return;
+  // Project semantic anchors in the same coordinate system as the model guides.
+  const point=new THREE.Vector3(...({lips:[0,-.019,.101],tongue:[0,-.027,.060],air:[0,-.073,.015]}[part]));
+  if(state.palette!=='human')point.y+=.014;
+  point.project(camera);
+  const x=(point.x+1)*mount.clientWidth/2,y=(1-point.y)*mount.clientHeight/2;
+  halo.hidden=point.z>1||x<30||x>mount.clientWidth-30||y<90||y>mount.clientHeight-50||(part!=='lips'&&state.alpha.left===state.alpha.right);
+  halo.style.left=x+'px';halo.style.top=y+'px';
+}
 function tick(now){
   frame=requestAnimationFrame(tick);const dt=Math.min((now-last)/1000,.06);last=now;
-  const duration=motionOnly?4:player.duration||durationFor(state.sound);
+  if(alphaPending)syncAlpha();
+  if(cameraTween){
+    const t=coach?.reducedMotion?1:Math.min(1,(now-cameraTween.start)/600),ease=t*t*(3-2*t);
+    camera.position.lerpVectors(cameraTween.from,cameraTween.position,ease);controls.target.lerpVectors(cameraTween.targetFrom,cameraTween.target,ease);
+    invalidate();if(t===1)cameraTween=null;
+  }
+  const cameraChanged=controls.update();
+  if(!state.playing&&!renderDirty&&!cameraChanged)return;
+  renderDirty=false;
+  const duration=motionOnly?(state.sound==='alphabet'?Math.max(4,durationFor(state.sound)*1.7):4):player.duration||durationFor(state.sound);
   if(state.playing){
-    if(motionOnly){state.progress+=dt*state.speed/duration;if(state.progress>=1){if(state.loop)state.progress%=1;else{state.progress=1;state.playing=false;syncPlay();}}}
+    if(motionOnly){state.progress+=dt*state.speed/duration;if(state.progress>=1){if(state.loop)state.progress%=1;else{state.progress=1;state.playing=false;syncPlay();coach?.finish('watch');}}}
     else state.progress=player.progress;
   }
   const pose=currentPose();animatePose(pose);animateAir(pose);showLesson(pose.phoneme);
+  coach?.update(pose,state.playing);
   $('#voice-cue').classList.toggle('vibrating',state.playing&&pose.voiced);
   $('#timeline').value=Math.round(state.progress*1000);$('#time-label').textContent=(state.progress*duration).toFixed(1)+' / '+duration.toFixed(1)+' 秒';
   $('#phase-label').textContent=SOUNDS[state.sound].steps[pose.step];document.querySelectorAll('[data-step]').forEach(b=>b.classList.toggle('active',Number(b.dataset.step)===pose.step));
   $('#air-status').textContent=!state.air?'气流已隐藏':pose.air>.02?pose.voiced?'口腔送气 · 喉部发声':'口腔送气':state.progress>.1&&state.progress<.65&&['plosive','affricate','cluster'].includes(PHONEMES[pose.phoneme]?.category)?'闭塞阶段 · 气流受阻':'准备呼气';
   if(state.air&&pose.air>.02&&pose.nasal>.5)$('#air-status').textContent='鼻腔送气 · 喉部发声';
   if(pose.phoneme)$('#phase-label').textContent=`${pose.letter?pose.letter+' · ':''}/${PHONEMES[pose.phoneme].ipa}/ · ${SOUNDS[state.sound].steps[pose.step]}`;
-  controls.update();updateGuides();renderer.render(scene,camera);
+  updateGuides();updateAttention();renderer.render(scene,camera);renderCount++;
+}
+
+// Compile both opacity modes while the loading screen is visible. Previously
+// the first half-transparent interaction paid this shader cost on the UI frame.
+async function warmMaterials(){
+  const warmScene=new THREE.Scene(),materials=new Map();
+  for(const source of [...meshes,...sectionCaps]){
+    const copy=source.clone(false);copy.visible=true;copy.matrixAutoUpdate=false;
+    copy.matrix.copy(source.matrixWorld);warmScene.add(copy);
+    materials.set(source.material,source.material.opacity);
+  }
+  try{
+    for(const opacity of [1,.5]){
+      for(const material of materials.keys())setOpacity(material,opacity);
+      await renderer.compileAsync(warmScene,camera,scene);
+    }
+  }finally{
+    for(const [material,opacity] of materials)setOpacity(material,opacity);
+    warmScene.clear();
+  }
 }
 buildUI();
 const mouthButton=document.createElement('button');mouthButton.dataset.view='mouth';mouthButton.textContent='口腔特写';$('.view-buttons').append(mouthButton);
@@ -300,14 +359,17 @@ const lipsButton=document.createElement('button');lipsButton.dataset.view='lips'
 try{
   renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio,1.75));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.0;mount.appendChild(renderer.domElement);
   controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.minDistance=.22;controls.maxDistance=1.2;controls.enablePan=true;
-  const resize=()=>{const w=mount.clientWidth,h=mount.clientHeight;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h);};new ResizeObserver(resize).observe(mount);resize();setView('oblique');
-  mount.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key))return;e.preventDefault();const offset=camera.position.clone().sub(controls.target);const s=new THREE.Spherical().setFromVector3(offset);s.theta+=(e.key==='ArrowLeft'?.1:e.key==='ArrowRight'?-.1:0);s.phi+=e.key==='ArrowUp'?-.1:e.key==='ArrowDown'?.1:0;s.makeSafe();camera.position.copy(controls.target).add(new THREE.Vector3().setFromSpherical(s));controls.update();});
+  controls.addEventListener('change',invalidate);
+  controls.addEventListener('start',()=>{cameraTween=null;});
+  const resize=()=>{const w=mount.clientWidth,h=mount.clientHeight;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h);invalidate();};new ResizeObserver(resize).observe(mount);resize();setView('oblique');
+  mount.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key))return;e.preventDefault();cameraTween=null;const offset=camera.position.clone().sub(controls.target);const s=new THREE.Spherical().setFromVector3(offset);s.theta+=(e.key==='ArrowLeft'?.1:e.key==='ArrowRight'?-.1:0);s.phi+=e.key==='ArrowUp'?-.1:e.key==='ArrowDown'?.1:0;s.makeSafe();camera.position.copy(controls.target).add(new THREE.Vector3().setFromSpherical(s));controls.update();});
   renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();cancelAnimationFrame(frame);fail(new Error('WebGL context lost'));});
   const loader=new GLTFLoader();
-  Promise.all([loader.loadAsync('./assets/phonetic-head.glb'),loader.loadAsync('./assets/repaired-skin.glb'),loader.loadAsync('./assets/character-heads.glb'),loader.loadAsync('./assets/solid-human-core.glb')]).then(([gltf,repaired,characters,solidCore])=>{
-    const oldSkin=[];gltf.scene.traverse(m=>{if(m.isMesh&&m.userData.layer==='skin')oldSkin.push(m);});
-    for(const m of oldSkin)m.parent.remove(m);
-    gltf.scene.add(repaired.scene);gltf.scene.add(characters.scene);gltf.scene.add(solidCore.scene);
+  Promise.all([loader.loadAsync('./assets/phonetic-head.glb'),loader.loadAsync('./assets/repaired-skin.glb'),loader.loadAsync('./assets/solid-human-core.glb'),loader.loadAsync('./assets/smooth-articulators.glb')]).then(async([gltf,repaired,solidCore,articulators])=>{
+    const refinedNames=new Set();articulators.scene.traverse(m=>{if(m.isMesh)refinedNames.add(m.userData.anatomyName);});
+    const replaced=[];gltf.scene.traverse(m=>{if(m.isMesh&&(m.userData.layer==='skin'||refinedNames.has(m.userData.anatomyName)))replaced.push(m);});
+    for(const m of replaced){m.parent.remove(m);m.geometry.dispose();m.material.dispose();}
+    gltf.scene.add(repaired.scene,solidCore.scene,articulators.scene);
     model=gltf.scene;model.updateMatrixWorld(true);scene.add(model);
     model.traverse(m=>{if(!m.isMesh)return;
       const metadata=m.userData.anatomyName?m.userData:m.parent?.userData||{};m.userData={...m.userData,...metadata};
@@ -315,6 +377,8 @@ try{
       if(!m.userData.side||!m.userData.layer)throw new Error('Missing anatomy metadata: '+m.name);
       const {color,material}=createTeachingMaterial(m.userData,state.palette,childMode);m.material=material;
       m.userData.baseColor=new THREE.Color(color);m.geometry.computeBoundingBox();m.userData.center=m.geometry.boundingBox.getCenter(new THREE.Vector3());m.frustumCulled=false;meshes.push(m);
+      m.userData.morphBindings=Object.entries(m.morphTargetDictionary||{});
+      m.userData.motionKeys=[...new Set(Object.values(FOCUS).filter(f=>f.match(m.userData.anatomyName)).flatMap(f=>f.keys))];
     });
     medianNormalGroups=smoothMedianNormals(meshes);
     for(const source of meshes){
@@ -335,7 +399,9 @@ try{
         model.add(backing);sectionCaps.push(backing);
       }
     }
-    preset('cutaway');setView('right');ready=true;$('#load-state').hidden=true;$('#play').disabled=false;$('#restart').disabled=false;$('#head-model').disabled=false;last=performance.now();tick(last);
+    preset('cutaway');setView('right');model.updateMatrixWorld(true);
+    $('#load-detail').textContent='正在准备透明观察效果…';await warmMaterials();
+    ready=true;coach?.ready();$('#load-state').hidden=true;$('#play').disabled=false;$('#restart').disabled=false;last=performance.now();tick(last);
   }).catch(fail);
 }catch(error){fail(error);}
 
@@ -348,22 +414,11 @@ $('#speed').oninput=e=>{
   e.target.setAttribute('aria-valuetext',state.speed.toFixed(2)+' 倍');
 };
 $('#voice').onchange=e=>{const resume=state.playing;pausePlayback();state.voice=e.target.value;state.progress=0;player.select(state.sound,state.voice);$('#audio-status').textContent='本地合成示范音';if(resume)startPlayback();};
-$('#sound-toggle').onchange=e=>player.setMuted(!e.target.checked);
+$('#sound-toggle').onchange=e=>{player.setMuted(!e.target.checked);if(!e.target.checked&&!motionOnly)coach?.interrupt('声音已关闭。准备好后，点“听示范音”再听一次。');};
 $('#loop').onchange=e=>state.loop=e.target.checked;$('#air-toggle').onchange=e=>state.air=e.target.checked;
-document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>controls&&setView(b.dataset.view));$('#reset-view').onclick=()=>controls&&setView('oblique');
+document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>controls&&setView(b.dataset.view,true));$('#reset-view').onclick=()=>controls&&setView('oblique',true);
 document.querySelectorAll('[data-preset]').forEach(b=>b.onclick=()=>preset(b.dataset.preset));$('#reset-opacity').onclick=()=>preset('cutaway');
 $('#swap-sides').onclick=()=>{[state.alpha.left,state.alpha.right]=[state.alpha.right,state.alpha.left];syncAlpha();clearPreset();};
-$('#head-model').onchange=e=>{
-  state.palette=e.target.value;
-  document.documentElement.style.setProperty('--muscle-color',PALETTES[state.palette].muscle);document.documentElement.style.setProperty('--organ-color',PALETTES[state.palette].organ);
-  const savedProgress=state.progress,savedPlaying=state.playing,savedPreview=previewing;selectSound(state.sound);state.progress=savedProgress;previewing=savedPreview;if(savedPlaying)startPlayback();
-  $('#character-note').hidden=state.palette==='human';
-  $('#focus-heading').textContent=!childMode&&state.palette==='human'?'观察肌肉配合':'观察发音动作';
-  for(const layer of ['bone','muscle'])$('#layer-'+layer).closest('.layer').hidden=state.palette!=='human';
-  refreshMaterials();
-  scene.background.set(PALETTES[state.palette].background);
-  preset('surface');setView('front');
-};
 $('#clear-focus').onclick=()=>focusOn(null);
 $('#anatomy-details').onchange=e=>{
   childMode=!e.target.checked;refreshMaterials();
@@ -372,18 +427,41 @@ $('#anatomy-details').onchange=e=>{
   $('#focus-heading').textContent=!childMode&&state.palette==='human'?'观察肌肉配合':'观察发音动作';
 };
 $('#contrast-sound').onclick=e=>selectLesson(e.currentTarget.dataset.sound);
-$('#watch-demo').onclick=()=>{if(!ready)return;preset('cutaway');setView('right');$('#motion-only').checked=true;$('#motion-only').dispatchEvent(new Event('change'));startPlayback();};
-$('#listen-demo').onclick=()=>{if(!ready)return;preset('surface');setView('lips');$('#motion-only').checked=false;$('#motion-only').dispatchEvent(new Event('change'));startPlayback();};
-$('#try-demo').onclick=()=>{pausePlayback();$('#practice-checks').open=true;$('#practice-checks').scrollIntoView({block:'nearest',behavior:'auto'});};
+coach=createLearningCoach({
+  phoneme:()=>currentPose().phoneme,
+  prepare(mode){
+    pausePlayback();state.loop=false;$('#loop').checked=false;showInspector('tab-practice');focusOn(null,null,false);
+    if(mode==='try'){
+      state.progress=.5;previewing=true;player.seek(.5);preset('surface');setView('lips',true);return;
+    }
+    motionOnly=mode==='watch';$('#motion-only').checked=motionOnly;previewing=false;state.progress=0;player.seek(0);
+    $('#speed').value=mode==='watch'?'0.65':'1';$('#speed').dispatchEvent(new Event('input'));
+    if(!motionOnly){$('#sound-toggle').checked=true;player.setMuted(false);preset('surface');setView('lips',true);}
+    state.air=true;$('#air-toggle').checked=true;
+    syncPlay();
+  },
+  play:startPlayback,pause:pausePlayback,
+  focus(part){
+    if(part==='lips'){preset('surface');setView('lips',true);focusOn('lips',null,false);}
+    else {preset('cutaway');setView('right',true);focusOn(part==='air'?'voice':'tongue',null,false);}
+    if(part==='air'){state.air=true;$('#air-toggle').checked=true;}
+  }
+});
+coach.ready(ready);
+document.addEventListener('visibilitychange',()=>{if(document.hidden)pausePlayback();});
 let down=null;
 mount.addEventListener('pointerdown',e=>down={x:e.clientX,y:e.clientY});
 mount.addEventListener('pointerup',e=>{
-  if(!ready||!down||Math.hypot(down.x-e.clientX,down.y-e.clientY)>5)return;
+  const start=down;down=null;
+  if(!ready||!start||Math.hypot(start.x-e.clientX,start.y-e.clientY)>5)return;
   const rect=mount.getBoundingClientRect(),ray=new THREE.Raycaster();ray.setFromCamera(new THREE.Vector2((e.clientX-rect.left)/rect.width*2-1,-(e.clientY-rect.top)/rect.height*2+1),camera);
-  const hit=ray.intersectObjects([...meshes,...sectionCaps].filter(m=>m.visible&&m.material.opacity>.22),false)[0];
+  const hit=pickClosest(ray,[...meshes,...sectionCaps]);
   if(hit){const n=hit.object.userData.anatomyName,id=Object.keys(FOCUS).find(k=>FOCUS[k].match(n));focusOn(id,n);}
 });
+mount.addEventListener('pointercancel',()=>{down=null;});
+window.renderSnapshot=()=>({renderCount,drawCalls:renderer.info.render.calls,triangles:renderer.info.render.triangles,programs:renderer.info.programs.length,materialVersion:meshes.reduce((sum,m)=>sum+m.material.version,0)+sectionCaps.reduce((sum,m)=>sum+m.material.version,0)});
 // Read-only diagnostic snapshot for local checks; no UI simulation or random scoring.
 window.teachingSnapshot=()=>({childMode,lesson:lessonKey,visibleSkeleton:meshes.filter(m=>m.visible&&m.userData.layer==='bone'&&teachingRole(m.userData)!=='teeth').length,filledContours:sectionCaps.filter(m=>m.visible&&m.userData.contourFill).length,visibleDetails:meshes.filter(m=>m.visible&&teachingRole(m.userData)==='detail').length,visibleRoles:[...new Set(meshes.filter(m=>m.visible).map(m=>teachingRole(m.userData)))],hiddenDetailCaps:sectionCaps.filter(m=>!m.visible&&teachingRole(m.userData)==='detail').length});
+window.learningSnapshot=()=>({...coach.snapshot(),cameraMoving:!!cameraTween});
 window.sectionMaterials=()=>sectionCaps.filter(c=>c.visible).map(c=>({name:c.sourceMesh.userData.anatomyName,color:c.material.color.getHexString(),source:c.sourceMesh.material.color.getHexString(),type:c.material.type,sourceType:c.sourceMesh.material.type,emissive:c.material.emissive?.getHexString(),sourceEmissive:c.sourceMesh.material.emissive?.getHexString()}));
 window.labSnapshot=()=>({ready,audio:{voice:state.voice,src:player.source,paused:player.audio.paused,currentTime:player.audio.currentTime,duration:player.duration,rate:player.rate,muted:player.muted},solidCoreMeshes:meshes.filter(m=>m.userData.solidVolume).length,visibleSolidCoreMeshes:meshes.filter(m=>m.userData.solidVolume&&m.visible).length,medianNormalGroups,sectionCapCount:sectionCaps.length,visibleWhiteSections:sectionCaps.filter(c=>c.visible&&c.userData.whiteSection).length,whiteSectionColors:[...new Set(sectionCaps.filter(c=>c.visible&&c.userData.whiteSection).map(c=>c.material.color.getHexString()))],humanEyeColors:meshes.filter(m=>m.userData.layer==='eye').map(m=>m.material.color.getHexString()),visibleSectionCaps:sectionCaps.filter(c=>c.visible).length,visibleMuscleCaps:sectionCaps.filter(c=>c.visible&&c.userData.layer==='muscle').length,palette:state.palette,visibleSourceMeshes:meshes.filter(m=>m.visible&&!m.userData.variant).length,characterTongue:meshes.filter(m=>m.userData.variant===state.palette&&m.userData.feature==='tongue').map(m=>({visible:m.visible,weights:Object.fromEntries(Object.entries(m.morphTargetDictionary||{}).map(([key,index])=>[key,m.morphTargetInfluences[index]]))})),repairedSkinMeshes:meshes.filter(m=>m.userData.layer==='skin'&&m.userData.variant==='human'&&!m.userData.solidVolume).length,visibleHeadVariants:[...new Set(meshes.filter(m=>m.visible&&m.userData.variant).map(m=>m.userData.variant))],visibleHeadMeshes:meshes.filter(m=>m.userData.variant===state.palette&&m.visible).length,headModels:[...new Set(meshes.map(m=>m.userData.variant).filter(Boolean))],skinMorphMeshes:meshes.filter(m=>m.userData.layer==='skin'&&!m.userData.solidVolume&&m.userData.variant===state.palette&&m.morphTargetInfluences?.some(w=>w>0)).length,playing:state.playing,sound:state.sound,progress:state.progress,alpha:{...state.alpha},meshCount:meshes.length,pose:currentPose(),airVisible:airGroup.visible,airPosition:particles.instanceMatrix.array.slice(12,15),visibleSides:{left:meshes.filter(m=>m.userData.side==='left'&&m.visible).length,right:meshes.filter(m=>m.userData.side==='right'&&m.visible).length},morphMeshes:meshes.filter(m=>m.morphTargetInfluences?.some(w=>w>0)).length});
