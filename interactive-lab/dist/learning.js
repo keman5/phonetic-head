@@ -32,7 +32,7 @@ export function attentionCue(pose, part = 'tongue') {
     title: ['先摆好起始口型', '舌头正在滑动', '到达尾音口型'][pose.step],
     text: '这是一个连续的声音，中间不要停。'
   };
-  return {title: pose.step === 2 ? '看完了，轻轻放松' : '找到粉色的舌头', text: lesson.tongue + '。'};
+  return {title: pose.step === 2 ? pose.nextPhoneme ? '接着读，准备下一个声音' : '看完了，轻轻放松' : '找到粉色的舌头', text: lesson.tongue + '。'};
 }
 
 export function createLearningCoach(hooks) {
@@ -86,7 +86,7 @@ export function createLearningCoach(hooks) {
     session.begin(mode); activeFocus = mode === 'watch';
     if (mode === 'watch') {
       part = ['p','b','f','v','m'].includes(hooks.phoneme()) ? 'lips' : 'tongue';
-      focus(part); announce('第一步：只看一个部位。蓝色箭头表示气流。');
+      focus(part); announce('第一步：听慢速声音，只观察一个部位。蓝色箭头表示气流。');
       hooks.play(); showStage();
     } else if (mode === 'listen') {
       part = 'lips'; markAttention();
@@ -124,7 +124,7 @@ export function createLearningCoach(hooks) {
     reset() {
       session.reset(); part = 'tongue'; activeFocus = false; checks.forEach(input => input.checked = false);
       document.querySelectorAll('[data-attention]').forEach(button => button.setAttribute('aria-pressed', 'false'));
-      announce('先看动作，再听声音，最后自己试一试。'); render();
+      announce('先慢速听看，再听完整示范，最后自己试一试。'); render();
     },
     interrupt(reason) { session.interrupt(); if(reason) announce(reason); render(); },
     clearFocus() { activeFocus = false; document.querySelectorAll('[data-attention]').forEach(button => button.setAttribute('aria-pressed','false')); },

@@ -9,6 +9,15 @@ import './audio.test.mjs';
 import './teaching.test.mjs';
 import './learning.test.mjs';
 import './render-utils.test.mjs';
+import './child-teeth.test.mjs';
+import './curriculum.test.mjs';
+import './journey.test.mjs';
+import './study-plan.test.mjs';
+import './voice-practice.test.mjs';
+import './curriculum-audio.test.mjs';
+import './connected-speech-model.test.mjs';
+import './teaching-tongue.test.mjs';
+import './tongue-airflow.test.mjs';
 
 test('plosives block airflow during closure and release it afterward',()=>{
   for(const sound of ['p','k']){

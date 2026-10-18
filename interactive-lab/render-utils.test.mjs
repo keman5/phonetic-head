@@ -13,6 +13,14 @@ test('opacity scrubbing only invalidates the shader at a mode boundary',()=>{
   setOpacity(m,1);assert.equal(m.version,initial+2);
 });
 
+test('nearest-surface skin depth is retained without changing organ blending',()=>{
+  const skin=new THREE.MeshBasicMaterial();skin.userData.surfaceDepth=true;
+  const organ=new THREE.MeshBasicMaterial();
+  setOpacity(skin,.2);setOpacity(organ,.2);
+  assert.equal(skin.depthWrite,true);assert.equal(organ.depthWrite,false);
+  assert.equal(skin.opacity,organ.opacity);
+});
+
 test('bounded picking agrees with exhaustive raycasting, including inside bounds and morphs',()=>{
   const meshes=[-2,0,2].map((x,i)=>{
     const g=new THREE.SphereGeometry(.8,16,12);g.morphTargetsRelative=true;

@@ -21,3 +21,6 @@ __pycache__/
 
 # Blender automatic backups; named model versions remain tracked
 *.blend[0-9]*
+
+# Local neural voice build dependencies and model weights
+interactive-lab/.audio-neural/

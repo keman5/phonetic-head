@@ -1,0 +1,4870 @@
+{
+  "engine": "Kokoro neural speech for letters and connected text; eSpeak NG for isolated IPA",
+  "accent": "en-gb",
+  "sampleRate": 22050,
+  "notice": "Neural speech; word timing uses model durations; within-word poses are proportional teaching guides, not forced alignment.",
+  "voices": {
+    "female": {
+      "engineVoice": "en+f3",
+      "entries": {
+        "lesson-dog-sound": {
+          "duration": 0.520045351473923,
+          "sha256": "59f8feda5bab32a673dd49e6f5ac9bdb262cdcccb26317d2c07ef4e2e5ee164e",
+          "text": "d",
+          "words": [
+            {
+              "text": "d",
+              "start": 0,
+              "end": 0.520045351473923
+            }
+          ],
+          "clips": [
+            {
+              "id": "d",
+              "start": 0,
+              "end": 0.520045351473923,
+              "wordIndex": 0
+            }
+          ]
+        },
+        "lesson-dog-word": {
+          "text": "dog",
+          "words": [
+            {
+              "text": "dog",
+              "start": 0.29933333333333334,
+              "end": 0.6243333333333333
+            }
+          ],
+          "clips": [
+            {
+              "id": "d",
+              "start": 0.29933333333333334,
+              "end": 0.4076666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "o",
+              "start": 0.4076666666666667,
+              "end": 0.516,
+              "wordIndex": 0
+            },
+            {
+              "id": "g",
+              "start": 0.516,
+              "end": 0.6243333333333333,
+              "wordIndex": 0
+            }
+          ],
+          "engineVoice": "bf_emma",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 0.8843083900226757,
+          "sha256": "710973e2b9976ee79742161f235f873ab3fb3be8e9faee9a2973c4c54a72e3ee",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-dog-phrase": {
+          "text": "big dog",
+          "words": [
+            {
+              "text": "big",
+              "start": 0.278,
+              "end": 0.528
+            },
+            {
+              "text": "dog",
+              "start": 0.528,
+              "end": 0.853
+            }
+          ],
+          "clips": [
+            {
+              "id": "b",
+              "start": 0.278,
+              "end": 0.3613333333333334,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.3613333333333334,
+              "end": 0.4446666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "g",
+              "start": 0.4446666666666667,
+              "end": 0.528,
+              "wordIndex": 0
+            },
+            {
+              "id": "d",
+              "start": 0.528,
+              "end": 0.6363333333333333,
+              "wordIndex": 1
+            },
+            {
+              "id": "o",
+              "start": 0.6363333333333333,
+              "end": 0.7446666666666666,
+              "wordIndex": 1
+            },
+            {
+              "id": "g",
+              "start": 0.7446666666666666,
+              "end": 0.853,
+              "wordIndex": 1
+            }
+          ],
+          "engineVoice": "bf_emma",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 1.113015873015873,
+          "sha256": "9ef1031ae3dd26e86ea039bd6b87ace9b2725c2377a42facf21906a430faaf1f",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-dog-sentence": {
+          "text": "This is a big dog.",
+          "words": [
+            {
+              "text": "This",
+              "start": 0.25666666666666665,
+              "end": 0.5566666666666666
+            },
+            {
+              "text": "is",
+              "start": 0.5566666666666666,
+              "end": 0.7316666666666667
+            },
+            {
+              "text": "a",
+              "start": 0.7316666666666667,
+              "end": 0.8316666666666667
+            },
+            {
+              "text": "big",
+              "start": 0.8316666666666667,
+              "end": 1.0816666666666666
+            },
+            {
+              "text": "dog",
+              "start": 1.0816666666666666,
+              "end": 1.7626666666666666
+            }
+          ],
+          "clips": [
+            {
+              "id": "dh",
+              "start": 0.25666666666666665,
+              "end": 0.3566666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.3566666666666667,
+              "end": 0.45666666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "s",
+              "start": 0.45666666666666667,
+              "end": 0.5566666666666666,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.5566666666666666,
+              "end": 0.6441666666666667,
+              "wordIndex": 1
+            },
+            {
+              "id": "z",
+              "start": 0.6441666666666667,
+              "end": 0.7316666666666667,
+              "wordIndex": 1
+            },
+            {
+              "id": "schwa",
+              "start": 0.7316666666666667,
+              "end": 0.8316666666666667,
+              "wordIndex": 2
+            },
+            {
+              "id": "b",
+              "start": 0.8316666666666667,
+              "end": 0.915,
+              "wordIndex": 3
+            },
+            {
+              "id": "ih",
+              "start": 0.915,
+              "end": 0.9983333333333333,
+              "wordIndex": 3
+            },
+            {
+              "id": "g",
+              "start": 0.9983333333333333,
+              "end": 1.0816666666666666,
+              "wordIndex": 3
+            },
+            {
+              "id": "d",
+              "start": 1.0816666666666666,
+              "end": 1.3086666666666666,
+              "wordIndex": 4
+            },
+            {
+              "id": "o",
+              "start": 1.3086666666666666,
+              "end": 1.5356666666666665,
+              "wordIndex": 4
+            },
+            {
+              "id": "g",
+              "start": 1.5356666666666665,
+              "end": 1.7626666666666666,
+              "wordIndex": 4
+            }
+          ],
+          "engineVoice": "bf_emma",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 2.0326530612244897,
+          "sha256": "daf573c7fdbaf97a10785c10165aef2ee8f6a8f31e392b828ddd7bfff96e9af9",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-cat-sound": {
+          "duration": 0.5961451247165533,
+          "sha256": "6846a2b3de14c3947db7c525eb37e25fd37cb8815e3b7bc3b1f5be0590d76b95",
+          "text": "c",
+          "words": [
+            {
+              "text": "c",
+              "start": 0,
+              "end": 0.5961451247165533
+            }
+          ],
+          "clips": [
+            {
+              "id": "k",
+              "start": 0,
+              "end": 0.5961451247165533,
+              "wordIndex": 0
+            }
+          ]
+        },
+        "lesson-cat-word": {
+          "text": "cat",
+          "words": [
+            {
+              "text": "cat",
+              "start": 0.29933333333333334,
+              "end": 0.6993333333333334
+            }
+          ],
+          "clips": [
+            {
+              "id": "k",
+              "start": 0.29933333333333334,
+              "end": 0.4326666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "ae",
+              "start": 0.4326666666666667,
+              "end": 0.5660000000000001,
+              "wordIndex": 0
+            },
+            {
+              "id": "t",
+              "start": 0.5660000000000001,
+              "end": 0.6993333333333334,
+              "wordIndex": 0
+            }
+          ],
+          "engineVoice": "bf_emma",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 0.898639455782313,
+          "sha256": "1bb1eab6f5c2ed5f64e442fe8b2d1cd23e735023b54d01759c2fe1f4f9e85e9b",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-cat-phrase": {
+          "text": "black cat",
+          "words": [
+            {
+              "text": "black",
+              "start": 0.29933333333333334,
+              "end": 0.5993333333333333
+            },
+            {
+              "text": "cat",
+              "start": 0.5993333333333333,
+              "end": 0.9993333333333333
+            }
+          ],
+          "clips": [
+            {
+              "id": "b",
+              "start": 0.29933333333333334,
+              "end": 0.3743333333333333,
+              "wordIndex": 0
+            },
+            {
+              "id": "l",
+              "start": 0.3743333333333333,
+              "end": 0.4493333333333333,
+              "wordIndex": 0
+            },
+            {
+              "id": "ae",
+              "start": 0.4493333333333333,
+              "end": 0.5243333333333333,
+              "wordIndex": 0
+            },
+            {
+              "id": "k",
+              "start": 0.5243333333333333,
+              "end": 0.5993333333333333,
+              "wordIndex": 0
+            },
+            {
+              "id": "k",
+              "start": 0.5993333333333333,
+              "end": 0.7326666666666666,
+              "wordIndex": 1
+            },
+            {
+              "id": "ae",
+              "start": 0.7326666666666666,
+              "end": 0.8659999999999999,
+              "wordIndex": 1
+            },
+            {
+              "id": "t",
+              "start": 0.8659999999999999,
+              "end": 0.9993333333333333,
+              "wordIndex": 1
+            }
+          ],
+          "engineVoice": "bf_emma",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 1.1760090702947845,
+          "sha256": "285af0878b84738d44fc49bffa169f3cacd2a3e817058d38ef96b9afadc0cc06",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-cat-sentence": {
+          "text": "This is a black cat.",
+          "words": [
+            {
+              "text": "This",
+              "start": 0.25666666666666665,
+              "end": 0.5566666666666666
+            },
+            {
+              "text": "is",
+              "start": 0.5566666666666666,
+              "end": 0.6816666666666666
+            },
+            {
+              "text": "a",
+              "start": 0.6816666666666666,
+              "end": 0.7566666666666667
+            },
+            {
+              "text": "black",
+              "start": 0.7566666666666667,
+              "end": 1.0816666666666666
+            },
+            {
+              "text": "cat",
+              "start": 1.0816666666666666,
+              "end": 1.7413333333333334
+            }
+          ],
+          "clips": [
+            {
+              "id": "dh",
+              "start": 0.25666666666666665,
+              "end": 0.3566666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.3566666666666667,
+              "end": 0.45666666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "s",
+              "start": 0.45666666666666667,
+              "end": 0.5566666666666666,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.5566666666666666,
+              "end": 0.6191666666666666,
+              "wordIndex": 1
+            },
+            {
+              "id": "z",
+              "start": 0.6191666666666666,
+              "end": 0.6816666666666666,
+              "wordIndex": 1
+            },
+            {
+              "id": "schwa",
+              "start": 0.6816666666666666,
+              "end": 0.7566666666666667,
+              "wordIndex": 2
+            },
+            {
+              "id": "b",
+              "start": 0.7566666666666667,
+              "end": 0.8379166666666668,
+              "wordIndex": 3
+            },
+            {
+              "id": "l",
+              "start": 0.8379166666666668,
+              "end": 0.9191666666666667,
+              "wordIndex": 3
+            },
+            {
+              "id": "ae",
+              "start": 0.9191666666666667,
+              "end": 1.0004166666666665,
+              "wordIndex": 3
+            },
+            {
+              "id": "k",
+              "start": 1.0004166666666665,
+              "end": 1.0816666666666666,
+              "wordIndex": 3
+            },
+            {
+              "id": "k",
+              "start": 1.0816666666666666,
+              "end": 1.3015555555555556,
+              "wordIndex": 4
+            },
+            {
+              "id": "ae",
+              "start": 1.3015555555555556,
+              "end": 1.5214444444444444,
+              "wordIndex": 4
+            },
+            {
+              "id": "t",
+              "start": 1.5214444444444444,
+              "end": 1.7413333333333334,
+              "wordIndex": 4
+            }
+          ],
+          "engineVoice": "bf_emma",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 2.001360544217687,
+          "sha256": "05ec252f776eb37c0e8b2cba3dcda084b0bcfa354cdb91593942c7b778dd6462",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-fish-sound": {
+          "duration": 0.4601360544217687,
+          "sha256": "8f700f0de18705fd48a148a089dcbc0b7a8ffae3494b385695a8e908495abe24",
+          "text": "f",
+          "words": [
+            {
+              "text": "f",
+              "start": 0,
+              "end": 0.4601360544217687
+            }
+          ],
+          "clips": [
+            {
+              "id": "f",
+              "start": 0,
+              "end": 0.4601360544217687,
+              "wordIndex": 0
+            }
+          ]
+        },
+        "lesson-fish-word": {
+          "text": "fish",
+          "words": [
+            {
+              "text": "fish",
+              "start": 0.32433333333333336,
+              "end": 0.6993333333333334
+            }
+          ],
+          "clips": [
+            {
+              "id": "f",
+              "start": 0.32433333333333336,
+              "end": 0.44933333333333336,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.44933333333333336,
+              "end": 0.5743333333333334,
+              "wordIndex": 0
+            },
+            {
+              "id": "sh",
+              "start": 0.5743333333333334,
+              "end": 0.6993333333333334,
+              "wordIndex": 0
+            }
+          ],
+          "engineVoice": "bf_emma",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 0.898639455782313,
+          "sha256": "d6d9b1373219a4c8731816c37924bedc3efc81bfa6b84b8cff3139ab2763ba32",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-fish-phrase": {
+          "text": "red fish",
+          "words": [
+            {
+              "text": "red",
+              "start": 0.32433333333333336,
+              "end": 0.5993333333333333
+            },
+            {
+              "text": "fish",
+              "start": 0.5993333333333333,
+              "end": 1.0743333333333334
+            }
+          ],
+          "clips": [
+            {
+              "id": "r",
+              "start": 0.32433333333333336,
+              "end": 0.41600000000000004,
+              "wordIndex": 0
+            },
+            {
+              "id": "e",
+              "start": 0.41600000000000004,
+              "end": 0.5076666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "d",
+              "start": 0.5076666666666667,
+              "end": 0.5993333333333333,
+              "wordIndex": 0
+            },
+            {
+              "id": "f",
+              "start": 0.5993333333333333,
+              "end": 0.7576666666666666,
+              "wordIndex": 1
+            },
+            {
+              "id": "ih",
+              "start": 0.7576666666666666,
+              "end": 0.9159999999999999,
+              "wordIndex": 1
+            },
+            {
+              "id": "sh",
+              "start": 0.9159999999999999,
+              "end": 1.0743333333333334,
+              "wordIndex": 1
+            }
+          ],
+          "engineVoice": "bf_emma",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 1.2613605442176872,
+          "sha256": "633087e9a19210c3651371928283d6fe1e4abc10426959a6d2746a068b42ba16",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-fish-sentence": {
+          "text": "This is a red fish.",
+          "words": [
+            {
+              "text": "This",
+              "start": 0.25666666666666665,
+              "end": 0.5566666666666666
+            },
+            {
+              "text": "is",
+              "start": 0.5566666666666666,
+              "end": 0.7316666666666667
+            },
+            {
+              "text": "a",
+              "start": 0.7316666666666667,
+              "end": 0.8316666666666667
+            },
+            {
+              "text": "red",
+              "start": 0.8316666666666667,
+              "end": 1.1066666666666667
+            },
+            {
+              "text": "fish",
+              "start": 1.1066666666666667,
+              "end": 1.7413333333333334
+            }
+          ],
+          "clips": [
+            {
+              "id": "dh",
+              "start": 0.25666666666666665,
+              "end": 0.3566666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.3566666666666667,
+              "end": 0.45666666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "s",
+              "start": 0.45666666666666667,
+              "end": 0.5566666666666666,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.5566666666666666,
+              "end": 0.6441666666666667,
+              "wordIndex": 1
+            },
+            {
+              "id": "z",
+              "start": 0.6441666666666667,
+              "end": 0.7316666666666667,
+              "wordIndex": 1
+            },
+            {
+              "id": "schwa",
+              "start": 0.7316666666666667,
+              "end": 0.8316666666666667,
+              "wordIndex": 2
+            },
+            {
+              "id": "r",
+              "start": 0.8316666666666667,
+              "end": 0.9233333333333333,
+              "wordIndex": 3
+            },
+            {
+              "id": "e",
+              "start": 0.9233333333333333,
+              "end": 1.0150000000000001,
+              "wordIndex": 3
+            },
+            {
+              "id": "d",
+              "start": 1.0150000000000001,
+              "end": 1.1066666666666667,
+              "wordIndex": 3
+            },
+            {
+              "id": "f",
+              "start": 1.1066666666666667,
+              "end": 1.3182222222222222,
+              "wordIndex": 4
+            },
+            {
+              "id": "ih",
+              "start": 1.3182222222222222,
+              "end": 1.529777777777778,
+              "wordIndex": 4
+            },
+            {
+              "id": "sh",
+              "start": 1.529777777777778,
+              "end": 1.7413333333333334,
+              "wordIndex": 4
+            }
+          ],
+          "engineVoice": "bf_emma",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 1.9913378684807257,
+          "sha256": "227d5073c0148faed1f1a72016ef430a58127d53129d135abf8bf3a32ef88425",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-milk-sound": {
+          "duration": 0.3400453514739229,
+          "sha256": "26de227d9ee235fe0d0330d349b30ef217758573adef8415a11170f9d4e06b8b",
+          "text": "m",
+          "words": [
+            {
+              "text": "m",
+              "start": 0,
+              "end": 0.3400453514739229
+            }
+          ],
+          "clips": [
+            {
+              "id": "m",
+              "start": 0,
+              "end": 0.3400453514739229,
+              "wordIndex": 0
+            }
+          ]
+        },
+        "lesson-milk-word": {
+          "text": "milk",
+          "words": [
+            {
+              "text": "milk",
+              "start": 0.32433333333333336,
+              "end": 0.6743333333333333
+            }
+          ],
+          "clips": [
+            {
+              "id": "m",
+              "start": 0.32433333333333336,
+              "end": 0.4118333333333334,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.4118333333333334,
+              "end": 0.49933333333333335,
+              "wordIndex": 0
+            },
+            {
+              "id": "l",
+              "start": 0.49933333333333335,
+              "end": 0.5868333333333333,
+              "wordIndex": 0
+            },
+            {
+              "id": "k",
+              "start": 0.5868333333333333,
+              "end": 0.6743333333333333,
+              "wordIndex": 0
+            }
+          ],
+          "engineVoice": "bf_emma",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 0.8773696145124716,
+          "sha256": "51f9fb34e5e16cf8f4c94ba76ece7e9811628762e237511c0c757dd1bb4d0bd6",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-milk-phrase": {
+          "text": "cold milk",
+          "words": [
+            {
+              "text": "cold",
+              "start": 0.29933333333333334,
+              "end": 0.6993333333333334
+            },
+            {
+              "text": "milk",
+              "start": 0.6993333333333334,
+              "end": 1.2243333333333335
+            }
+          ],
+          "clips": [
+            {
+              "id": "k",
+              "start": 0.29933333333333334,
+              "end": 0.38822222222222225,
+              "wordIndex": 0
+            },
+            {
+              "id": "ou",
+              "start": 0.38822222222222225,
+              "end": 0.5215555555555556,
+              "wordIndex": 0
+            },
+            {
+              "id": "l",
+              "start": 0.5215555555555556,
+              "end": 0.6104444444444445,
+              "wordIndex": 0
+            },
+            {
+              "id": "d",
+              "start": 0.6104444444444445,
+              "end": 0.6993333333333334,
+              "wordIndex": 0
+            },
+            {
+              "id": "m",
+              "start": 0.6993333333333334,
+              "end": 0.8305833333333335,
+              "wordIndex": 1
+            },
+            {
+              "id": "ih",
+              "start": 0.8305833333333335,
+              "end": 0.9618333333333335,
+              "wordIndex": 1
+            },
+            {
+              "id": "l",
+              "start": 0.9618333333333335,
+              "end": 1.0930833333333334,
+              "wordIndex": 1
+            },
+            {
+              "id": "k",
+              "start": 1.0930833333333334,
+              "end": 1.2243333333333335,
+              "wordIndex": 1
+            }
+          ],
+          "engineVoice": "bf_emma",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 1.410702947845805,
+          "sha256": "4ada3bb2080889a09f5bd4fac2ef298265fbfe3a81310f3ef9b64c2ee377541c",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-milk-sentence": {
+          "text": "I like cold milk.",
+          "words": [
+            {
+              "text": "I",
+              "start": 0.303,
+              "end": 0.478
+            },
+            {
+              "text": "like",
+              "start": 0.478,
+              "end": 0.778
+            },
+            {
+              "text": "cold",
+              "start": 0.778,
+              "end": 1.178
+            },
+            {
+              "text": "milk",
+              "start": 1.178,
+              "end": 1.8266666666666667
+            }
+          ],
+          "clips": [
+            {
+              "id": "ai",
+              "start": 0.303,
+              "end": 0.478,
+              "wordIndex": 0
+            },
+            {
+              "id": "l",
+              "start": 0.478,
+              "end": 0.5637142857142857,
+              "wordIndex": 1
+            },
+            {
+              "id": "ai",
+              "start": 0.5637142857142857,
+              "end": 0.6922857142857143,
+              "wordIndex": 1
+            },
+            {
+              "id": "k",
+              "start": 0.6922857142857143,
+              "end": 0.778,
+              "wordIndex": 1
+            },
+            {
+              "id": "k",
+              "start": 0.778,
+              "end": 0.8668888888888889,
+              "wordIndex": 2
+            },
+            {
+              "id": "ou",
+              "start": 0.8668888888888889,
+              "end": 1.0002222222222223,
+              "wordIndex": 2
+            },
+            {
+              "id": "l",
+              "start": 1.0002222222222223,
+              "end": 1.0891111111111111,
+              "wordIndex": 2
+            },
+            {
+              "id": "d",
+              "start": 1.0891111111111111,
+              "end": 1.178,
+              "wordIndex": 2
+            },
+            {
+              "id": "m",
+              "start": 1.178,
+              "end": 1.3401666666666667,
+              "wordIndex": 3
+            },
+            {
+              "id": "ih",
+              "start": 1.3401666666666667,
+              "end": 1.5023333333333333,
+              "wordIndex": 3
+            },
+            {
+              "id": "l",
+              "start": 1.5023333333333333,
+              "end": 1.6644999999999999,
+              "wordIndex": 3
+            },
+            {
+              "id": "k",
+              "start": 1.6644999999999999,
+              "end": 1.8266666666666667,
+              "wordIndex": 3
+            }
+          ],
+          "engineVoice": "bf_emma",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 2.0866666666666664,
+          "sha256": "f9097062cf444a6cd2b683caac4f36dae889c758b1af519ae71ba88692a41594",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-rabbit-sound": {
+          "duration": 0.37065759637188206,
+          "sha256": "a13502de7e58c0f05cc5a0b4f1841b408cb2bbf9ae97739d20183c60a73ed1d5",
+          "text": "r",
+          "words": [
+            {
+              "text": "r",
+              "start": 0,
+              "end": 0.37065759637188206
+            }
+          ],
+          "clips": [
+            {
+              "id": "r",
+              "start": 0,
+              "end": 0.37065759637188206,
+              "wordIndex": 0
+            }
+          ]
+        },
+        "lesson-rabbit-word": {
+          "text": "rabbit",
+          "words": [
+            {
+              "text": "rabbit",
+              "start": 0.32433333333333336,
+              "end": 0.8743333333333333
+            }
+          ],
+          "clips": [
+            {
+              "id": "r",
+              "start": 0.32433333333333336,
+              "end": 0.43433333333333335,
+              "wordIndex": 0
+            },
+            {
+              "id": "ae",
+              "start": 0.43433333333333335,
+              "end": 0.5443333333333333,
+              "wordIndex": 0
+            },
+            {
+              "id": "b",
+              "start": 0.5443333333333333,
+              "end": 0.6543333333333333,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.6543333333333333,
+              "end": 0.7643333333333333,
+              "wordIndex": 0
+            },
+            {
+              "id": "t",
+              "start": 0.7643333333333333,
+              "end": 0.8743333333333333,
+              "wordIndex": 0
+            }
+          ],
+          "engineVoice": "bf_emma",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 1.0693424036281178,
+          "sha256": "5c303f1a6857d620764b48f7b9dc660b72606a97ea2e22f31794359c21cff438",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-rabbit-phrase": {
+          "text": "white rabbit",
+          "words": [
+            {
+              "text": "white",
+              "start": 0.32433333333333336,
+              "end": 0.6243333333333333
+            },
+            {
+              "text": "rabbit",
+              "start": 0.6243333333333333,
+              "end": 1.2243333333333335
+            }
+          ],
+          "clips": [
+            {
+              "id": "w",
+              "start": 0.32433333333333336,
+              "end": 0.41004761904761905,
+              "wordIndex": 0
+            },
+            {
+              "id": "ai",
+              "start": 0.41004761904761905,
+              "end": 0.5386190476190476,
+              "wordIndex": 0
+            },
+            {
+              "id": "t",
+              "start": 0.5386190476190476,
+              "end": 0.6243333333333333,
+              "wordIndex": 0
+            },
+            {
+              "id": "r",
+              "start": 0.6243333333333333,
+              "end": 0.7443333333333334,
+              "wordIndex": 1
+            },
+            {
+              "id": "ae",
+              "start": 0.7443333333333334,
+              "end": 0.8643333333333334,
+              "wordIndex": 1
+            },
+            {
+              "id": "b",
+              "start": 0.8643333333333334,
+              "end": 0.9843333333333335,
+              "wordIndex": 1
+            },
+            {
+              "id": "ih",
+              "start": 0.9843333333333335,
+              "end": 1.1043333333333334,
+              "wordIndex": 1
+            },
+            {
+              "id": "t",
+              "start": 1.1043333333333334,
+              "end": 1.2243333333333335,
+              "wordIndex": 1
+            }
+          ],
+          "engineVoice": "bf_emma",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 1.389342403628118,
+          "sha256": "25d3b38c18ed25c259004e4b341f85ff5b060b1c2ce30587e885e5180286bd10",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-rabbit-sentence": {
+          "text": "This is a white rabbit.",
+          "words": [
+            {
+              "text": "This",
+              "start": 0.25666666666666665,
+              "end": 0.5566666666666666
+            },
+            {
+              "text": "is",
+              "start": 0.5566666666666666,
+              "end": 0.7066666666666667
+            },
+            {
+              "text": "a",
+              "start": 0.7066666666666667,
+              "end": 0.8316666666666667
+            },
+            {
+              "text": "white",
+              "start": 0.8316666666666667,
+              "end": 1.1316666666666668
+            },
+            {
+              "text": "rabbit",
+              "start": 1.1316666666666668,
+              "end": 1.8479999999999999
+            }
+          ],
+          "clips": [
+            {
+              "id": "dh",
+              "start": 0.25666666666666665,
+              "end": 0.3566666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.3566666666666667,
+              "end": 0.45666666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "s",
+              "start": 0.45666666666666667,
+              "end": 0.5566666666666666,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.5566666666666666,
+              "end": 0.6316666666666666,
+              "wordIndex": 1
+            },
+            {
+              "id": "z",
+              "start": 0.6316666666666666,
+              "end": 0.7066666666666667,
+              "wordIndex": 1
+            },
+            {
+              "id": "schwa",
+              "start": 0.7066666666666667,
+              "end": 0.8316666666666667,
+              "wordIndex": 2
+            },
+            {
+              "id": "w",
+              "start": 0.8316666666666667,
+              "end": 0.9173809523809524,
+              "wordIndex": 3
+            },
+            {
+              "id": "ai",
+              "start": 0.9173809523809524,
+              "end": 1.0459523809523812,
+              "wordIndex": 3
+            },
+            {
+              "id": "t",
+              "start": 1.0459523809523812,
+              "end": 1.1316666666666668,
+              "wordIndex": 3
+            },
+            {
+              "id": "r",
+              "start": 1.1316666666666668,
+              "end": 1.2749333333333335,
+              "wordIndex": 4
+            },
+            {
+              "id": "ae",
+              "start": 1.2749333333333335,
+              "end": 1.4182,
+              "wordIndex": 4
+            },
+            {
+              "id": "b",
+              "start": 1.4182,
+              "end": 1.5614666666666666,
+              "wordIndex": 4
+            },
+            {
+              "id": "ih",
+              "start": 1.5614666666666666,
+              "end": 1.7047333333333334,
+              "wordIndex": 4
+            },
+            {
+              "id": "t",
+              "start": 1.7047333333333334,
+              "end": 1.8479999999999999,
+              "wordIndex": 4
+            }
+          ],
+          "engineVoice": "bf_emma",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 2.138004535147392,
+          "sha256": "6c2234fda481ffac1fde31683f16257cd2253d462ad081926fa1b8f7e3611dc3",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-bird-sound": {
+          "duration": 0.520045351473923,
+          "sha256": "02a642c5d319f6ee92c42a2df323cccd2994986a8b316054eb46a7ec03d408c9",
+          "text": "b",
+          "words": [
+            {
+              "text": "b",
+              "start": 0,
+              "end": 0.520045351473923
+            }
+          ],
+          "clips": [
+            {
+              "id": "b",
+              "start": 0,
+              "end": 0.520045351473923,
+              "wordIndex": 0
+            }
+          ]
+        },
+        "lesson-bird-word": {
+          "text": "bird",
+          "words": [
+            {
+              "text": "bird",
+              "start": 0.29933333333333334,
+              "end": 0.7743333333333333
+            }
+          ],
+          "clips": [
+            {
+              "id": "b",
+              "start": 0.29933333333333334,
+              "end": 0.45766666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "er",
+              "start": 0.45766666666666667,
+              "end": 0.6160000000000001,
+              "wordIndex": 0
+            },
+            {
+              "id": "d",
+              "start": 0.6160000000000001,
+              "end": 0.7743333333333333,
+              "wordIndex": 0
+            }
+          ],
+          "engineVoice": "bf_emma",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 0.9840362811791383,
+          "sha256": "8519f762073ccb0443e2616fb10c61d2a896eec2e6b3cccce4fc73a95f60970e",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-bird-phrase": {
+          "text": "little bird",
+          "words": [
+            {
+              "text": "little",
+              "start": 0.32433333333333336,
+              "end": 0.6243333333333333
+            },
+            {
+              "text": "bird",
+              "start": 0.6243333333333333,
+              "end": 1.2243333333333335
+            }
+          ],
+          "clips": [
+            {
+              "id": "l",
+              "start": 0.32433333333333336,
+              "end": 0.38433333333333336,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.38433333333333336,
+              "end": 0.44433333333333336,
+              "wordIndex": 0
+            },
+            {
+              "id": "t",
+              "start": 0.44433333333333336,
+              "end": 0.5043333333333333,
+              "wordIndex": 0
+            },
+            {
+              "id": "schwa",
+              "start": 0.5043333333333333,
+              "end": 0.5643333333333334,
+              "wordIndex": 0
+            },
+            {
+              "id": "l",
+              "start": 0.5643333333333334,
+              "end": 0.6243333333333333,
+              "wordIndex": 0
+            },
+            {
+              "id": "b",
+              "start": 0.6243333333333333,
+              "end": 0.8243333333333334,
+              "wordIndex": 1
+            },
+            {
+              "id": "er",
+              "start": 0.8243333333333334,
+              "end": 1.0243333333333335,
+              "wordIndex": 1
+            },
+            {
+              "id": "d",
+              "start": 1.0243333333333335,
+              "end": 1.2243333333333335,
+              "wordIndex": 1
+            }
+          ],
+          "engineVoice": "bf_emma",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 1.4319727891156462,
+          "sha256": "8c1343f87306178702fdcf3d2ebc87fc9ec21047c5835f7f032a364cd488599c",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-bird-sentence": {
+          "text": "This is a little bird.",
+          "words": [
+            {
+              "text": "This",
+              "start": 0.25666666666666665,
+              "end": 0.5566666666666666
+            },
+            {
+              "text": "is",
+              "start": 0.5566666666666666,
+              "end": 0.6816666666666666
+            },
+            {
+              "text": "a",
+              "start": 0.6816666666666666,
+              "end": 0.7566666666666667
+            },
+            {
+              "text": "little",
+              "start": 0.7566666666666667,
+              "end": 1.0566666666666666
+            },
+            {
+              "text": "bird",
+              "start": 1.0566666666666666,
+              "end": 1.7413333333333334
+            }
+          ],
+          "clips": [
+            {
+              "id": "dh",
+              "start": 0.25666666666666665,
+              "end": 0.3566666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.3566666666666667,
+              "end": 0.45666666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "s",
+              "start": 0.45666666666666667,
+              "end": 0.5566666666666666,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.5566666666666666,
+              "end": 0.6191666666666666,
+              "wordIndex": 1
+            },
+            {
+              "id": "z",
+              "start": 0.6191666666666666,
+              "end": 0.6816666666666666,
+              "wordIndex": 1
+            },
+            {
+              "id": "schwa",
+              "start": 0.6816666666666666,
+              "end": 0.7566666666666667,
+              "wordIndex": 2
+            },
+            {
+              "id": "l",
+              "start": 0.7566666666666667,
+              "end": 0.8166666666666668,
+              "wordIndex": 3
+            },
+            {
+              "id": "ih",
+              "start": 0.8166666666666668,
+              "end": 0.8766666666666667,
+              "wordIndex": 3
+            },
+            {
+              "id": "t",
+              "start": 0.8766666666666667,
+              "end": 0.9366666666666668,
+              "wordIndex": 3
+            },
+            {
+              "id": "schwa",
+              "start": 0.9366666666666668,
+              "end": 0.9966666666666667,
+              "wordIndex": 3
+            },
+            {
+              "id": "l",
+              "start": 0.9966666666666667,
+              "end": 1.0566666666666666,
+              "wordIndex": 3
+            },
+            {
+              "id": "b",
+              "start": 1.0566666666666666,
+              "end": 1.2848888888888887,
+              "wordIndex": 4
+            },
+            {
+              "id": "er",
+              "start": 1.2848888888888887,
+              "end": 1.5131111111111109,
+              "wordIndex": 4
+            },
+            {
+              "id": "d",
+              "start": 1.5131111111111109,
+              "end": 1.7413333333333334,
+              "wordIndex": 4
+            }
+          ],
+          "engineVoice": "bf_emma",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 2.001360544217687,
+          "sha256": "98f1d8369c9d0f45b3cc5126fd8e6eb22ae1566a441512643d2d354c3ba435bf",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-duck-sound": {
+          "duration": 0.520045351473923,
+          "sha256": "59f8feda5bab32a673dd49e6f5ac9bdb262cdcccb26317d2c07ef4e2e5ee164e",
+          "text": "d",
+          "words": [
+            {
+              "text": "d",
+              "start": 0,
+              "end": 0.520045351473923
+            }
+          ],
+          "clips": [
+            {
+              "id": "d",
+              "start": 0,
+              "end": 0.520045351473923,
+              "wordIndex": 0
+            }
+          ]
+        },
+        "lesson-duck-word": {
+          "text": "duck",
+          "words": [
+            {
+              "text": "duck",
+              "start": 0.29933333333333334,
+              "end": 0.6493333333333333
+            }
+          ],
+          "clips": [
+            {
+              "id": "d",
+              "start": 0.29933333333333334,
+              "end": 0.41600000000000004,
+              "wordIndex": 0
+            },
+            {
+              "id": "uh",
+              "start": 0.41600000000000004,
+              "end": 0.5326666666666666,
+              "wordIndex": 0
+            },
+            {
+              "id": "k",
+              "start": 0.5326666666666666,
+              "end": 0.6493333333333333,
+              "wordIndex": 0
+            }
+          ],
+          "engineVoice": "bf_emma",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 0.8593650793650793,
+          "sha256": "f20ffaf32072a77a1639512a9ddde20e07bb300623da2a1d4d444bdf1b70e123",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-duck-phrase": {
+          "text": "yellow duck",
+          "words": [
+            {
+              "text": "yellow",
+              "start": 0.32433333333333336,
+              "end": 0.6743333333333333
+            },
+            {
+              "text": "duck",
+              "start": 0.6743333333333333,
+              "end": 1.0743333333333334
+            }
+          ],
+          "clips": [
+            {
+              "id": "j",
+              "start": 0.32433333333333336,
+              "end": 0.40211111111111114,
+              "wordIndex": 0
+            },
+            {
+              "id": "e",
+              "start": 0.40211111111111114,
+              "end": 0.4798888888888889,
+              "wordIndex": 0
+            },
+            {
+              "id": "l",
+              "start": 0.4798888888888889,
+              "end": 0.5576666666666666,
+              "wordIndex": 0
+            },
+            {
+              "id": "ou",
+              "start": 0.5576666666666666,
+              "end": 0.6743333333333333,
+              "wordIndex": 0
+            },
+            {
+              "id": "d",
+              "start": 0.6743333333333333,
+              "end": 0.8076666666666666,
+              "wordIndex": 1
+            },
+            {
+              "id": "uh",
+              "start": 0.8076666666666666,
+              "end": 0.9410000000000001,
+              "wordIndex": 1
+            },
+            {
+              "id": "k",
+              "start": 0.9410000000000001,
+              "end": 1.0743333333333334,
+              "wordIndex": 1
+            }
+          ],
+          "engineVoice": "bf_emma",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 1.24,
+          "sha256": "30b1c1ba5a1666b529f4fb06e593934a2a59df95ee11a7f762093640c2b37eff",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-duck-sentence": {
+          "text": "This is a yellow duck.",
+          "words": [
+            {
+              "text": "This",
+              "start": 0.25666666666666665,
+              "end": 0.5566666666666666
+            },
+            {
+              "text": "is",
+              "start": 0.5566666666666666,
+              "end": 0.7316666666666667
+            },
+            {
+              "text": "a",
+              "start": 0.7316666666666667,
+              "end": 0.8566666666666667
+            },
+            {
+              "text": "yellow",
+              "start": 0.8566666666666667,
+              "end": 1.2066666666666666
+            },
+            {
+              "text": "duck",
+              "start": 1.2066666666666666,
+              "end": 1.8053333333333335
+            }
+          ],
+          "clips": [
+            {
+              "id": "dh",
+              "start": 0.25666666666666665,
+              "end": 0.3566666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.3566666666666667,
+              "end": 0.45666666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "s",
+              "start": 0.45666666666666667,
+              "end": 0.5566666666666666,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.5566666666666666,
+              "end": 0.6441666666666667,
+              "wordIndex": 1
+            },
+            {
+              "id": "z",
+              "start": 0.6441666666666667,
+              "end": 0.7316666666666667,
+              "wordIndex": 1
+            },
+            {
+              "id": "schwa",
+              "start": 0.7316666666666667,
+              "end": 0.8566666666666667,
+              "wordIndex": 2
+            },
+            {
+              "id": "j",
+              "start": 0.8566666666666667,
+              "end": 0.9344444444444444,
+              "wordIndex": 3
+            },
+            {
+              "id": "e",
+              "start": 0.9344444444444444,
+              "end": 1.0122222222222221,
+              "wordIndex": 3
+            },
+            {
+              "id": "l",
+              "start": 1.0122222222222221,
+              "end": 1.0899999999999999,
+              "wordIndex": 3
+            },
+            {
+              "id": "ou",
+              "start": 1.0899999999999999,
+              "end": 1.2066666666666666,
+              "wordIndex": 3
+            },
+            {
+              "id": "d",
+              "start": 1.2066666666666666,
+              "end": 1.406222222222222,
+              "wordIndex": 4
+            },
+            {
+              "id": "uh",
+              "start": 1.406222222222222,
+              "end": 1.6057777777777775,
+              "wordIndex": 4
+            },
+            {
+              "id": "k",
+              "start": 1.6057777777777775,
+              "end": 1.8053333333333335,
+              "wordIndex": 4
+            }
+          ],
+          "engineVoice": "bf_emma",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 2.1053061224489795,
+          "sha256": "4b1969f33260b4ba1678ecb67d0ac00c19f653216b99b306086dae2f204332fa",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-horse-sound": {
+          "duration": 0.3927891156462585,
+          "sha256": "e08cc73c9cd07b6af3ed04338cf7dea749c9dfca808909d5c497bd30b829f4c6",
+          "text": "h",
+          "words": [
+            {
+              "text": "h",
+              "start": 0,
+              "end": 0.3927891156462585
+            }
+          ],
+          "clips": [
+            {
+              "id": "h",
+              "start": 0,
+              "end": 0.3927891156462585,
+              "wordIndex": 0
+            }
+          ]
+        },
+        "lesson-horse-word": {
+          "text": "horse",
+          "words": [
+            {
+              "text": "horse",
+              "start": 0.29933333333333334,
+              "end": 0.6993333333333334
+            }
+          ],
+          "clips": [
+            {
+              "id": "h",
+              "start": 0.29933333333333334,
+              "end": 0.4326666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "aw",
+              "start": 0.4326666666666667,
+              "end": 0.5660000000000001,
+              "wordIndex": 0
+            },
+            {
+              "id": "s",
+              "start": 0.5660000000000001,
+              "end": 0.6993333333333334,
+              "wordIndex": 0
+            }
+          ],
+          "engineVoice": "bf_emma",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 0.898639455782313,
+          "sha256": "49ad1fb0bc9ee7caad6752eb1b80d4a02d6ea3b8aec7aca1c90bc6d7b0efb314",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-horse-phrase": {
+          "text": "brown horse",
+          "words": [
+            {
+              "text": "brown",
+              "start": 0.29933333333333334,
+              "end": 0.6493333333333333
+            },
+            {
+              "text": "horse",
+              "start": 0.6493333333333333,
+              "end": 1.2243333333333335
+            }
+          ],
+          "clips": [
+            {
+              "id": "b",
+              "start": 0.29933333333333334,
+              "end": 0.3771111111111111,
+              "wordIndex": 0
+            },
+            {
+              "id": "r",
+              "start": 0.3771111111111111,
+              "end": 0.4548888888888889,
+              "wordIndex": 0
+            },
+            {
+              "id": "au",
+              "start": 0.4548888888888889,
+              "end": 0.5715555555555556,
+              "wordIndex": 0
+            },
+            {
+              "id": "n",
+              "start": 0.5715555555555556,
+              "end": 0.6493333333333333,
+              "wordIndex": 0
+            },
+            {
+              "id": "h",
+              "start": 0.6493333333333333,
+              "end": 0.8410000000000001,
+              "wordIndex": 1
+            },
+            {
+              "id": "aw",
+              "start": 0.8410000000000001,
+              "end": 1.0326666666666668,
+              "wordIndex": 1
+            },
+            {
+              "id": "s",
+              "start": 1.0326666666666668,
+              "end": 1.2243333333333335,
+              "wordIndex": 1
+            }
+          ],
+          "engineVoice": "bf_emma",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 1.410702947845805,
+          "sha256": "e985c79aeb8afd215433081286f169475bc45fe0e7d78ebf2c86004338c534c2",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-horse-sentence": {
+          "text": "This is a brown horse.",
+          "words": [
+            {
+              "text": "This",
+              "start": 0.25666666666666665,
+              "end": 0.5066666666666666
+            },
+            {
+              "text": "is",
+              "start": 0.5066666666666666,
+              "end": 0.6316666666666667
+            },
+            {
+              "text": "a",
+              "start": 0.6316666666666667,
+              "end": 0.7066666666666667
+            },
+            {
+              "text": "brown",
+              "start": 0.7066666666666667,
+              "end": 1.0816666666666666
+            },
+            {
+              "text": "horse",
+              "start": 1.0816666666666666,
+              "end": 1.7626666666666666
+            }
+          ],
+          "clips": [
+            {
+              "id": "dh",
+              "start": 0.25666666666666665,
+              "end": 0.33999999999999997,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.33999999999999997,
+              "end": 0.42333333333333334,
+              "wordIndex": 0
+            },
+            {
+              "id": "s",
+              "start": 0.42333333333333334,
+              "end": 0.5066666666666666,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.5066666666666666,
+              "end": 0.5691666666666666,
+              "wordIndex": 1
+            },
+            {
+              "id": "z",
+              "start": 0.5691666666666666,
+              "end": 0.6316666666666667,
+              "wordIndex": 1
+            },
+            {
+              "id": "schwa",
+              "start": 0.6316666666666667,
+              "end": 0.7066666666666667,
+              "wordIndex": 2
+            },
+            {
+              "id": "b",
+              "start": 0.7066666666666667,
+              "end": 0.79,
+              "wordIndex": 3
+            },
+            {
+              "id": "r",
+              "start": 0.79,
+              "end": 0.8733333333333333,
+              "wordIndex": 3
+            },
+            {
+              "id": "au",
+              "start": 0.8733333333333333,
+              "end": 0.9983333333333333,
+              "wordIndex": 3
+            },
+            {
+              "id": "n",
+              "start": 0.9983333333333333,
+              "end": 1.0816666666666666,
+              "wordIndex": 3
+            },
+            {
+              "id": "h",
+              "start": 1.0816666666666666,
+              "end": 1.3086666666666664,
+              "wordIndex": 4
+            },
+            {
+              "id": "aw",
+              "start": 1.3086666666666664,
+              "end": 1.5356666666666663,
+              "wordIndex": 4
+            },
+            {
+              "id": "s",
+              "start": 1.5356666666666663,
+              "end": 1.7626666666666666,
+              "wordIndex": 4
+            }
+          ],
+          "engineVoice": "bf_emma",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 2.0326530612244897,
+          "sha256": "0ef7e6fe269521c08e99cff1e5feef3fb586de47213224ce43620a695699f5db",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-lion-sound": {
+          "duration": 0.3979591836734694,
+          "sha256": "2ba4ba9d2bcb04556dbb46db6bf74f8a5295764465a7937579168d8e309e305b",
+          "text": "l",
+          "words": [
+            {
+              "text": "l",
+              "start": 0,
+              "end": 0.3979591836734694
+            }
+          ],
+          "clips": [
+            {
+              "id": "l",
+              "start": 0,
+              "end": 0.3979591836734694,
+              "wordIndex": 0
+            }
+          ]
+        },
+        "lesson-lion-word": {
+          "text": "lion",
+          "words": [
+            {
+              "text": "lion",
+              "start": 0.32433333333333336,
+              "end": 0.8243333333333334
+            }
+          ],
+          "clips": [
+            {
+              "id": "l",
+              "start": 0.32433333333333336,
+              "end": 0.43544444444444447,
+              "wordIndex": 0
+            },
+            {
+              "id": "ai",
+              "start": 0.43544444444444447,
+              "end": 0.602111111111111,
+              "wordIndex": 0
+            },
+            {
+              "id": "schwa",
+              "start": 0.602111111111111,
+              "end": 0.7132222222222222,
+              "wordIndex": 0
+            },
+            {
+              "id": "n",
+              "start": 0.7132222222222222,
+              "end": 0.8243333333333334,
+              "wordIndex": 0
+            }
+          ],
+          "engineVoice": "bf_emma",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 1.0053061224489797,
+          "sha256": "663c1292e997734c515de62129e5836a7d5120a2b07c83a92fc1e908dc7ea958",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-lion-phrase": {
+          "text": "big lion",
+          "words": [
+            {
+              "text": "big",
+              "start": 0.29933333333333334,
+              "end": 0.5493333333333333
+            },
+            {
+              "text": "lion",
+              "start": 0.5493333333333333,
+              "end": 1.1743333333333332
+            }
+          ],
+          "clips": [
+            {
+              "id": "b",
+              "start": 0.29933333333333334,
+              "end": 0.3826666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.3826666666666667,
+              "end": 0.466,
+              "wordIndex": 0
+            },
+            {
+              "id": "g",
+              "start": 0.466,
+              "end": 0.5493333333333333,
+              "wordIndex": 0
+            },
+            {
+              "id": "l",
+              "start": 0.5493333333333333,
+              "end": 0.6882222222222222,
+              "wordIndex": 1
+            },
+            {
+              "id": "ai",
+              "start": 0.6882222222222222,
+              "end": 0.8965555555555554,
+              "wordIndex": 1
+            },
+            {
+              "id": "schwa",
+              "start": 0.8965555555555554,
+              "end": 1.0354444444444444,
+              "wordIndex": 1
+            },
+            {
+              "id": "n",
+              "start": 1.0354444444444444,
+              "end": 1.1743333333333332,
+              "wordIndex": 1
+            }
+          ],
+          "engineVoice": "bf_emma",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 1.3466666666666667,
+          "sha256": "d86e5d22c3e8d1b93fa456898798d24a2945b7cf21da9e49787d1421fab3eacd",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-lion-sentence": {
+          "text": "This is a big lion.",
+          "words": [
+            {
+              "text": "This",
+              "start": 0.25666666666666665,
+              "end": 0.5566666666666666
+            },
+            {
+              "text": "is",
+              "start": 0.5566666666666666,
+              "end": 0.7066666666666667
+            },
+            {
+              "text": "a",
+              "start": 0.7066666666666667,
+              "end": 0.8316666666666667
+            },
+            {
+              "text": "big",
+              "start": 0.8316666666666667,
+              "end": 1.0816666666666666
+            },
+            {
+              "text": "lion",
+              "start": 1.0816666666666666,
+              "end": 1.7839999999999998
+            }
+          ],
+          "clips": [
+            {
+              "id": "dh",
+              "start": 0.25666666666666665,
+              "end": 0.3566666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.3566666666666667,
+              "end": 0.45666666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "s",
+              "start": 0.45666666666666667,
+              "end": 0.5566666666666666,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.5566666666666666,
+              "end": 0.6316666666666666,
+              "wordIndex": 1
+            },
+            {
+              "id": "z",
+              "start": 0.6316666666666666,
+              "end": 0.7066666666666667,
+              "wordIndex": 1
+            },
+            {
+              "id": "schwa",
+              "start": 0.7066666666666667,
+              "end": 0.8316666666666667,
+              "wordIndex": 2
+            },
+            {
+              "id": "b",
+              "start": 0.8316666666666667,
+              "end": 0.915,
+              "wordIndex": 3
+            },
+            {
+              "id": "ih",
+              "start": 0.915,
+              "end": 0.9983333333333333,
+              "wordIndex": 3
+            },
+            {
+              "id": "g",
+              "start": 0.9983333333333333,
+              "end": 1.0816666666666666,
+              "wordIndex": 3
+            },
+            {
+              "id": "l",
+              "start": 1.0816666666666666,
+              "end": 1.2377407407407406,
+              "wordIndex": 4
+            },
+            {
+              "id": "ai",
+              "start": 1.2377407407407406,
+              "end": 1.4718518518518517,
+              "wordIndex": 4
+            },
+            {
+              "id": "schwa",
+              "start": 1.4718518518518517,
+              "end": 1.6279259259259256,
+              "wordIndex": 4
+            },
+            {
+              "id": "n",
+              "start": 1.6279259259259256,
+              "end": 1.7839999999999998,
+              "wordIndex": 4
+            }
+          ],
+          "engineVoice": "bf_emma",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 2.0539682539682538,
+          "sha256": "483af8ff5b924a1442bbf9a78114cd681913595dca0762c748cd03eba1ae9222",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-panda-sound": {
+          "duration": 0.6401360544217687,
+          "sha256": "f191d59d90230941dcf020aca2e1d8481dff42699834b5e5690c22a55dc2d8f3",
+          "text": "p",
+          "words": [
+            {
+              "text": "p",
+              "start": 0,
+              "end": 0.6401360544217687
+            }
+          ],
+          "clips": [
+            {
+              "id": "p",
+              "start": 0,
+              "end": 0.6401360544217687,
+              "wordIndex": 0
+            }
+          ]
+        },
+        "lesson-panda-word": {
+          "text": "panda",
+          "words": [
+            {
+              "text": "panda",
+              "start": 0.29933333333333334,
+              "end": 0.8743333333333333
+            }
+          ],
+          "clips": [
+            {
+              "id": "p",
+              "start": 0.29933333333333334,
+              "end": 0.41433333333333333,
+              "wordIndex": 0
+            },
+            {
+              "id": "ae",
+              "start": 0.41433333333333333,
+              "end": 0.5293333333333333,
+              "wordIndex": 0
+            },
+            {
+              "id": "n",
+              "start": 0.5293333333333333,
+              "end": 0.6443333333333333,
+              "wordIndex": 0
+            },
+            {
+              "id": "d",
+              "start": 0.6443333333333333,
+              "end": 0.7593333333333332,
+              "wordIndex": 0
+            },
+            {
+              "id": "schwa",
+              "start": 0.7593333333333332,
+              "end": 0.8743333333333333,
+              "wordIndex": 0
+            }
+          ],
+          "engineVoice": "bf_emma",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 1.0693424036281178,
+          "sha256": "6e4ab9a0dccbbb36c444309ff38bba5b415518e6677d88b63fa840642a816f4d",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-panda-phrase": {
+          "text": "cute panda",
+          "words": [
+            {
+              "text": "cute",
+              "start": 0.29933333333333334,
+              "end": 0.5993333333333333
+            },
+            {
+              "text": "panda",
+              "start": 0.5993333333333333,
+              "end": 1.1743333333333332
+            }
+          ],
+          "clips": [
+            {
+              "id": "k",
+              "start": 0.29933333333333334,
+              "end": 0.3743333333333333,
+              "wordIndex": 0
+            },
+            {
+              "id": "j",
+              "start": 0.3743333333333333,
+              "end": 0.4493333333333333,
+              "wordIndex": 0
+            },
+            {
+              "id": "u",
+              "start": 0.4493333333333333,
+              "end": 0.5243333333333333,
+              "wordIndex": 0
+            },
+            {
+              "id": "t",
+              "start": 0.5243333333333333,
+              "end": 0.5993333333333333,
+              "wordIndex": 0
+            },
+            {
+              "id": "p",
+              "start": 0.5993333333333333,
+              "end": 0.7143333333333333,
+              "wordIndex": 1
+            },
+            {
+              "id": "ae",
+              "start": 0.7143333333333333,
+              "end": 0.8293333333333334,
+              "wordIndex": 1
+            },
+            {
+              "id": "n",
+              "start": 0.8293333333333334,
+              "end": 0.9443333333333334,
+              "wordIndex": 1
+            },
+            {
+              "id": "d",
+              "start": 0.9443333333333334,
+              "end": 1.0593333333333332,
+              "wordIndex": 1
+            },
+            {
+              "id": "schwa",
+              "start": 1.0593333333333332,
+              "end": 1.1743333333333332,
+              "wordIndex": 1
+            }
+          ],
+          "engineVoice": "bf_emma",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 1.3466666666666667,
+          "sha256": "464d95607eb348f93768f5502d9fbee051dda5d1c2ce26d1dd66093e847fcf7d",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-panda-sentence": {
+          "text": "This is a cute panda.",
+          "words": [
+            {
+              "text": "This",
+              "start": 0.25666666666666665,
+              "end": 0.5566666666666666
+            },
+            {
+              "text": "is",
+              "start": 0.5566666666666666,
+              "end": 0.7066666666666667
+            },
+            {
+              "text": "a",
+              "start": 0.7066666666666667,
+              "end": 0.8316666666666667
+            },
+            {
+              "text": "cute",
+              "start": 0.8316666666666667,
+              "end": 1.1316666666666668
+            },
+            {
+              "text": "panda",
+              "start": 1.1316666666666668,
+              "end": 1.8053333333333335
+            }
+          ],
+          "clips": [
+            {
+              "id": "dh",
+              "start": 0.25666666666666665,
+              "end": 0.3566666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.3566666666666667,
+              "end": 0.45666666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "s",
+              "start": 0.45666666666666667,
+              "end": 0.5566666666666666,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.5566666666666666,
+              "end": 0.6316666666666666,
+              "wordIndex": 1
+            },
+            {
+              "id": "z",
+              "start": 0.6316666666666666,
+              "end": 0.7066666666666667,
+              "wordIndex": 1
+            },
+            {
+              "id": "schwa",
+              "start": 0.7066666666666667,
+              "end": 0.8316666666666667,
+              "wordIndex": 2
+            },
+            {
+              "id": "k",
+              "start": 0.8316666666666667,
+              "end": 0.9066666666666667,
+              "wordIndex": 3
+            },
+            {
+              "id": "j",
+              "start": 0.9066666666666667,
+              "end": 0.9816666666666668,
+              "wordIndex": 3
+            },
+            {
+              "id": "u",
+              "start": 0.9816666666666668,
+              "end": 1.0566666666666669,
+              "wordIndex": 3
+            },
+            {
+              "id": "t",
+              "start": 1.0566666666666669,
+              "end": 1.1316666666666668,
+              "wordIndex": 3
+            },
+            {
+              "id": "p",
+              "start": 1.1316666666666668,
+              "end": 1.2664000000000002,
+              "wordIndex": 4
+            },
+            {
+              "id": "ae",
+              "start": 1.2664000000000002,
+              "end": 1.4011333333333333,
+              "wordIndex": 4
+            },
+            {
+              "id": "n",
+              "start": 1.4011333333333333,
+              "end": 1.5358666666666667,
+              "wordIndex": 4
+            },
+            {
+              "id": "d",
+              "start": 1.5358666666666667,
+              "end": 1.6706000000000003,
+              "wordIndex": 4
+            },
+            {
+              "id": "schwa",
+              "start": 1.6706000000000003,
+              "end": 1.8053333333333335,
+              "wordIndex": 4
+            }
+          ],
+          "engineVoice": "bf_emma",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 2.1053061224489795,
+          "sha256": "0fb99208ba007490172f36571d2e545d34b301dd18bcb512811d609cdeac5b45",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        }
+      },
+      "naturalVoice": "bf_emma"
+    },
+    "male": {
+      "engineVoice": "en+m3",
+      "entries": {
+        "lesson-dog-sound": {
+          "duration": 0.5109750566893424,
+          "sha256": "0293cade0c9499299e620d06f2a55e17bc871a69cfe1eec31c886928444ca6bc",
+          "text": "d",
+          "words": [
+            {
+              "text": "d",
+              "start": 0,
+              "end": 0.5109750566893424
+            }
+          ],
+          "clips": [
+            {
+              "id": "d",
+              "start": 0,
+              "end": 0.5109750566893424,
+              "wordIndex": 0
+            }
+          ]
+        },
+        "lesson-dog-word": {
+          "text": "dog",
+          "words": [
+            {
+              "text": "dog",
+              "start": 0.278,
+              "end": 0.778
+            }
+          ],
+          "clips": [
+            {
+              "id": "d",
+              "start": 0.278,
+              "end": 0.4446666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "o",
+              "start": 0.4446666666666667,
+              "end": 0.6113333333333334,
+              "wordIndex": 0
+            },
+            {
+              "id": "g",
+              "start": 0.6113333333333334,
+              "end": 0.778,
+              "wordIndex": 0
+            }
+          ],
+          "engineVoice": "bm_george",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 1.0053061224489797,
+          "sha256": "535bef14c0bc23c6e22d680854161eebd6d9f65fe7ee5f1b839112c647da3057",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-dog-phrase": {
+          "text": "big dog",
+          "words": [
+            {
+              "text": "big",
+              "start": 0.23166666666666666,
+              "end": 0.5316666666666667
+            },
+            {
+              "text": "dog",
+              "start": 0.5316666666666667,
+              "end": 0.8816666666666667
+            }
+          ],
+          "clips": [
+            {
+              "id": "b",
+              "start": 0.23166666666666666,
+              "end": 0.33166666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.33166666666666667,
+              "end": 0.4316666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "g",
+              "start": 0.4316666666666667,
+              "end": 0.5316666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "d",
+              "start": 0.5316666666666667,
+              "end": 0.6483333333333334,
+              "wordIndex": 1
+            },
+            {
+              "id": "o",
+              "start": 0.6483333333333334,
+              "end": 0.765,
+              "wordIndex": 1
+            },
+            {
+              "id": "g",
+              "start": 0.765,
+              "end": 0.8816666666666667,
+              "wordIndex": 1
+            }
+          ],
+          "engineVoice": "bm_george",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 1.1333333333333333,
+          "sha256": "53e5846151233e1f8cdbfea6c8fea128c42209174a15d232c8122aa049110f3f",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-dog-sentence": {
+          "text": "This is a big dog.",
+          "words": [
+            {
+              "text": "This",
+              "start": 0.23533333333333334,
+              "end": 0.5853333333333333
+            },
+            {
+              "text": "is",
+              "start": 0.5853333333333333,
+              "end": 0.7853333333333333
+            },
+            {
+              "text": "a",
+              "start": 0.7853333333333333,
+              "end": 0.9603333333333334
+            },
+            {
+              "text": "big",
+              "start": 0.9603333333333334,
+              "end": 1.3603333333333332
+            },
+            {
+              "text": "dog",
+              "start": 1.3603333333333332,
+              "end": 1.9333333333333331
+            }
+          ],
+          "clips": [
+            {
+              "id": "dh",
+              "start": 0.23533333333333334,
+              "end": 0.352,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.352,
+              "end": 0.4686666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "s",
+              "start": 0.4686666666666667,
+              "end": 0.5853333333333333,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.5853333333333333,
+              "end": 0.6853333333333333,
+              "wordIndex": 1
+            },
+            {
+              "id": "z",
+              "start": 0.6853333333333333,
+              "end": 0.7853333333333333,
+              "wordIndex": 1
+            },
+            {
+              "id": "schwa",
+              "start": 0.7853333333333333,
+              "end": 0.9603333333333334,
+              "wordIndex": 2
+            },
+            {
+              "id": "b",
+              "start": 0.9603333333333334,
+              "end": 1.0936666666666668,
+              "wordIndex": 3
+            },
+            {
+              "id": "ih",
+              "start": 1.0936666666666668,
+              "end": 1.2269999999999999,
+              "wordIndex": 3
+            },
+            {
+              "id": "g",
+              "start": 1.2269999999999999,
+              "end": 1.3603333333333332,
+              "wordIndex": 3
+            },
+            {
+              "id": "d",
+              "start": 1.3603333333333332,
+              "end": 1.5513333333333332,
+              "wordIndex": 4
+            },
+            {
+              "id": "o",
+              "start": 1.5513333333333332,
+              "end": 1.742333333333333,
+              "wordIndex": 4
+            },
+            {
+              "id": "g",
+              "start": 1.742333333333333,
+              "end": 1.9333333333333331,
+              "wordIndex": 4
+            }
+          ],
+          "engineVoice": "bm_george",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 2.2533333333333334,
+          "sha256": "3bf79410ff2007d39486a0359f1895fecbfc98e72024cd9b7748b76b72ecad3b",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-cat-sound": {
+          "duration": 0.5386848072562358,
+          "sha256": "e4895c0dda1bec55bbc35fd3b0aa203a4847e871fd59be18d7a2a4a2f8552aed",
+          "text": "c",
+          "words": [
+            {
+              "text": "c",
+              "start": 0,
+              "end": 0.5386848072562358
+            }
+          ],
+          "clips": [
+            {
+              "id": "k",
+              "start": 0,
+              "end": 0.5386848072562358,
+              "wordIndex": 0
+            }
+          ]
+        },
+        "lesson-cat-word": {
+          "text": "cat",
+          "words": [
+            {
+              "text": "cat",
+              "start": 0.278,
+              "end": 0.803
+            }
+          ],
+          "clips": [
+            {
+              "id": "k",
+              "start": 0.278,
+              "end": 0.45300000000000007,
+              "wordIndex": 0
+            },
+            {
+              "id": "ae",
+              "start": 0.45300000000000007,
+              "end": 0.6280000000000001,
+              "wordIndex": 0
+            },
+            {
+              "id": "t",
+              "start": 0.6280000000000001,
+              "end": 0.803,
+              "wordIndex": 0
+            }
+          ],
+          "engineVoice": "bm_george",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 1.0266666666666666,
+          "sha256": "e83adacb364973d21385dd91751d4e379be0fab96062ea6a68e3da2bd207b655",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-cat-phrase": {
+          "text": "black cat",
+          "words": [
+            {
+              "text": "black",
+              "start": 0.23166666666666666,
+              "end": 0.6316666666666667
+            },
+            {
+              "text": "cat",
+              "start": 0.6316666666666667,
+              "end": 1.2293333333333334
+            }
+          ],
+          "clips": [
+            {
+              "id": "b",
+              "start": 0.23166666666666666,
+              "end": 0.33166666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "l",
+              "start": 0.33166666666666667,
+              "end": 0.43166666666666664,
+              "wordIndex": 0
+            },
+            {
+              "id": "ae",
+              "start": 0.43166666666666664,
+              "end": 0.5316666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "k",
+              "start": 0.5316666666666667,
+              "end": 0.6316666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "k",
+              "start": 0.6316666666666667,
+              "end": 0.8308888888888889,
+              "wordIndex": 1
+            },
+            {
+              "id": "ae",
+              "start": 0.8308888888888889,
+              "end": 1.0301111111111112,
+              "wordIndex": 1
+            },
+            {
+              "id": "t",
+              "start": 1.0301111111111112,
+              "end": 1.2293333333333334,
+              "wordIndex": 1
+            }
+          ],
+          "engineVoice": "bm_george",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 1.389342403628118,
+          "sha256": "9d9659ef77b753e047c85aa65f117d4f5474544a934f4ccd4b45c62f5f0c7ea0",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-cat-sentence": {
+          "text": "This is a black cat.",
+          "words": [
+            {
+              "text": "This",
+              "start": 0.25666666666666665,
+              "end": 0.6316666666666667
+            },
+            {
+              "text": "is",
+              "start": 0.6316666666666667,
+              "end": 0.8066666666666666
+            },
+            {
+              "text": "a",
+              "start": 0.8066666666666666,
+              "end": 0.9566666666666667
+            },
+            {
+              "text": "black",
+              "start": 0.9566666666666667,
+              "end": 1.4316666666666666
+            },
+            {
+              "text": "cat",
+              "start": 1.4316666666666666,
+              "end": 2.018666666666667
+            }
+          ],
+          "clips": [
+            {
+              "id": "dh",
+              "start": 0.25666666666666665,
+              "end": 0.3816666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.3816666666666667,
+              "end": 0.5066666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "s",
+              "start": 0.5066666666666667,
+              "end": 0.6316666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.6316666666666667,
+              "end": 0.7191666666666667,
+              "wordIndex": 1
+            },
+            {
+              "id": "z",
+              "start": 0.7191666666666667,
+              "end": 0.8066666666666666,
+              "wordIndex": 1
+            },
+            {
+              "id": "schwa",
+              "start": 0.8066666666666666,
+              "end": 0.9566666666666667,
+              "wordIndex": 2
+            },
+            {
+              "id": "b",
+              "start": 0.9566666666666667,
+              "end": 1.0754166666666667,
+              "wordIndex": 3
+            },
+            {
+              "id": "l",
+              "start": 1.0754166666666667,
+              "end": 1.1941666666666668,
+              "wordIndex": 3
+            },
+            {
+              "id": "ae",
+              "start": 1.1941666666666668,
+              "end": 1.3129166666666667,
+              "wordIndex": 3
+            },
+            {
+              "id": "k",
+              "start": 1.3129166666666667,
+              "end": 1.4316666666666666,
+              "wordIndex": 3
+            },
+            {
+              "id": "k",
+              "start": 1.4316666666666666,
+              "end": 1.6273333333333333,
+              "wordIndex": 4
+            },
+            {
+              "id": "ae",
+              "start": 1.6273333333333333,
+              "end": 1.823,
+              "wordIndex": 4
+            },
+            {
+              "id": "t",
+              "start": 1.823,
+              "end": 2.018666666666667,
+              "wordIndex": 4
+            }
+          ],
+          "engineVoice": "bm_george",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 2.358639455782313,
+          "sha256": "85ab10cd6505838e0db613bd79a3cef530e4f39c582a8d8049b68fb982ec045e",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-fish-sound": {
+          "duration": 0.4473015873015873,
+          "sha256": "a43d297bbc995dd75bc14fe194e3b28efffc956a59048e6a88836886cff97bde",
+          "text": "f",
+          "words": [
+            {
+              "text": "f",
+              "start": 0,
+              "end": 0.4473015873015873
+            }
+          ],
+          "clips": [
+            {
+              "id": "f",
+              "start": 0,
+              "end": 0.4473015873015873,
+              "wordIndex": 0
+            }
+          ]
+        },
+        "lesson-fish-word": {
+          "text": "fish",
+          "words": [
+            {
+              "text": "fish",
+              "start": 0.278,
+              "end": 0.803
+            }
+          ],
+          "clips": [
+            {
+              "id": "f",
+              "start": 0.278,
+              "end": 0.45300000000000007,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.45300000000000007,
+              "end": 0.6280000000000001,
+              "wordIndex": 0
+            },
+            {
+              "id": "sh",
+              "start": 0.6280000000000001,
+              "end": 0.803,
+              "wordIndex": 0
+            }
+          ],
+          "engineVoice": "bm_george",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 1.0480272108843538,
+          "sha256": "b71a15d7dc939790cbfed847c3aa677fa1ed3f75f9c83dd099bc5eb8d3342dcf",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-fish-phrase": {
+          "text": "red fish",
+          "words": [
+            {
+              "text": "red",
+              "start": 0.25666666666666665,
+              "end": 0.6316666666666667
+            },
+            {
+              "text": "fish",
+              "start": 0.6316666666666667,
+              "end": 1.2506666666666666
+            }
+          ],
+          "clips": [
+            {
+              "id": "r",
+              "start": 0.25666666666666665,
+              "end": 0.3816666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "e",
+              "start": 0.3816666666666667,
+              "end": 0.5066666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "d",
+              "start": 0.5066666666666667,
+              "end": 0.6316666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "f",
+              "start": 0.6316666666666667,
+              "end": 0.838,
+              "wordIndex": 1
+            },
+            {
+              "id": "ih",
+              "start": 0.838,
+              "end": 1.0443333333333333,
+              "wordIndex": 1
+            },
+            {
+              "id": "sh",
+              "start": 1.0443333333333333,
+              "end": 1.2506666666666666,
+              "wordIndex": 1
+            }
+          ],
+          "engineVoice": "bm_george",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 1.410702947845805,
+          "sha256": "f7dcf0340eb70362ea156e5e173dc2f4d99c72e7a28f9bffaad0a26d29ad37a5",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-fish-sentence": {
+          "text": "This is a red fish.",
+          "words": [
+            {
+              "text": "This",
+              "start": 0.23533333333333334,
+              "end": 0.5603333333333333
+            },
+            {
+              "text": "is",
+              "start": 0.5603333333333333,
+              "end": 0.8103333333333333
+            },
+            {
+              "text": "a",
+              "start": 0.8103333333333333,
+              "end": 1.0353333333333334
+            },
+            {
+              "text": "red",
+              "start": 1.0353333333333334,
+              "end": 1.4353333333333333
+            },
+            {
+              "text": "fish",
+              "start": 1.4353333333333333,
+              "end": 1.976
+            }
+          ],
+          "clips": [
+            {
+              "id": "dh",
+              "start": 0.23533333333333334,
+              "end": 0.3436666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.3436666666666667,
+              "end": 0.45200000000000007,
+              "wordIndex": 0
+            },
+            {
+              "id": "s",
+              "start": 0.45200000000000007,
+              "end": 0.5603333333333333,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.5603333333333333,
+              "end": 0.6853333333333333,
+              "wordIndex": 1
+            },
+            {
+              "id": "z",
+              "start": 0.6853333333333333,
+              "end": 0.8103333333333333,
+              "wordIndex": 1
+            },
+            {
+              "id": "schwa",
+              "start": 0.8103333333333333,
+              "end": 1.0353333333333334,
+              "wordIndex": 2
+            },
+            {
+              "id": "r",
+              "start": 1.0353333333333334,
+              "end": 1.1686666666666667,
+              "wordIndex": 3
+            },
+            {
+              "id": "e",
+              "start": 1.1686666666666667,
+              "end": 1.302,
+              "wordIndex": 3
+            },
+            {
+              "id": "d",
+              "start": 1.302,
+              "end": 1.4353333333333333,
+              "wordIndex": 3
+            },
+            {
+              "id": "f",
+              "start": 1.4353333333333333,
+              "end": 1.6155555555555556,
+              "wordIndex": 4
+            },
+            {
+              "id": "ih",
+              "start": 1.6155555555555556,
+              "end": 1.7957777777777777,
+              "wordIndex": 4
+            },
+            {
+              "id": "sh",
+              "start": 1.7957777777777777,
+              "end": 1.976,
+              "wordIndex": 4
+            }
+          ],
+          "engineVoice": "bm_george",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 2.326031746031746,
+          "sha256": "7f32d98ca2ae6dd25e48fb16c9ae83cb53519afea3502ca5ee2324d730ab2eba",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-milk-sound": {
+          "duration": 0.3222675736961451,
+          "sha256": "481c3f0dbc792a1140ea84539904890705e171294477fcfc8981ca45cf3e2d61",
+          "text": "m",
+          "words": [
+            {
+              "text": "m",
+              "start": 0,
+              "end": 0.3222675736961451
+            }
+          ],
+          "clips": [
+            {
+              "id": "m",
+              "start": 0,
+              "end": 0.3222675736961451,
+              "wordIndex": 0
+            }
+          ]
+        },
+        "lesson-milk-word": {
+          "text": "milk",
+          "words": [
+            {
+              "text": "milk",
+              "start": 0.29933333333333334,
+              "end": 0.7993333333333333
+            }
+          ],
+          "clips": [
+            {
+              "id": "m",
+              "start": 0.29933333333333334,
+              "end": 0.42433333333333334,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.42433333333333334,
+              "end": 0.5493333333333333,
+              "wordIndex": 0
+            },
+            {
+              "id": "l",
+              "start": 0.5493333333333333,
+              "end": 0.6743333333333333,
+              "wordIndex": 0
+            },
+            {
+              "id": "k",
+              "start": 0.6743333333333333,
+              "end": 0.7993333333333333,
+              "wordIndex": 0
+            }
+          ],
+          "engineVoice": "bm_george",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 0.9626757369614513,
+          "sha256": "f56c21c9311b53e6fdd23504be1adaf87a2fab3e5a267835111dba40702ebb0d",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-milk-phrase": {
+          "text": "cold milk",
+          "words": [
+            {
+              "text": "cold",
+              "start": 0.23166666666666666,
+              "end": 0.7316666666666667
+            },
+            {
+              "text": "milk",
+              "start": 0.7316666666666667,
+              "end": 1.3359999999999999
+            }
+          ],
+          "clips": [
+            {
+              "id": "k",
+              "start": 0.23166666666666666,
+              "end": 0.34277777777777774,
+              "wordIndex": 0
+            },
+            {
+              "id": "ou",
+              "start": 0.34277777777777774,
+              "end": 0.5094444444444444,
+              "wordIndex": 0
+            },
+            {
+              "id": "l",
+              "start": 0.5094444444444444,
+              "end": 0.6205555555555555,
+              "wordIndex": 0
+            },
+            {
+              "id": "d",
+              "start": 0.6205555555555555,
+              "end": 0.7316666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "m",
+              "start": 0.7316666666666667,
+              "end": 0.88275,
+              "wordIndex": 1
+            },
+            {
+              "id": "ih",
+              "start": 0.88275,
+              "end": 1.0338333333333334,
+              "wordIndex": 1
+            },
+            {
+              "id": "l",
+              "start": 1.0338333333333334,
+              "end": 1.1849166666666666,
+              "wordIndex": 1
+            },
+            {
+              "id": "k",
+              "start": 1.1849166666666666,
+              "end": 1.3359999999999999,
+              "wordIndex": 1
+            }
+          ],
+          "engineVoice": "bm_george",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 1.4960090702947846,
+          "sha256": "cd89736d6b03e8538a7d9f8a9cb915d68eede89bd80ca239cf1691a103405469",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-milk-sentence": {
+          "text": "I like cold milk.",
+          "words": [
+            {
+              "text": "I",
+              "start": 0.25666666666666665,
+              "end": 0.4066666666666667
+            },
+            {
+              "text": "like",
+              "start": 0.4066666666666667,
+              "end": 0.7566666666666667
+            },
+            {
+              "text": "cold",
+              "start": 0.7566666666666667,
+              "end": 1.2566666666666668
+            },
+            {
+              "text": "milk",
+              "start": 1.2566666666666668,
+              "end": 1.8053333333333335
+            }
+          ],
+          "clips": [
+            {
+              "id": "ai",
+              "start": 0.25666666666666665,
+              "end": 0.4066666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "l",
+              "start": 0.4066666666666667,
+              "end": 0.5066666666666667,
+              "wordIndex": 1
+            },
+            {
+              "id": "ai",
+              "start": 0.5066666666666667,
+              "end": 0.6566666666666667,
+              "wordIndex": 1
+            },
+            {
+              "id": "k",
+              "start": 0.6566666666666667,
+              "end": 0.7566666666666667,
+              "wordIndex": 1
+            },
+            {
+              "id": "k",
+              "start": 0.7566666666666667,
+              "end": 0.8677777777777779,
+              "wordIndex": 2
+            },
+            {
+              "id": "ou",
+              "start": 0.8677777777777779,
+              "end": 1.0344444444444445,
+              "wordIndex": 2
+            },
+            {
+              "id": "l",
+              "start": 1.0344444444444445,
+              "end": 1.1455555555555557,
+              "wordIndex": 2
+            },
+            {
+              "id": "d",
+              "start": 1.1455555555555557,
+              "end": 1.2566666666666668,
+              "wordIndex": 2
+            },
+            {
+              "id": "m",
+              "start": 1.2566666666666668,
+              "end": 1.3938333333333335,
+              "wordIndex": 3
+            },
+            {
+              "id": "ih",
+              "start": 1.3938333333333335,
+              "end": 1.5310000000000001,
+              "wordIndex": 3
+            },
+            {
+              "id": "l",
+              "start": 1.5310000000000001,
+              "end": 1.6681666666666668,
+              "wordIndex": 3
+            },
+            {
+              "id": "k",
+              "start": 1.6681666666666668,
+              "end": 1.8053333333333335,
+              "wordIndex": 3
+            }
+          ],
+          "engineVoice": "bm_george",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 2.1353287981859412,
+          "sha256": "e532127cea030aaf2ddc59572639c0930bb788e07c5223978da269ef05c1ab3f",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-rabbit-sound": {
+          "duration": 0.365124716553288,
+          "sha256": "4a6ea1909721b6864869ed39958486f527891981fa981862bead511d5854aed3",
+          "text": "r",
+          "words": [
+            {
+              "text": "r",
+              "start": 0,
+              "end": 0.365124716553288
+            }
+          ],
+          "clips": [
+            {
+              "id": "r",
+              "start": 0,
+              "end": 0.365124716553288,
+              "wordIndex": 0
+            }
+          ]
+        },
+        "lesson-rabbit-word": {
+          "text": "rabbit",
+          "words": [
+            {
+              "text": "rabbit",
+              "start": 0.25666666666666665,
+              "end": 1.0566666666666666
+            }
+          ],
+          "clips": [
+            {
+              "id": "r",
+              "start": 0.25666666666666665,
+              "end": 0.41666666666666663,
+              "wordIndex": 0
+            },
+            {
+              "id": "ae",
+              "start": 0.41666666666666663,
+              "end": 0.5766666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "b",
+              "start": 0.5766666666666667,
+              "end": 0.7366666666666666,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.7366666666666666,
+              "end": 0.8966666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "t",
+              "start": 0.8966666666666667,
+              "end": 1.0566666666666666,
+              "wordIndex": 0
+            }
+          ],
+          "engineVoice": "bm_george",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 1.2613605442176872,
+          "sha256": "f230153294438100fcc836ad680e06ad659d9a1677f56bbc79335e5950ed81df",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-rabbit-phrase": {
+          "text": "white rabbit",
+          "words": [
+            {
+              "text": "white",
+              "start": 0.25666666666666665,
+              "end": 0.6566666666666666
+            },
+            {
+              "text": "rabbit",
+              "start": 0.6566666666666666,
+              "end": 1.4
+            }
+          ],
+          "clips": [
+            {
+              "id": "w",
+              "start": 0.25666666666666665,
+              "end": 0.3709523809523809,
+              "wordIndex": 0
+            },
+            {
+              "id": "ai",
+              "start": 0.3709523809523809,
+              "end": 0.5423809523809524,
+              "wordIndex": 0
+            },
+            {
+              "id": "t",
+              "start": 0.5423809523809524,
+              "end": 0.6566666666666666,
+              "wordIndex": 0
+            },
+            {
+              "id": "r",
+              "start": 0.6566666666666666,
+              "end": 0.8053333333333333,
+              "wordIndex": 1
+            },
+            {
+              "id": "ae",
+              "start": 0.8053333333333333,
+              "end": 0.954,
+              "wordIndex": 1
+            },
+            {
+              "id": "b",
+              "start": 0.954,
+              "end": 1.1026666666666667,
+              "wordIndex": 1
+            },
+            {
+              "id": "ih",
+              "start": 1.1026666666666667,
+              "end": 1.2513333333333332,
+              "wordIndex": 1
+            },
+            {
+              "id": "t",
+              "start": 1.2513333333333332,
+              "end": 1.4,
+              "wordIndex": 1
+            }
+          ],
+          "engineVoice": "bm_george",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 1.56,
+          "sha256": "1403cb852c7ea74c76f4abe381f05206788886564974450251a385adcaa630b3",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-rabbit-sentence": {
+          "text": "This is a white rabbit.",
+          "words": [
+            {
+              "text": "This",
+              "start": 0.23533333333333334,
+              "end": 0.5353333333333333
+            },
+            {
+              "text": "is",
+              "start": 0.5353333333333333,
+              "end": 0.7103333333333334
+            },
+            {
+              "text": "a",
+              "start": 0.7103333333333334,
+              "end": 0.9103333333333333
+            },
+            {
+              "text": "white",
+              "start": 0.9103333333333333,
+              "end": 1.3603333333333332
+            },
+            {
+              "text": "rabbit",
+              "start": 1.3603333333333332,
+              "end": 1.9546666666666668
+            }
+          ],
+          "clips": [
+            {
+              "id": "dh",
+              "start": 0.23533333333333334,
+              "end": 0.33533333333333337,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.33533333333333337,
+              "end": 0.43533333333333335,
+              "wordIndex": 0
+            },
+            {
+              "id": "s",
+              "start": 0.43533333333333335,
+              "end": 0.5353333333333333,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.5353333333333333,
+              "end": 0.6228333333333333,
+              "wordIndex": 1
+            },
+            {
+              "id": "z",
+              "start": 0.6228333333333333,
+              "end": 0.7103333333333334,
+              "wordIndex": 1
+            },
+            {
+              "id": "schwa",
+              "start": 0.7103333333333334,
+              "end": 0.9103333333333333,
+              "wordIndex": 2
+            },
+            {
+              "id": "w",
+              "start": 0.9103333333333333,
+              "end": 1.0389047619047618,
+              "wordIndex": 3
+            },
+            {
+              "id": "ai",
+              "start": 1.0389047619047618,
+              "end": 1.2317619047619046,
+              "wordIndex": 3
+            },
+            {
+              "id": "t",
+              "start": 1.2317619047619046,
+              "end": 1.3603333333333332,
+              "wordIndex": 3
+            },
+            {
+              "id": "r",
+              "start": 1.3603333333333332,
+              "end": 1.4791999999999998,
+              "wordIndex": 4
+            },
+            {
+              "id": "ae",
+              "start": 1.4791999999999998,
+              "end": 1.5980666666666665,
+              "wordIndex": 4
+            },
+            {
+              "id": "b",
+              "start": 1.5980666666666665,
+              "end": 1.7169333333333332,
+              "wordIndex": 4
+            },
+            {
+              "id": "ih",
+              "start": 1.7169333333333332,
+              "end": 1.8358,
+              "wordIndex": 4
+            },
+            {
+              "id": "t",
+              "start": 1.8358,
+              "end": 1.9546666666666668,
+              "wordIndex": 4
+            }
+          ],
+          "engineVoice": "bm_george",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 2.2746938775510204,
+          "sha256": "bbdc9a3d5a4df9d517ee42734eba6a23c60dc232329e94453dd8a7f28f071a1a",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-bird-sound": {
+          "duration": 0.5112018140589569,
+          "sha256": "a05d0d35db77f0a059d0058f78e3df787f60ea5340ed0f52b86284db46cac40f",
+          "text": "b",
+          "words": [
+            {
+              "text": "b",
+              "start": 0,
+              "end": 0.5112018140589569
+            }
+          ],
+          "clips": [
+            {
+              "id": "b",
+              "start": 0,
+              "end": 0.5112018140589569,
+              "wordIndex": 0
+            }
+          ]
+        },
+        "lesson-bird-word": {
+          "text": "bird",
+          "words": [
+            {
+              "text": "bird",
+              "start": 0.253,
+              "end": 0.953
+            }
+          ],
+          "clips": [
+            {
+              "id": "b",
+              "start": 0.253,
+              "end": 0.48633333333333334,
+              "wordIndex": 0
+            },
+            {
+              "id": "er",
+              "start": 0.48633333333333334,
+              "end": 0.7196666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "d",
+              "start": 0.7196666666666667,
+              "end": 0.953,
+              "wordIndex": 0
+            }
+          ],
+          "engineVoice": "bm_george",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 1.1546938775510205,
+          "sha256": "b57856d64e47584799af3d16f03949f7b04c722b0f64810130495fae0be95796",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-bird-phrase": {
+          "text": "little bird",
+          "words": [
+            {
+              "text": "little",
+              "start": 0.25666666666666665,
+              "end": 0.6066666666666667
+            },
+            {
+              "text": "bird",
+              "start": 0.6066666666666667,
+              "end": 1.3146666666666667
+            }
+          ],
+          "clips": [
+            {
+              "id": "l",
+              "start": 0.25666666666666665,
+              "end": 0.32666666666666666,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.32666666666666666,
+              "end": 0.39666666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "t",
+              "start": 0.39666666666666667,
+              "end": 0.4666666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "schwa",
+              "start": 0.4666666666666667,
+              "end": 0.5366666666666666,
+              "wordIndex": 0
+            },
+            {
+              "id": "l",
+              "start": 0.5366666666666666,
+              "end": 0.6066666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "b",
+              "start": 0.6066666666666667,
+              "end": 0.8426666666666667,
+              "wordIndex": 1
+            },
+            {
+              "id": "er",
+              "start": 0.8426666666666667,
+              "end": 1.0786666666666669,
+              "wordIndex": 1
+            },
+            {
+              "id": "d",
+              "start": 1.0786666666666669,
+              "end": 1.3146666666666667,
+              "wordIndex": 1
+            }
+          ],
+          "engineVoice": "bm_george",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 1.4746938775510203,
+          "sha256": "b04dced3e2e058aea913d3de48e136b806d221e522be7af9018f1fb37fb51df5",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-bird-sentence": {
+          "text": "This is a little bird.",
+          "words": [
+            {
+              "text": "This",
+              "start": 0.25666666666666665,
+              "end": 0.6316666666666667
+            },
+            {
+              "text": "is",
+              "start": 0.6316666666666667,
+              "end": 0.8316666666666667
+            },
+            {
+              "text": "a",
+              "start": 0.8316666666666667,
+              "end": 0.9566666666666667
+            },
+            {
+              "text": "little",
+              "start": 0.9566666666666667,
+              "end": 1.3066666666666666
+            },
+            {
+              "text": "bird",
+              "start": 1.3066666666666666,
+              "end": 1.912
+            }
+          ],
+          "clips": [
+            {
+              "id": "dh",
+              "start": 0.25666666666666665,
+              "end": 0.3816666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.3816666666666667,
+              "end": 0.5066666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "s",
+              "start": 0.5066666666666667,
+              "end": 0.6316666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.6316666666666667,
+              "end": 0.7316666666666667,
+              "wordIndex": 1
+            },
+            {
+              "id": "z",
+              "start": 0.7316666666666667,
+              "end": 0.8316666666666667,
+              "wordIndex": 1
+            },
+            {
+              "id": "schwa",
+              "start": 0.8316666666666667,
+              "end": 0.9566666666666667,
+              "wordIndex": 2
+            },
+            {
+              "id": "l",
+              "start": 0.9566666666666667,
+              "end": 1.0266666666666666,
+              "wordIndex": 3
+            },
+            {
+              "id": "ih",
+              "start": 1.0266666666666666,
+              "end": 1.0966666666666667,
+              "wordIndex": 3
+            },
+            {
+              "id": "t",
+              "start": 1.0966666666666667,
+              "end": 1.1666666666666667,
+              "wordIndex": 3
+            },
+            {
+              "id": "schwa",
+              "start": 1.1666666666666667,
+              "end": 1.2366666666666666,
+              "wordIndex": 3
+            },
+            {
+              "id": "l",
+              "start": 1.2366666666666666,
+              "end": 1.3066666666666666,
+              "wordIndex": 3
+            },
+            {
+              "id": "b",
+              "start": 1.3066666666666666,
+              "end": 1.5084444444444443,
+              "wordIndex": 4
+            },
+            {
+              "id": "er",
+              "start": 1.5084444444444443,
+              "end": 1.7102222222222219,
+              "wordIndex": 4
+            },
+            {
+              "id": "d",
+              "start": 1.7102222222222219,
+              "end": 1.912,
+              "wordIndex": 4
+            }
+          ],
+          "engineVoice": "bm_george",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 2.2419954648526077,
+          "sha256": "1e1cd418fecc7af5efa1e0e39f2638a157af1896b448dc346023c532f0b0431d",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-duck-sound": {
+          "duration": 0.5109750566893424,
+          "sha256": "0293cade0c9499299e620d06f2a55e17bc871a69cfe1eec31c886928444ca6bc",
+          "text": "d",
+          "words": [
+            {
+              "text": "d",
+              "start": 0,
+              "end": 0.5109750566893424
+            }
+          ],
+          "clips": [
+            {
+              "id": "d",
+              "start": 0,
+              "end": 0.5109750566893424,
+              "wordIndex": 0
+            }
+          ]
+        },
+        "lesson-duck-word": {
+          "text": "duck",
+          "words": [
+            {
+              "text": "duck",
+              "start": 0.278,
+              "end": 0.803
+            }
+          ],
+          "clips": [
+            {
+              "id": "d",
+              "start": 0.278,
+              "end": 0.45300000000000007,
+              "wordIndex": 0
+            },
+            {
+              "id": "uh",
+              "start": 0.45300000000000007,
+              "end": 0.6280000000000001,
+              "wordIndex": 0
+            },
+            {
+              "id": "k",
+              "start": 0.6280000000000001,
+              "end": 0.803,
+              "wordIndex": 0
+            }
+          ],
+          "engineVoice": "bm_george",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 1.0053061224489797,
+          "sha256": "61520d3d901659a5abed6233f890f8f514bf074e3c00db996227257b2ad01a79",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-duck-phrase": {
+          "text": "yellow duck",
+          "words": [
+            {
+              "text": "yellow",
+              "start": 0.25666666666666665,
+              "end": 0.7316666666666667
+            },
+            {
+              "text": "duck",
+              "start": 0.7316666666666667,
+              "end": 1.2293333333333334
+            }
+          ],
+          "clips": [
+            {
+              "id": "j",
+              "start": 0.25666666666666665,
+              "end": 0.3622222222222222,
+              "wordIndex": 0
+            },
+            {
+              "id": "e",
+              "start": 0.3622222222222222,
+              "end": 0.4677777777777778,
+              "wordIndex": 0
+            },
+            {
+              "id": "l",
+              "start": 0.4677777777777778,
+              "end": 0.5733333333333333,
+              "wordIndex": 0
+            },
+            {
+              "id": "ou",
+              "start": 0.5733333333333333,
+              "end": 0.7316666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "d",
+              "start": 0.7316666666666667,
+              "end": 0.8975555555555556,
+              "wordIndex": 1
+            },
+            {
+              "id": "uh",
+              "start": 0.8975555555555556,
+              "end": 1.0634444444444444,
+              "wordIndex": 1
+            },
+            {
+              "id": "k",
+              "start": 1.0634444444444444,
+              "end": 1.2293333333333334,
+              "wordIndex": 1
+            }
+          ],
+          "engineVoice": "bm_george",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 1.389342403628118,
+          "sha256": "c2a172f57b6a2457f9e9108e852be00e31d22102a3524ca277b41464dfa9b9e4",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-duck-sentence": {
+          "text": "This is a yellow duck.",
+          "words": [
+            {
+              "text": "This",
+              "start": 0.23533333333333334,
+              "end": 0.5603333333333333
+            },
+            {
+              "text": "is",
+              "start": 0.5603333333333333,
+              "end": 0.7853333333333333
+            },
+            {
+              "text": "a",
+              "start": 0.7853333333333333,
+              "end": 1.0603333333333333
+            },
+            {
+              "text": "yellow",
+              "start": 1.0603333333333333,
+              "end": 1.5103333333333335
+            },
+            {
+              "text": "duck",
+              "start": 1.5103333333333335,
+              "end": 2.018666666666667
+            }
+          ],
+          "clips": [
+            {
+              "id": "dh",
+              "start": 0.23533333333333334,
+              "end": 0.3436666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.3436666666666667,
+              "end": 0.45200000000000007,
+              "wordIndex": 0
+            },
+            {
+              "id": "s",
+              "start": 0.45200000000000007,
+              "end": 0.5603333333333333,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.5603333333333333,
+              "end": 0.6728333333333334,
+              "wordIndex": 1
+            },
+            {
+              "id": "z",
+              "start": 0.6728333333333334,
+              "end": 0.7853333333333333,
+              "wordIndex": 1
+            },
+            {
+              "id": "schwa",
+              "start": 0.7853333333333333,
+              "end": 1.0603333333333333,
+              "wordIndex": 2
+            },
+            {
+              "id": "j",
+              "start": 1.0603333333333333,
+              "end": 1.1603333333333334,
+              "wordIndex": 3
+            },
+            {
+              "id": "e",
+              "start": 1.1603333333333334,
+              "end": 1.2603333333333333,
+              "wordIndex": 3
+            },
+            {
+              "id": "l",
+              "start": 1.2603333333333333,
+              "end": 1.3603333333333334,
+              "wordIndex": 3
+            },
+            {
+              "id": "ou",
+              "start": 1.3603333333333334,
+              "end": 1.5103333333333335,
+              "wordIndex": 3
+            },
+            {
+              "id": "d",
+              "start": 1.5103333333333335,
+              "end": 1.6797777777777778,
+              "wordIndex": 4
+            },
+            {
+              "id": "uh",
+              "start": 1.6797777777777778,
+              "end": 1.849222222222222,
+              "wordIndex": 4
+            },
+            {
+              "id": "k",
+              "start": 1.849222222222222,
+              "end": 2.018666666666667,
+              "wordIndex": 4
+            }
+          ],
+          "engineVoice": "bm_george",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 2.348662131519274,
+          "sha256": "c451ec876cd8060804bb020737751524d85cb8ca9d327d1aba87f7bf1ac7837e",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-horse-sound": {
+          "duration": 0.39206349206349206,
+          "sha256": "4e78ba80808d1fb010b062886bafd18a01ccfd2a0ba81e0408a4d21b960485a5",
+          "text": "h",
+          "words": [
+            {
+              "text": "h",
+              "start": 0,
+              "end": 0.39206349206349206
+            }
+          ],
+          "clips": [
+            {
+              "id": "h",
+              "start": 0,
+              "end": 0.39206349206349206,
+              "wordIndex": 0
+            }
+          ]
+        },
+        "lesson-horse-word": {
+          "text": "horse",
+          "words": [
+            {
+              "text": "horse",
+              "start": 0.253,
+              "end": 0.853
+            }
+          ],
+          "clips": [
+            {
+              "id": "h",
+              "start": 0.253,
+              "end": 0.453,
+              "wordIndex": 0
+            },
+            {
+              "id": "aw",
+              "start": 0.453,
+              "end": 0.653,
+              "wordIndex": 0
+            },
+            {
+              "id": "s",
+              "start": 0.653,
+              "end": 0.853,
+              "wordIndex": 0
+            }
+          ],
+          "engineVoice": "bm_george",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 1.0693424036281178,
+          "sha256": "e32986bc4909c768f511a45da898c02aedd5ee9f5ac183caf4450333b62c6fb0",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-horse-phrase": {
+          "text": "brown horse",
+          "words": [
+            {
+              "text": "brown",
+              "start": 0.23166666666666666,
+              "end": 0.7066666666666667
+            },
+            {
+              "text": "horse",
+              "start": 0.7066666666666667,
+              "end": 1.4
+            }
+          ],
+          "clips": [
+            {
+              "id": "b",
+              "start": 0.23166666666666666,
+              "end": 0.3372222222222222,
+              "wordIndex": 0
+            },
+            {
+              "id": "r",
+              "start": 0.3372222222222222,
+              "end": 0.4427777777777777,
+              "wordIndex": 0
+            },
+            {
+              "id": "au",
+              "start": 0.4427777777777777,
+              "end": 0.601111111111111,
+              "wordIndex": 0
+            },
+            {
+              "id": "n",
+              "start": 0.601111111111111,
+              "end": 0.7066666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "h",
+              "start": 0.7066666666666667,
+              "end": 0.9377777777777778,
+              "wordIndex": 1
+            },
+            {
+              "id": "aw",
+              "start": 0.9377777777777778,
+              "end": 1.168888888888889,
+              "wordIndex": 1
+            },
+            {
+              "id": "s",
+              "start": 1.168888888888889,
+              "end": 1.4,
+              "wordIndex": 1
+            }
+          ],
+          "engineVoice": "bm_george",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 1.56,
+          "sha256": "791103b388ca5446eb03d8dcbb3fb525f5b0c25acfa870411ff11d5c3bc78c31",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-horse-sentence": {
+          "text": "This is a brown horse.",
+          "words": [
+            {
+              "text": "This",
+              "start": 0.23533333333333334,
+              "end": 0.5603333333333333
+            },
+            {
+              "text": "is",
+              "start": 0.5603333333333333,
+              "end": 0.7353333333333333
+            },
+            {
+              "text": "a",
+              "start": 0.7353333333333333,
+              "end": 0.9353333333333333
+            },
+            {
+              "text": "brown",
+              "start": 0.9353333333333333,
+              "end": 1.4353333333333333
+            },
+            {
+              "text": "horse",
+              "start": 1.4353333333333333,
+              "end": 2.04
+            }
+          ],
+          "clips": [
+            {
+              "id": "dh",
+              "start": 0.23533333333333334,
+              "end": 0.3436666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.3436666666666667,
+              "end": 0.45200000000000007,
+              "wordIndex": 0
+            },
+            {
+              "id": "s",
+              "start": 0.45200000000000007,
+              "end": 0.5603333333333333,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.5603333333333333,
+              "end": 0.6478333333333333,
+              "wordIndex": 1
+            },
+            {
+              "id": "z",
+              "start": 0.6478333333333333,
+              "end": 0.7353333333333333,
+              "wordIndex": 1
+            },
+            {
+              "id": "schwa",
+              "start": 0.7353333333333333,
+              "end": 0.9353333333333333,
+              "wordIndex": 2
+            },
+            {
+              "id": "b",
+              "start": 0.9353333333333333,
+              "end": 1.0464444444444445,
+              "wordIndex": 3
+            },
+            {
+              "id": "r",
+              "start": 1.0464444444444445,
+              "end": 1.1575555555555554,
+              "wordIndex": 3
+            },
+            {
+              "id": "au",
+              "start": 1.1575555555555554,
+              "end": 1.3242222222222222,
+              "wordIndex": 3
+            },
+            {
+              "id": "n",
+              "start": 1.3242222222222222,
+              "end": 1.4353333333333333,
+              "wordIndex": 3
+            },
+            {
+              "id": "h",
+              "start": 1.4353333333333333,
+              "end": 1.6368888888888888,
+              "wordIndex": 4
+            },
+            {
+              "id": "aw",
+              "start": 1.6368888888888888,
+              "end": 1.8384444444444443,
+              "wordIndex": 4
+            },
+            {
+              "id": "s",
+              "start": 1.8384444444444443,
+              "end": 2.04,
+              "wordIndex": 4
+            }
+          ],
+          "engineVoice": "bm_george",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 2.3500226757369616,
+          "sha256": "08eb4b5d37912221e49cbb4a6fe0f1421340f8b31c40323e0f5b3c3b8da6d532",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-lion-sound": {
+          "duration": 0.34988662131519277,
+          "sha256": "f0ac9bb3015f78dfb756297e5fbf7205ca5c5297348f6fee408ded3760957589",
+          "text": "l",
+          "words": [
+            {
+              "text": "l",
+              "start": 0,
+              "end": 0.34988662131519277
+            }
+          ],
+          "clips": [
+            {
+              "id": "l",
+              "start": 0,
+              "end": 0.34988662131519277,
+              "wordIndex": 0
+            }
+          ]
+        },
+        "lesson-lion-word": {
+          "text": "lion",
+          "words": [
+            {
+              "text": "lion",
+              "start": 0.2816666666666666,
+              "end": 1.08
+            }
+          ],
+          "clips": [
+            {
+              "id": "l",
+              "start": 0.2816666666666666,
+              "end": 0.4590740740740741,
+              "wordIndex": 0
+            },
+            {
+              "id": "ai",
+              "start": 0.4590740740740741,
+              "end": 0.7251851851851852,
+              "wordIndex": 0
+            },
+            {
+              "id": "schwa",
+              "start": 0.7251851851851852,
+              "end": 0.9025925925925926,
+              "wordIndex": 0
+            },
+            {
+              "id": "n",
+              "start": 0.9025925925925926,
+              "end": 1.08,
+              "wordIndex": 0
+            }
+          ],
+          "engineVoice": "bm_george",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 1.24,
+          "sha256": "731879d79c2a00ae278ca7a042e3bf10eef5b77da28afde5db1dbee163b43a7d",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-lion-phrase": {
+          "text": "big lion",
+          "words": [
+            {
+              "text": "big",
+              "start": 0.23166666666666666,
+              "end": 0.5816666666666667
+            },
+            {
+              "text": "lion",
+              "start": 0.5816666666666667,
+              "end": 1.3146666666666667
+            }
+          ],
+          "clips": [
+            {
+              "id": "b",
+              "start": 0.23166666666666666,
+              "end": 0.34833333333333333,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.34833333333333333,
+              "end": 0.46499999999999997,
+              "wordIndex": 0
+            },
+            {
+              "id": "g",
+              "start": 0.46499999999999997,
+              "end": 0.5816666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "l",
+              "start": 0.5816666666666667,
+              "end": 0.7445555555555555,
+              "wordIndex": 1
+            },
+            {
+              "id": "ai",
+              "start": 0.7445555555555555,
+              "end": 0.9888888888888888,
+              "wordIndex": 1
+            },
+            {
+              "id": "schwa",
+              "start": 0.9888888888888888,
+              "end": 1.1517777777777778,
+              "wordIndex": 1
+            },
+            {
+              "id": "n",
+              "start": 1.1517777777777778,
+              "end": 1.3146666666666667,
+              "wordIndex": 1
+            }
+          ],
+          "engineVoice": "bm_george",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 1.4746938775510203,
+          "sha256": "38a5e8b1024855e60a0c9cc2dd3a99dfd0b41db032b9bb7f1920a01024bf4b67",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-lion-sentence": {
+          "text": "This is a big lion.",
+          "words": [
+            {
+              "text": "This",
+              "start": 0.23533333333333334,
+              "end": 0.5853333333333333
+            },
+            {
+              "text": "is",
+              "start": 0.5853333333333333,
+              "end": 0.7603333333333333
+            },
+            {
+              "text": "a",
+              "start": 0.7603333333333333,
+              "end": 0.9353333333333333
+            },
+            {
+              "text": "big",
+              "start": 0.9353333333333333,
+              "end": 1.3353333333333333
+            },
+            {
+              "text": "lion",
+              "start": 1.3353333333333333,
+              "end": 1.976
+            }
+          ],
+          "clips": [
+            {
+              "id": "dh",
+              "start": 0.23533333333333334,
+              "end": 0.352,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.352,
+              "end": 0.4686666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "s",
+              "start": 0.4686666666666667,
+              "end": 0.5853333333333333,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.5853333333333333,
+              "end": 0.6728333333333333,
+              "wordIndex": 1
+            },
+            {
+              "id": "z",
+              "start": 0.6728333333333333,
+              "end": 0.7603333333333333,
+              "wordIndex": 1
+            },
+            {
+              "id": "schwa",
+              "start": 0.7603333333333333,
+              "end": 0.9353333333333333,
+              "wordIndex": 2
+            },
+            {
+              "id": "b",
+              "start": 0.9353333333333333,
+              "end": 1.0686666666666667,
+              "wordIndex": 3
+            },
+            {
+              "id": "ih",
+              "start": 1.0686666666666667,
+              "end": 1.202,
+              "wordIndex": 3
+            },
+            {
+              "id": "g",
+              "start": 1.202,
+              "end": 1.3353333333333333,
+              "wordIndex": 3
+            },
+            {
+              "id": "l",
+              "start": 1.3353333333333333,
+              "end": 1.4777037037037035,
+              "wordIndex": 4
+            },
+            {
+              "id": "ai",
+              "start": 1.4777037037037035,
+              "end": 1.6912592592592592,
+              "wordIndex": 4
+            },
+            {
+              "id": "schwa",
+              "start": 1.6912592592592592,
+              "end": 1.8336296296296295,
+              "wordIndex": 4
+            },
+            {
+              "id": "n",
+              "start": 1.8336296296296295,
+              "end": 1.976,
+              "wordIndex": 4
+            }
+          ],
+          "engineVoice": "bm_george",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 2.2960090702947844,
+          "sha256": "f439c86e753f87cda35f253c4f0468b52be11a8c448aa20f42d748b0901a98da",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-panda-sound": {
+          "duration": 0.5773696145124717,
+          "sha256": "0d79d04ec1a4e4c12efc628bf1befc223d0cd6c423ce03ac1095de7ebfe1c261",
+          "text": "p",
+          "words": [
+            {
+              "text": "p",
+              "start": 0,
+              "end": 0.5773696145124717
+            }
+          ],
+          "clips": [
+            {
+              "id": "p",
+              "start": 0,
+              "end": 0.5773696145124717,
+              "wordIndex": 0
+            }
+          ]
+        },
+        "lesson-panda-word": {
+          "text": "panda",
+          "words": [
+            {
+              "text": "panda",
+              "start": 0.23166666666666666,
+              "end": 1.0066666666666668
+            }
+          ],
+          "clips": [
+            {
+              "id": "p",
+              "start": 0.23166666666666666,
+              "end": 0.3866666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "ae",
+              "start": 0.3866666666666667,
+              "end": 0.5416666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "n",
+              "start": 0.5416666666666667,
+              "end": 0.6966666666666668,
+              "wordIndex": 0
+            },
+            {
+              "id": "d",
+              "start": 0.6966666666666668,
+              "end": 0.8516666666666668,
+              "wordIndex": 0
+            },
+            {
+              "id": "schwa",
+              "start": 0.8516666666666668,
+              "end": 1.0066666666666668,
+              "wordIndex": 0
+            }
+          ],
+          "engineVoice": "bm_george",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 1.24,
+          "sha256": "22b4525407429634f850a5b20555d43bf200ccc0d707f253cc45b4c4750dcdf2",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-panda-phrase": {
+          "text": "cute panda",
+          "words": [
+            {
+              "text": "cute",
+              "start": 0.23166666666666666,
+              "end": 0.6316666666666667
+            },
+            {
+              "text": "panda",
+              "start": 0.6316666666666667,
+              "end": 1.4
+            }
+          ],
+          "clips": [
+            {
+              "id": "k",
+              "start": 0.23166666666666666,
+              "end": 0.33166666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "j",
+              "start": 0.33166666666666667,
+              "end": 0.43166666666666664,
+              "wordIndex": 0
+            },
+            {
+              "id": "u",
+              "start": 0.43166666666666664,
+              "end": 0.5316666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "t",
+              "start": 0.5316666666666667,
+              "end": 0.6316666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "p",
+              "start": 0.6316666666666667,
+              "end": 0.7853333333333334,
+              "wordIndex": 1
+            },
+            {
+              "id": "ae",
+              "start": 0.7853333333333334,
+              "end": 0.9390000000000001,
+              "wordIndex": 1
+            },
+            {
+              "id": "n",
+              "start": 0.9390000000000001,
+              "end": 1.0926666666666667,
+              "wordIndex": 1
+            },
+            {
+              "id": "d",
+              "start": 1.0926666666666667,
+              "end": 1.2463333333333333,
+              "wordIndex": 1
+            },
+            {
+              "id": "schwa",
+              "start": 1.2463333333333333,
+              "end": 1.4,
+              "wordIndex": 1
+            }
+          ],
+          "engineVoice": "bm_george",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 1.56,
+          "sha256": "960461ac690b23af5d78622168bb424b6cad8e43268964531df55873398e6a98",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        },
+        "lesson-panda-sentence": {
+          "text": "This is a cute panda.",
+          "words": [
+            {
+              "text": "This",
+              "start": 0.25666666666666665,
+              "end": 0.6316666666666667
+            },
+            {
+              "text": "is",
+              "start": 0.6316666666666667,
+              "end": 0.8066666666666666
+            },
+            {
+              "text": "a",
+              "start": 0.8066666666666666,
+              "end": 0.9816666666666667
+            },
+            {
+              "text": "cute",
+              "start": 0.9816666666666667,
+              "end": 1.4316666666666666
+            },
+            {
+              "text": "panda",
+              "start": 1.4316666666666666,
+              "end": 2.1253333333333333
+            }
+          ],
+          "clips": [
+            {
+              "id": "dh",
+              "start": 0.25666666666666665,
+              "end": 0.3816666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.3816666666666667,
+              "end": 0.5066666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "s",
+              "start": 0.5066666666666667,
+              "end": 0.6316666666666667,
+              "wordIndex": 0
+            },
+            {
+              "id": "ih",
+              "start": 0.6316666666666667,
+              "end": 0.7191666666666667,
+              "wordIndex": 1
+            },
+            {
+              "id": "z",
+              "start": 0.7191666666666667,
+              "end": 0.8066666666666666,
+              "wordIndex": 1
+            },
+            {
+              "id": "schwa",
+              "start": 0.8066666666666666,
+              "end": 0.9816666666666667,
+              "wordIndex": 2
+            },
+            {
+              "id": "k",
+              "start": 0.9816666666666667,
+              "end": 1.0941666666666667,
+              "wordIndex": 3
+            },
+            {
+              "id": "j",
+              "start": 1.0941666666666667,
+              "end": 1.2066666666666668,
+              "wordIndex": 3
+            },
+            {
+              "id": "u",
+              "start": 1.2066666666666668,
+              "end": 1.3191666666666666,
+              "wordIndex": 3
+            },
+            {
+              "id": "t",
+              "start": 1.3191666666666666,
+              "end": 1.4316666666666666,
+              "wordIndex": 3
+            },
+            {
+              "id": "p",
+              "start": 1.4316666666666666,
+              "end": 1.5704,
+              "wordIndex": 4
+            },
+            {
+              "id": "ae",
+              "start": 1.5704,
+              "end": 1.7091333333333332,
+              "wordIndex": 4
+            },
+            {
+              "id": "n",
+              "start": 1.7091333333333332,
+              "end": 1.8478666666666665,
+              "wordIndex": 4
+            },
+            {
+              "id": "d",
+              "start": 1.8478666666666665,
+              "end": 1.9866000000000001,
+              "wordIndex": 4
+            },
+            {
+              "id": "schwa",
+              "start": 1.9866000000000001,
+              "end": 2.1253333333333333,
+              "wordIndex": 4
+            }
+          ],
+          "engineVoice": "bm_george",
+          "timingMethod": "model word durations; proportional phonemes within words",
+          "duration": 2.4653061224489794,
+          "sha256": "cdc66c1722a925b9ef1c5a39dacea7cdd104f36b5883a08015310e50cc9ef8ce",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
+        }
+      },
+      "naturalVoice": "bm_george"
+    }
+  }
+}

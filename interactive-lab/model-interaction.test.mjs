@@ -1,23 +1,31 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {chromium} from 'playwright';
+import {launchBrowser} from './browser-test-utils.mjs';
 import {mkdir} from 'node:fs/promises';
 
 test('neutral human model: opacity, picking, idle rendering and animation',{timeout:120000},async t=>{
-  const browser=await chromium.launch({channel:'chrome',headless:true});t.after(()=>browser.close());
+  const browser=await launchBrowser();t.after(()=>browser.close());
   const page=await browser.newPage({viewport:{width:1440,height:1000}}),errors=[],requests=[];
   page.on('pageerror',e=>errors.push(e.message));
   page.on('console',m=>{if(m.type()==='error'&&/shader|THREE/i.test(m.text()))errors.push(m.text());});
   page.on('request',r=>requests.push(r.url()));
-  await page.goto('http://127.0.0.1:4173');
+  await page.goto('http://127.0.0.1:4173/lab.html');
   await page.waitForFunction(()=>window.labSnapshot?.().ready,{}, {timeout:90000});
   assert(!requests.some(url=>url.includes('character-heads.glb')));
   const initial=await page.evaluate(()=>labSnapshot());
   assert.deepEqual(initial.headModels,['human']);
   assert(initial.humanEyeColors.every(c=>c==='ffdcbd'));
   assert.equal(await page.locator('#head-model').count(),0);
+  await page.locator('[data-organ="tongue"]').click();
+  await page.locator('#part-demo').click();
+  await page.waitForFunction(()=>!learningSnapshot().cameraMoving);
+  assert.equal(await page.locator('#tongue-landmarks').isVisible(),true);
+  assert.deepEqual(await page.locator('#tongue-landmarks span').allTextContents(),['舌尖','舌面','舌根']);
+  assert.match(await page.locator('#air-status').innerText(),/舌两侧/);
+  await mkdir('qa',{recursive:true});
+  await page.screenshot({path:'qa/tongue-navigation-after.png'});
   await page.locator('#tab-model').click();
-  await page.locator('#teacher-tools summary').click();
+  assert.equal(await page.locator('#teacher-tools').evaluate(e=>e.open),true);
 
   const timings=await page.evaluate(async()=>{
     const frames=()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
@@ -63,6 +71,7 @@ test('neutral human model: opacity, picking, idle rendering and animation',{time
   await page.screenshot({path:'qa/neutral-half.png',fullPage:true});
   await page.locator('#anatomy-details').check();
   assert((await page.evaluate(()=>teachingSnapshot())).visibleDetails>0);
+  assert.equal(await page.locator('#tongue-landmarks').isVisible(),false);
   await page.locator('#anatomy-details').uncheck();
   assert.equal((await page.evaluate(()=>teachingSnapshot())).visibleDetails,0);
   await page.locator('#tab-practice').click();

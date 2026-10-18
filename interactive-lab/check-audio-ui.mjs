@@ -3,12 +3,13 @@ import assert from 'node:assert/strict';
 const browser=await chromium.launch({executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',headless:true,args:['--use-angle=metal']});
 const page=await browser.newPage({viewport:{width:1440,height:1000}});
 const errors=[];page.on('pageerror',e=>errors.push(e.message));
-async function choose(id,value){await page.locator('#'+id+' [role=combobox]').click();await page.locator('#'+id+' [role=option][data-value="'+value+'"]').click();}
+async function choose(id,value){
+    if(id==='entry-select'){await page.locator(`[data-sound="${value}"]`).click();return;}await page.locator('#'+id+' [role=combobox]').click();await page.locator('#'+id+' [role=option][data-value="'+value+'"]').click();}
 async function speed(value){await page.locator('#speed').fill(String(value));await page.locator('#speed').dispatchEvent('input');}
 const snapshot=()=>page.evaluate(()=>window.labSnapshot());
 try{
- await page.goto('http://127.0.0.1:4173');await page.waitForFunction(()=>window.labSnapshot?.().ready,{},{timeout:60000});
- assert.equal(await page.locator('select').count(),0);assert.equal(await page.locator('[role=combobox]').count(),5);
+ await page.goto('http://127.0.0.1:4173/lab.html');await page.waitForFunction(()=>window.labSnapshot?.().ready,{},{timeout:60000});
+ assert.equal(await page.locator('select').count(),0);assert.equal(await page.locator('[role=combobox]').count(),4);
  assert(!(await page.locator('body').innerText()).includes('原四音'));
  const category=page.locator('#category [role=combobox]');
  await category.focus();await category.press('ArrowDown');await category.press('End');await category.press('Enter');assert.equal(await page.locator('#category').evaluate(e=>e.value),'cluster');
@@ -55,7 +56,7 @@ try{
  await choose('voice','female');await choose('entry-select','letter:A');await page.waitForFunction(()=>document.querySelector('#audio-status').textContent.includes('失败'));
  await page.unroute('**/audio/female/letter-A.wav');await page.locator('#play').click();await page.waitForFunction(()=>!window.labSnapshot().audio.paused&&window.labSnapshot().audio.currentTime>0);
  await page.locator('#restart').click();
- await choose('library-mode','ipa');await choose('category','vowel');await choose('entry-select','ipa:u');await page.locator('[data-step="1"]').click();await page.locator('[data-preset="cutaway"]').click();await page.locator('[data-view="right"]').click();
+ await choose('library-mode','ipa');await choose('category','vowel');await page.locator('[data-vowel="u"]').click();await page.locator('[data-step="1"]').click();await page.locator('[data-preset="cutaway"]').click();await page.locator('[data-view="right"]').click();
  await page.locator('#voice [role=combobox]').click();await page.screenshot({path:'qa/voices-desktop.png'});await page.locator('#voice [role=combobox]').press('Escape');
  await page.setViewportSize({width:390,height:844});await choose('head-model','tom');
  await page.locator('#category [role=combobox]').click();await page.screenshot({path:'qa/custom-select-mobile.png'});await category.press('Escape');

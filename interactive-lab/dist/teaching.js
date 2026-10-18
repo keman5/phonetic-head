@@ -7,10 +7,15 @@ export function teachingRole(meta){
   if(meta.layer==='skin'||meta.layer==='eye')return 'surface';
   if(name==='Tongue')return 'tongue';
   if(/^(Upper|Lower) /.test(name))return 'teeth';
+  if(name==='Hard palate')return 'hard-palate';
   if(/Soft palate|Uvula of palate/.test(name))return 'palate';
   if(name==='Gingiva')return 'gum';
-  if(name==='Trachea'||name==='Epiglottis')return 'airway';
-  if(/thyro-arytenoid|Transverse arytenoid/.test(name))return 'voice';
+  // Epiglottis is useful for swallowing lessons, but its thin flap distracts
+  // from the pronunciation targets. It remains in the teacher reference.
+  if(name==='Trachea')return 'airway';
+  // The large outer laryngeal muscle sheets are not the vocal folds. Keep a
+  // small location reference; the labelled inset explains the actual folds.
+  if(name==='Transverse arytenoid muscle')return 'voice';
   return 'detail';
 }
 export const CHILD_LABELS={lips:'嘴唇',jaw:'下巴',tongue:'舌头',genio:'舌头的帮手',smile:'嘴角',velum:'软腭 · 小门',voice:'声带 · 小马达'};

@@ -1,15 +1,15 @@
 {
-  "engine": "eSpeak NG via espeakng-loader 0.2.4",
+  "engine": "Kokoro neural speech for letters and connected text; eSpeak NG for isolated IPA",
   "accent": "en-gb",
   "sampleRate": 22050,
-  "notice": "Synthetic demonstration voices; articulation timing is approximate, not forced alignment.",
+  "notice": "Neural British letter names; isolated phonemes retain explicit eSpeak inputs. Synthetic, not human recordings.",
   "voices": {
     "female": {
       "engineVoice": "en+f3",
       "entries": {
         "ipa-i": {
           "duration": 0.7603628117913832,
-          "sha256": "0591bd98da38f08751a260cf8fa28ae8c537dd0da4c0206a51f108a13f9165a3",
+          "sha256": "563f2e6eee440648eba939e2b20a6462409473a54350aa373bd2247852e86fb9",
           "ipa": "iː",
           "phonemes": [
             "i"
@@ -20,7 +20,7 @@
         },
         "ipa-ih": {
           "duration": 0.4601360544217687,
-          "sha256": "3f18be875fe0bc0462decdbb8eed00db537f7a861ec669ecbddcd0ef9aa9b4c9",
+          "sha256": "932c6d12ad818af00c408ee540044773b2a0fa15416683eefed435d0130f06e7",
           "ipa": "ɪ",
           "phonemes": [
             "ih"
@@ -31,7 +31,7 @@
         },
         "ipa-e": {
           "duration": 0.5201814058956916,
-          "sha256": "0a905df9544356222360273d699527f3504d6b6dd6a3f57468c52657ed571acb",
+          "sha256": "5c4fb70e152d572d1294075cef3a783e68968c49cfa5cb864ba3c99b4f663269",
           "ipa": "e",
           "phonemes": [
             "e"
@@ -97,7 +97,7 @@
         },
         "ipa-u": {
           "duration": 0.8204081632653061,
-          "sha256": "a424b34956c7fee5fa7b432262a1f27dc66966d7244b2f4b74ea740119aa514c",
+          "sha256": "9a7808c4194778f165c36fa6fcb3265c257b82cb9cdd52e142d30dc0fbf12323",
           "ipa": "uː",
           "phonemes": [
             "u"
@@ -141,7 +141,7 @@
         },
         "ipa-ei": {
           "duration": 0.7003174603174603,
-          "sha256": "2241255bf7cdcb5861b006f348dee874566fa5243a570935f9418307ece15fbf",
+          "sha256": "f0ec78c3978cc4bc4c80a55d72c5f02cb84563bd7825bca0c4e3c1afc61faa85",
           "ipa": "eɪ",
           "phonemes": [
             "ei"
@@ -207,14 +207,14 @@
         },
         "ipa-ea": {
           "duration": 0.7603628117913832,
-          "sha256": "7999de5db35e04e09f060d2456f7ff4d5fc52275897916bfc7935bc099c2b62a",
+          "sha256": "81cec35d5e35701570ed8a5d854611eccb19b8679cb6c8ccd6d07994f8388a41",
           "ipa": "eə",
           "phonemes": [
             "ea"
           ],
           "synthesisInput": "e@",
           "synthesisRate": 115,
-          "activeDuration": 0.48027210884353744
+          "activeDuration": 0.4803174603174603
         },
         "ipa-ua": {
           "duration": 0.7003174603174603,
@@ -229,150 +229,150 @@
         },
         "ipa-p": {
           "duration": 0.6401360544217687,
-          "sha256": "f4c8dcfd623f2045387c9dfe793da04875389e15233ec04a2f76bb2cc086a71f",
+          "sha256": "f191d59d90230941dcf020aca2e1d8481dff42699834b5e5690c22a55dc2d8f3",
           "ipa": "p",
           "phonemes": [
             "p"
           ],
           "synthesisInput": "p",
           "synthesisRate": 115,
-          "activeDuration": 0.17877551020408164
+          "activeDuration": 0.1800907029478458
         },
         "ipa-b": {
           "duration": 0.520045351473923,
-          "sha256": "64096cfc7200e227fc9d39ae3556b22ecc0662d2e278119ef6e6fa17e41c12cb",
+          "sha256": "02a642c5d319f6ee92c42a2df323cccd2994986a8b316054eb46a7ec03d408c9",
           "ipa": "b",
           "phonemes": [
             "b"
           ],
           "synthesisInput": "b",
           "synthesisRate": 115,
-          "activeDuration": 0.03664399092970522
+          "activeDuration": 0.060045351473922905
         },
         "ipa-t": {
           "duration": 0.5961451247165533,
-          "sha256": "8f07a44c85d190cd915fd4fe8d542c58de7fbefb55e6044c4abaccc343e29056",
+          "sha256": "939e15a01dbbab34d7f98931df4e1f2c911f048c75b1df98b47692417c1bf4ac",
           "ipa": "t",
           "phonemes": [
             "t"
           ],
           "synthesisInput": "t",
           "synthesisRate": 115,
-          "activeDuration": 0.12462585034013605
+          "activeDuration": 0.12612244897959185
         },
         "ipa-d": {
           "duration": 0.520045351473923,
-          "sha256": "26fdc574e04b1388bc10929c32052eda7ca123937d41f2068fdbff9e39507b52",
+          "sha256": "59f8feda5bab32a673dd49e6f5ac9bdb262cdcccb26317d2c07ef4e2e5ee164e",
           "ipa": "d",
           "phonemes": [
             "d"
           ],
           "synthesisInput": "d",
           "synthesisRate": 115,
-          "activeDuration": 0.03668934240362812
+          "activeDuration": 0.048798185941043085
         },
         "ipa-k": {
           "duration": 0.5961451247165533,
-          "sha256": "0cfd80a6892da6f12f0708ba3f189b0177ffe3587fe413a80b05f1936dc42057",
+          "sha256": "6846a2b3de14c3947db7c525eb37e25fd37cb8815e3b7bc3b1f5be0590d76b95",
           "ipa": "k",
           "phonemes": [
             "k"
           ],
           "synthesisInput": "k",
           "synthesisRate": 115,
-          "activeDuration": 0.12417233560090703
+          "activeDuration": 0.12603174603174602
         },
         "ipa-g": {
           "duration": 0.5404081632653062,
-          "sha256": "1aee29ea36dc32fc43a37b65c48c604494f63c9790bc1fa428563533dac11327",
+          "sha256": "612161deaade0c78aabe147a509c12b1153ce573756853a43f90c03e5e1665fd",
           "ipa": "g",
           "phonemes": [
             "g"
           ],
           "synthesisInput": "g",
           "synthesisRate": 115,
-          "activeDuration": 0.05047619047619047
+          "activeDuration": 0.05052154195011338
         },
         "ipa-f": {
           "duration": 0.4601360544217687,
-          "sha256": "25ed26bc608ec1bece2cf21bb279302d65be191eba50aab758e90bc2c8224a48",
+          "sha256": "8f700f0de18705fd48a148a089dcbc0b7a8ffae3494b385695a8e908495abe24",
           "ipa": "f",
           "phonemes": [
             "f"
           ],
           "synthesisInput": "f",
           "synthesisRate": 115,
-          "activeDuration": 0.15723356009070294
+          "activeDuration": 0.18013605442176872
         },
         "ipa-v": {
           "duration": 0.39310657596371884,
-          "sha256": "01edf70de9ec7b9ee33979da6b90310c460fc2eb46518521c9231189e9bbb1ce",
+          "sha256": "c6274e5c4968bd94e2b73e531b5a42fbdb7d06c41c98ec351a1ca296af658c57",
           "ipa": "v",
           "phonemes": [
             "v"
           ],
           "synthesisInput": "v",
           "synthesisRate": 115,
-          "activeDuration": 0.07850340136054422
+          "activeDuration": 0.09287981859410431
         },
         "ipa-theta": {
           "duration": 0.4325170068027211,
-          "sha256": "37262f5d24ff2a9ffd021c25bd3f8c19fb32f58ce9bef153f31a76b870a3dc36",
+          "sha256": "e132f4897e258b4a7434836d84cc2bd3305291cfe00a4f5b3f9b5313c8903306",
           "ipa": "θ",
           "phonemes": [
             "theta"
           ],
           "synthesisInput": "T",
           "synthesisRate": 115,
-          "activeDuration": 0.11260770975056689
+          "activeDuration": 0.14244897959183672
         },
         "ipa-dh": {
           "duration": 0.39310657596371884,
-          "sha256": "b786769c8f7937df413a91362cff0e6d9831c186078c091c94b2dd7c729837d8",
+          "sha256": "1b41db53966835383cc9fd99ffc5fc672af7f7521f12b08207f5b34d6914acc8",
           "ipa": "ð",
           "phonemes": [
             "dh"
           ],
           "synthesisInput": "D",
           "synthesisRate": 115,
-          "activeDuration": 0.07804988662131519
+          "activeDuration": 0.08798185941043084
         },
         "ipa-s": {
           "duration": 0.4531519274376417,
-          "sha256": "72eca35d066eabe6d718cb5444bd80887af78ea5ca5b33ecdcc25cfa4a72c8d2",
+          "sha256": "618401ac2b8072c65ab974685acc8fc16fde5b970d75aecc5e75332505ef58b9",
           "ipa": "s",
           "phonemes": [
             "s"
           ],
           "synthesisInput": "s",
           "synthesisRate": 115,
-          "activeDuration": 0.1622222222222222
+          "activeDuration": 0.16317460317460317
         },
         "ipa-z": {
           "duration": 0.4601360544217687,
-          "sha256": "1c7d9fda5a1b4044cb4fcf6ebf199741a891d1615b378c5a06a9f08e0b3b3968",
+          "sha256": "4e8b1bb59d662ff3efcc05029657f06483ac9e1209e006f17b98ed0b7ba52faf",
           "ipa": "z",
           "phonemes": [
             "z"
           ],
           "synthesisInput": "z",
           "synthesisRate": 115,
-          "activeDuration": 0.17814058956916098
+          "activeDuration": 0.18
         },
         "ipa-sh": {
           "duration": 0.4601360544217687,
-          "sha256": "c066be0291e63364cf76be0c154b2e874c958eceac5570410a5d88ab4efc70f9",
+          "sha256": "3c5165655ab2041dafc98d046d79381f074591f1de349d7d48a0f06df789f49b",
           "ipa": "ʃ",
           "phonemes": [
             "sh"
           ],
           "synthesisInput": "S",
           "synthesisRate": 115,
-          "activeDuration": 0.1800907029478458
+          "activeDuration": 0.18013605442176872
         },
         "ipa-zh": {
           "duration": 0.4000907029478458,
-          "sha256": "d8daf8632210c670dde7b8a14aabc52e049ec67b49be26eb54855c65b3f13812",
+          "sha256": "6b0b4d421c019efd2781098bf1ffb62907d912185a3bed516e7af97a8b0a54d8",
           "ipa": "ʒ",
           "phonemes": [
             "zh"
@@ -383,84 +383,84 @@
         },
         "ipa-h": {
           "duration": 0.3927891156462585,
-          "sha256": "b5da487b0a9a209e4bcd48a4191495a6c7d449d6498524a668afd37efb77e4ce",
+          "sha256": "e08cc73c9cd07b6af3ed04338cf7dea749c9dfca808909d5c497bd30b829f4c6",
           "ipa": "h",
           "phonemes": [
             "h"
           ],
           "synthesisInput": "h",
           "synthesisRate": 115,
-          "activeDuration": 0.08793650793650794
+          "activeDuration": 0.09682539682539683
         },
         "ipa-ch": {
           "duration": 0.5961451247165533,
-          "sha256": "8abd4641175060531d64d13d8504decff20bff0f3d2ba17a0fb0e005b0a1cffd",
+          "sha256": "87dab5aaa6c553da1014682f96861b8ce4c837b105d92edebb8882ff06acb326",
           "ipa": "tʃ",
           "phonemes": [
             "ch"
           ],
           "synthesisInput": "tS",
           "synthesisRate": 115,
-          "activeDuration": 0.12435374149659864
+          "activeDuration": 0.1361451247165533
         },
         "ipa-jh": {
           "duration": 0.5800907029478458,
-          "sha256": "f383fe51555e2067a3822805a2d360f02f34ea1fdebdbfc9e379ff82eb51a97d",
+          "sha256": "d1294e9b5ad86e607b9a26680f6e6e6de5d1258713488dc7f3f01023f755957d",
           "ipa": "dʒ",
           "phonemes": [
             "jh"
           ],
           "synthesisInput": "dZ",
           "synthesisRate": 115,
-          "activeDuration": 0.09206349206349207
+          "activeDuration": 0.10090702947845805
         },
         "ipa-m": {
           "duration": 0.3400453514739229,
-          "sha256": "2895abf994fa86a700be797af2f7fdb3c5dd43339b86e2d88948636c5341745f",
+          "sha256": "26de227d9ee235fe0d0330d349b30ef217758573adef8415a11170f9d4e06b8b",
           "ipa": "m",
           "phonemes": [
             "m"
           ],
           "synthesisInput": "m",
           "synthesisRate": 115,
-          "activeDuration": 0.0599546485260771
+          "activeDuration": 0.06
         },
         "ipa-n": {
           "duration": 0.3400453514739229,
-          "sha256": "c97e24328c03cb3061d7a3e030a98ce1e8c0e5e9ad590e7467f2b13364419b5b",
+          "sha256": "3e2be5347525750de2399f06d2fe7e99cb0e829f7cbdcc2e0ff145c17b2a5c35",
           "ipa": "n",
           "phonemes": [
             "n"
           ],
           "synthesisInput": "n",
           "synthesisRate": 115,
-          "activeDuration": 0.03056689342403628
+          "activeDuration": 0.03197278911564626
         },
         "ipa-ng": {
           "duration": 0.3400453514739229,
-          "sha256": "fe74a2c6ed1f3b8f4a2000f9a4d5575ccca3b258d9272b23d1321a6026c18632",
+          "sha256": "1dbd4cbe70fa2547cb7c8ec86daac2fefb4cfd74b6ddc879a1c3815173f06433",
           "ipa": "ŋ",
           "phonemes": [
             "ng"
           ],
           "synthesisInput": "N",
           "synthesisRate": 115,
-          "activeDuration": 0.03034013605442177
+          "activeDuration": 0.060045351473922905
         },
         "ipa-l": {
           "duration": 0.3979591836734694,
-          "sha256": "cc03c8da4a357a06b0f3d0738d028067315ab14019204f768b641851e3514d8c",
+          "sha256": "2ba4ba9d2bcb04556dbb46db6bf74f8a5295764465a7937579168d8e309e305b",
           "ipa": "l",
           "phonemes": [
             "l"
           ],
           "synthesisInput": "l",
           "synthesisRate": 115,
-          "activeDuration": 0.08802721088435374
+          "activeDuration": 0.08975056689342403
         },
         "ipa-r": {
           "duration": 0.37065759637188206,
-          "sha256": "ad22cca5cc51fac0c4a1a9389a0c2f493a456f9fa637e6b75d4a7ba11262b4f9",
+          "sha256": "a13502de7e58c0f05cc5a0b4f1841b408cb2bbf9ae97739d20183c60a73ed1d5",
           "ipa": "r",
           "phonemes": [
             "r"
@@ -471,18 +471,18 @@
         },
         "ipa-j": {
           "duration": 0.38639455782312926,
-          "sha256": "a6f9a9d1ff7d794f8e5df32a12bae2a50efe792ef7dcf90533c20be21bb49d82",
+          "sha256": "eeec61aefb991bb3c7dd302815cc8f43eb57afb1314dd5e027111826745b2193",
           "ipa": "j",
           "phonemes": [
             "j"
           ],
           "synthesisInput": "j",
           "synthesisRate": 115,
-          "activeDuration": 0.07646258503401361
+          "activeDuration": 0.07659863945578231
         },
         "ipa-w": {
           "duration": 0.4000907029478458,
-          "sha256": "b5baca4f81aede78951e25624f56e133dfe74d461e7191667fd23b93231ed1f7",
+          "sha256": "4187d23a0f75922df41e5fc90d3a2574d40f0f4776c476da3502e73fab78a880",
           "ipa": "w",
           "phonemes": [
             "w"
@@ -493,245 +493,331 @@
         },
         "ipa-ts": {
           "duration": 0.7602267573696145,
-          "sha256": "8cdcdcc7cdf7056e67836bb1d60b77f08d3ed5c24d3373ce0fdf1aab839e7031",
+          "sha256": "5dccfb035b62d4302e4276a23ba383f2d1380900b72e9b0d3dfc09c8509bae1e",
           "ipa": "ts",
           "phonemes": [
             "ts"
           ],
           "synthesisInput": "ts",
           "synthesisRate": 115,
-          "activeDuration": 0.2993650793650794
+          "activeDuration": 0.3002267573696145
         },
         "ipa-dz": {
           "duration": 0.6401360544217687,
-          "sha256": "7e18fbf0baea4b12893e6d6df63c922d334b44f4f0c3ec86923668084a58baff",
+          "sha256": "88781c0af18d898ea964d9334c383214e1bdd98fa922f3d145de789b209c6b8c",
           "ipa": "dz",
           "phonemes": [
             "dz"
           ],
           "synthesisInput": "dz",
           "synthesisRate": 115,
-          "activeDuration": 0.1798185941043084
+          "activeDuration": 0.1800907029478458
         },
         "ipa-tr": {
           "duration": 0.7001814058956916,
-          "sha256": "b9b17571f4637e04d9b3674f20057cc74e5bfdc2667930b6107819ceee88e0cc",
+          "sha256": "17fe5b7831029e6418ccd2a56ec6a55bd7c1235a54a2ffa87e3203b15c8d435a",
           "ipa": "tr",
           "phonemes": [
             "tr"
           ],
           "synthesisInput": "tr",
           "synthesisRate": 115,
-          "activeDuration": 0.23959183673469386
+          "activeDuration": 0.2398639455782313
         },
         "ipa-dr": {
           "duration": 0.5800907029478458,
-          "sha256": "fcdfc98410d20d800d25e4bf13bef7077367a9f5be9589cfccb19f1695753d34",
+          "sha256": "369b52d0ac0fde0096a5171117f863c7f4ed4706d9d6e4d658024b5e3f4ac362",
           "ipa": "dr",
           "phonemes": [
             "dr"
           ],
           "synthesisInput": "dr",
           "synthesisRate": 115,
-          "activeDuration": 0.09365079365079365
+          "activeDuration": 0.09392290249433106
         },
         "letter-A": {
-          "duration": 0.7003174603174603,
-          "sha256": "aef1c2bff3a28bb8b25692dda0bb81b10bb0835bbb8b1da3cc4185d25d73d4ac",
           "ipa": "eɪ",
           "phonemes": [
             "ei"
-          ]
+          ],
+          "synthesisInput": "eɪ",
+          "engineVoice": "bf_emma",
+          "duration": 0.7880272108843538,
+          "sha256": "5ce899e54a66374e99e4bb77d36d9500c697341f32aec301da75a76de21b1326",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-B": {
-          "duration": 0.7603628117913832,
-          "sha256": "46996db98516f686f40e2d58a7bd0a3fa641fc72859430f628a6786a31b5b1fa",
           "ipa": "biː",
           "phonemes": [
             "b",
             "i"
-          ]
+          ],
+          "synthesisInput": "biː",
+          "engineVoice": "bf_emma",
+          "duration": 0.7880272108843538,
+          "sha256": "27cec14346fe0f0f4e6b449b31c48a7c744173599190684f52b410c65f050d30",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-C": {
-          "duration": 0.7603628117913832,
-          "sha256": "b9ad28d03cf1fb8733b49f82dbcfedd558819ed13d72e611ac9a7bdc305f662f",
           "ipa": "siː",
           "phonemes": [
             "s",
             "i"
-          ]
+          ],
+          "synthesisInput": "siː",
+          "engineVoice": "bf_emma",
+          "duration": 0.7880272108843538,
+          "sha256": "9421ed61682c40ab9d79bf29709a326e3f70c0c188387ac1658220ea048df6e4",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-D": {
-          "duration": 0.7003174603174603,
-          "sha256": "2d45355f5d019f51a7057ada03c1c05721c82b2dc3a611788077663723fb3098",
           "ipa": "diː",
           "phonemes": [
             "d",
             "i"
-          ]
+          ],
+          "synthesisInput": "diː",
+          "engineVoice": "bf_emma",
+          "duration": 0.8093424036281179,
+          "sha256": "b9c1374ea2edeb48ca9123363e8bf0fc6526c4ac918878bc3b680cfb448146ef",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-E": {
-          "duration": 0.7003174603174603,
-          "sha256": "264572d8b3b4c1643a1686b043d94e02069f7eff5ae1f864a287381088f265ff",
           "ipa": "iː",
           "phonemes": [
             "i"
-          ]
+          ],
+          "synthesisInput": "iː",
+          "engineVoice": "bf_emma",
+          "duration": 0.7380045351473923,
+          "sha256": "bd9bba6e763b457c203a9f93ad4fce75443bb1cdc516ca1ed796cc30bbc5ce56",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-F": {
-          "duration": 0.7003174603174603,
-          "sha256": "2c78526110669871ac04d43ef9831850f8f8e7cfc54ee607176b9a6d14a0530b",
           "ipa": "ef",
           "phonemes": [
             "e",
             "f"
-          ]
+          ],
+          "synthesisInput": "ef",
+          "engineVoice": "bf_emma",
+          "duration": 0.6880272108843537,
+          "sha256": "5973bfb34af2d7b79c5c27b40450e69f837e417babfcaaad9d139a24bb6f35c3",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-G": {
-          "duration": 0.7523809523809524,
-          "sha256": "3809d884b39353f55702397c313c2e1a840a4a4b76327d808b0268df7be51096",
           "ipa": "dʒiː",
           "phonemes": [
             "jh",
             "i"
-          ]
+          ],
+          "synthesisInput": "dʒiː",
+          "engineVoice": "bf_emma",
+          "duration": 0.83437641723356,
+          "sha256": "136f070db8910acbe8c78b14dd22c32146c6cd36f87faec8f4f8c9603bc1ee55",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-H": {
-          "duration": 0.7603628117913832,
-          "sha256": "f09393e5e628a392293ecaa58fd0bbd94640c271a37f181343fb208178be6233",
           "ipa": "eɪtʃ",
           "phonemes": [
             "ei",
             "ch"
-          ]
+          ],
+          "synthesisInput": "eɪtʃ",
+          "engineVoice": "bf_emma",
+          "duration": 0.8843083900226757,
+          "sha256": "707ddf247df638d43cb3daad2ca9745015f96bd0694ddc96c9e2c17c88093a9c",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-I": {
-          "duration": 0.7603628117913832,
-          "sha256": "1d3d988330f43f8e5d202658a604522c203cf885e7168f404b2b76b1cce3faed",
           "ipa": "aɪ",
           "phonemes": [
             "ai"
-          ]
+          ],
+          "synthesisInput": "aɪ",
+          "engineVoice": "bf_emma",
+          "duration": 0.713015873015873,
+          "sha256": "4c410e31cbece54621884631d458fcddc96f41fafc1fb489649e65c0d812d775",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-J": {
-          "duration": 0.7603628117913832,
-          "sha256": "c8d12ecb57f41cbfb1a6efad753bfd8088e515dfe19c36f219c18f5272194b3a",
           "ipa": "dʒeɪ",
           "phonemes": [
             "jh",
             "ei"
-          ]
+          ],
+          "synthesisInput": "dʒeɪ",
+          "engineVoice": "bf_emma",
+          "duration": 0.8773696145124716,
+          "sha256": "bdddeea757a9f0628c6ad2c19d559dc5b286f88f4992ee7992a69503c891cf84",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-K": {
-          "duration": 0.8204081632653061,
-          "sha256": "083ad387d9fd5bf2194d4b7609639966375cab75f1fe5dc1631139aa76227f33",
           "ipa": "keɪ",
           "phonemes": [
             "k",
             "ei"
-          ]
+          ],
+          "synthesisInput": "keɪ",
+          "engineVoice": "bf_emma",
+          "duration": 0.8380045351473923,
+          "sha256": "a5f822b1c389a0bc00735d3bf40760bfbb539a99fb1f83bf314f77b4d51d7d96",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-L": {
-          "duration": 0.7003174603174603,
-          "sha256": "707e515f91b7e8ebf8fa4617651de19b8ce196a6c41160908a373e1f9ed039c6",
           "ipa": "el",
           "phonemes": [
             "e",
             "l"
-          ]
+          ],
+          "synthesisInput": "el",
+          "engineVoice": "bf_emma",
+          "duration": 0.713015873015873,
+          "sha256": "9c6a143f19c87b789aa8db8ec00fe90ca3192e9d0cdc3aa9432db1c13cd5cf08",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-M": {
-          "duration": 0.7603628117913832,
-          "sha256": "e92595d117fbadbaf31cfa3e0e3412892fc7cdc59e3f011c2b9768475065aad8",
           "ipa": "em",
           "phonemes": [
             "e",
             "m"
-          ]
+          ],
+          "synthesisInput": "em",
+          "engineVoice": "bf_emma",
+          "duration": 0.713015873015873,
+          "sha256": "536fb362a4e1af61a246a0d474a9a11e35a639c05f1288be84b593a1e1cdb4ff",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-N": {
-          "duration": 0.7603628117913832,
-          "sha256": "7fc248f6883c9a2f8eb9e53cee6d5e0d8445cd8ce8bab2278bb136d2154a9499",
           "ipa": "en",
           "phonemes": [
             "e",
             "n"
-          ]
+          ],
+          "synthesisInput": "en",
+          "engineVoice": "bf_emma",
+          "duration": 0.6630385487528345,
+          "sha256": "1eb428b50afcb50fd4b2572dfac846d3eba2fb83f89a3b7730514871b8f90bd1",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-O": {
-          "duration": 0.7603628117913832,
-          "sha256": "26e8c748eff3837f5d8bf2be9c790a82fb0ce406f84470e26e6b44df4de42444",
           "ipa": "əʊ",
           "phonemes": [
             "ou"
-          ]
+          ],
+          "synthesisInput": "əʊ",
+          "engineVoice": "bf_emma",
+          "duration": 0.7380045351473923,
+          "sha256": "089c0ab44e25082c1b6f5d92a3c29825b907b8df6f69969a86f48059a30b6a83",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-P": {
-          "duration": 0.7603628117913832,
-          "sha256": "4da117ceece98f536d26a9f046fbc4751f064eaeeb662408a56e4d2a4348bbb4",
           "ipa": "piː",
           "phonemes": [
             "p",
             "i"
-          ]
+          ],
+          "synthesisInput": "piː",
+          "engineVoice": "bf_emma",
+          "duration": 0.7880272108843538,
+          "sha256": "a33f6881ef9acf7284043a656c0beab68c87ffd76c9e87d40b257cb348f29fa9",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-Q": {
-          "duration": 0.9404988662131519,
-          "sha256": "dd154a33095a940efc494617681ea9f86eaee40d292c573293a1b4331f4a771e",
           "ipa": "kjuː",
           "phonemes": [
             "k",
             "j",
             "u"
-          ]
+          ],
+          "synthesisInput": "kjuː",
+          "engineVoice": "bf_emma",
+          "duration": 0.813015873015873,
+          "sha256": "2b655d2733bf848be4044715ae7d040706214983c49cab966b64be3063fc46f3",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-R": {
-          "duration": 0.7603628117913832,
-          "sha256": "126ab347bfa837096bfdb94b2021f1458979027c6c66e354cfa1f32ab8684525",
           "ipa": "ɑː",
           "phonemes": [
             "ah"
-          ]
+          ],
+          "synthesisInput": "ɑː",
+          "engineVoice": "bf_emma",
+          "duration": 0.7380045351473923,
+          "sha256": "a0243100a12c69f51a084e2387c375587725c84189e5642d5e8d25eb38b53b19",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-S": {
-          "duration": 0.7003174603174603,
-          "sha256": "46dc13ab05974a56ac2d577d7035dddbacc2723477c36f3a81a7c4435eac550e",
           "ipa": "es",
           "phonemes": [
             "e",
             "s"
-          ]
+          ],
+          "synthesisInput": "es",
+          "engineVoice": "bf_emma",
+          "duration": 0.6880272108843537,
+          "sha256": "888636538849f5e0a26ce27d42e3a565677d248fbd70c26ed14b9ad7fc93ac63",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-T": {
-          "duration": 0.7603628117913832,
-          "sha256": "d1a9d940829484a707be1aa869e6e9d0dc2d1df5c031131ff67bc23811d0d63f",
           "ipa": "tiː",
           "phonemes": [
             "t",
             "i"
-          ]
+          ],
+          "synthesisInput": "tiː",
+          "engineVoice": "bf_emma",
+          "duration": 0.7880272108843538,
+          "sha256": "25c66f5ac354cd8a88176cc751b8033af4c7115d8b2d9b73bf52e8f7d64a4b6d",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-U": {
-          "duration": 0.8204081632653061,
-          "sha256": "b666eba7687e7ac783359722eaa669ef0dfa680d94bfb915d20c618c9f98e1f4",
           "ipa": "juː",
           "phonemes": [
             "j",
             "u"
-          ]
+          ],
+          "synthesisInput": "juː",
+          "engineVoice": "bf_emma",
+          "duration": 0.7630385487528345,
+          "sha256": "7cffe86e5a3c9591b2a6a7bcd705c8ef31f8b41ff31dab04f8417049ae69d51c",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-V": {
-          "duration": 0.8204081632653061,
-          "sha256": "9efc3b80e13db9cc1ea552c99b0c463313200e2ce5b29e566bf6e671b7f66a68",
           "ipa": "viː",
           "phonemes": [
             "v",
             "i"
-          ]
+          ],
+          "synthesisInput": "viː",
+          "engineVoice": "bf_emma",
+          "duration": 0.813015873015873,
+          "sha256": "1b6f9c6155decb214e4f41ad81c87949f80334bd2ab6d97061eab44085902902",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-W": {
-          "duration": 1.1206349206349207,
-          "sha256": "247bc9da1c6f4cf3b9fbef58a657237a707dc3bf8bd95caf4088bbfcacceba07",
           "ipa": "dʌbəljuː",
           "phonemes": [
             "d",
@@ -741,181 +827,203 @@
             "l",
             "j",
             "u"
-          ]
+          ],
+          "synthesisInput": "dʌbəljuː",
+          "engineVoice": "bf_emma",
+          "duration": 1.0266666666666666,
+          "sha256": "21ccf0529a510ebaacb80f50d333eb13c2f588db989befb28cbb031dd843e54c",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-X": {
-          "duration": 0.8204081632653061,
-          "sha256": "0c6d21ea8b0597e92f5c71b4175ec9ec9d4e0f00f4f20dc2164e84554646ae48",
           "ipa": "eks",
           "phonemes": [
             "e",
             "k",
             "s"
-          ]
+          ],
+          "synthesisInput": "eks",
+          "engineVoice": "bf_emma",
+          "duration": 0.7380045351473923,
+          "sha256": "de8883204476714a35ea9e0d2d0538a25270321f2a5f74f10b051cc6596752ac",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-Y": {
-          "duration": 0.8804535147392291,
-          "sha256": "5109fd4a63afdce4a4359f9b2c3a4a62107ffee55d5eabb735a493c329e1050d",
           "ipa": "waɪ",
           "phonemes": [
             "w",
             "ai"
-          ]
+          ],
+          "synthesisInput": "waɪ",
+          "engineVoice": "bf_emma",
+          "duration": 0.813015873015873,
+          "sha256": "329aeb7c238ee6652df08cd6f4fa6d83f914d5f1943809da6c8184e8e0ccb278",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-Z": {
-          "duration": 0.8804535147392291,
-          "sha256": "52574172ff1cbb21b748852811693236a04cc70b2b05893fd80dad17235a46d9",
           "ipa": "zed",
           "phonemes": [
             "z",
             "e",
             "d"
-          ]
+          ],
+          "synthesisInput": "zed",
+          "engineVoice": "bf_emma",
+          "duration": 0.8843083900226757,
+          "sha256": "1d3bf57da58c5475135202c279d3b470adc17e14ebadfbc96e93a6121523c874",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "alphabet": {
-          "duration": 25.621950113378684,
-          "sha256": "8a110a7684fd89d312eb106c65b988ce1f160278e358f761bad0969cd9c56851",
           "segments": [
             {
               "letter": "A",
               "start": 0.0,
-              "end": 0.7003174603174603
+              "end": 0.7880272108843538
             },
             {
               "letter": "B",
-              "start": 0.9003174603174603,
-              "end": 1.6606802721088436
+              "start": 0.9880272108843537,
+              "end": 1.7760544217687075
             },
             {
               "letter": "C",
-              "start": 1.8606802721088436,
-              "end": 2.6210430839002266
+              "start": 1.9760544217687075,
+              "end": 2.764081632653061
             },
             {
               "letter": "D",
-              "start": 2.8210430839002267,
-              "end": 3.521360544217687
+              "start": 2.9640816326530612,
+              "end": 3.7734240362811793
             },
             {
               "letter": "E",
-              "start": 3.721360544217687,
-              "end": 4.421678004535147
+              "start": 3.973424036281179,
+              "end": 4.711428571428572
             },
             {
               "letter": "F",
-              "start": 4.6216780045351475,
-              "end": 5.321995464852607
+              "start": 4.911428571428571,
+              "end": 5.599455782312925
             },
             {
               "letter": "G",
-              "start": 5.5219954648526075,
-              "end": 6.27437641723356
+              "start": 5.799455782312926,
+              "end": 6.633832199546485
             },
             {
               "letter": "H",
-              "start": 6.47437641723356,
-              "end": 7.234739229024943
+              "start": 6.833832199546485,
+              "end": 7.718140589569161
             },
             {
               "letter": "I",
-              "start": 7.434739229024943,
-              "end": 8.195102040816327
+              "start": 7.918140589569161,
+              "end": 8.631156462585034
             },
             {
               "letter": "J",
-              "start": 8.395102040816326,
-              "end": 9.15546485260771
+              "start": 8.831156462585033,
+              "end": 9.708526077097506
             },
             {
               "letter": "K",
-              "start": 9.35546485260771,
-              "end": 10.175873015873016
+              "start": 9.908526077097505,
+              "end": 10.746530612244898
             },
             {
               "letter": "L",
-              "start": 10.375873015873015,
-              "end": 11.076190476190476
+              "start": 10.946530612244898,
+              "end": 11.65954648526077
             },
             {
               "letter": "M",
-              "start": 11.276190476190477,
-              "end": 12.03655328798186
+              "start": 11.85954648526077,
+              "end": 12.572562358276643
             },
             {
               "letter": "N",
-              "start": 12.23655328798186,
-              "end": 12.996916099773243
+              "start": 12.772562358276645,
+              "end": 13.435600907029478
             },
             {
               "letter": "O",
-              "start": 13.196916099773242,
-              "end": 13.957278911564625
+              "start": 13.63560090702948,
+              "end": 14.37360544217687
             },
             {
               "letter": "P",
-              "start": 14.157278911564626,
-              "end": 14.91764172335601
+              "start": 14.57360544217687,
+              "end": 15.361632653061225
             },
             {
               "letter": "Q",
-              "start": 15.117641723356009,
-              "end": 16.05814058956916
+              "start": 15.561632653061224,
+              "end": 16.3746485260771
             },
             {
               "letter": "R",
-              "start": 16.258140589569162,
-              "end": 17.018503401360544
+              "start": 16.574648526077098,
+              "end": 17.31265306122449
             },
             {
               "letter": "S",
-              "start": 17.218503401360543,
-              "end": 17.918820861678004
+              "start": 17.51265306122449,
+              "end": 18.200680272108844
             },
             {
               "letter": "T",
-              "start": 18.118820861678003,
-              "end": 18.879183673469388
+              "start": 18.400680272108843,
+              "end": 19.1887074829932
             },
             {
               "letter": "U",
-              "start": 19.079183673469387,
-              "end": 19.899591836734693
+              "start": 19.388707482993198,
+              "end": 20.151746031746033
             },
             {
               "letter": "V",
-              "start": 20.099591836734692,
-              "end": 20.92
+              "start": 20.351746031746032,
+              "end": 21.164761904761903
             },
             {
               "letter": "W",
-              "start": 21.12,
-              "end": 22.24063492063492
+              "start": 21.364761904761906,
+              "end": 22.39142857142857
             },
             {
               "letter": "X",
-              "start": 22.44063492063492,
-              "end": 23.261043083900226
+              "start": 22.591428571428573,
+              "end": 23.329433106575962
             },
             {
               "letter": "Y",
-              "start": 23.461043083900226,
-              "end": 24.341496598639456
+              "start": 23.529433106575965,
+              "end": 24.342448979591836
             },
             {
               "letter": "Z",
-              "start": 24.541496598639455,
-              "end": 25.421950113378685
+              "start": 24.542448979591835,
+              "end": 25.426757369614513
             }
-          ]
+          ],
+          "engineVoice": "bf_emma",
+          "duration": 25.626757369614513,
+          "sha256": "17650389042308dca852fb3fac93b4a79ecd15faa104220eefc8d5377545ed7f",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         }
-      }
+      },
+      "naturalVoice": "bf_emma"
     },
     "male": {
       "engineVoice": "en+m3",
       "entries": {
         "ipa-i": {
           "duration": 0.6952380952380952,
-          "sha256": "1c5e2053e8a274ea697ca6bd724a07e2629399c60ebb55ed7360d4de585deb23",
+          "sha256": "a799c39f5a02ba13cd9cbe6827e551bf278c2c859589f08dda18313a9ec38996",
           "ipa": "iː",
           "phonemes": [
             "i"
@@ -1003,14 +1111,14 @@
         },
         "ipa-u": {
           "duration": 0.76140589569161,
-          "sha256": "a585169da508b97956baaef3370e4799c8c0989d57e474c64c2835b8ddcc8304",
+          "sha256": "fe08f9c544cee4edeb765243325a7abda16eb81e57f5821e77957a6af060adef",
           "ipa": "uː",
           "phonemes": [
             "u"
           ],
           "synthesisInput": "'u:",
           "synthesisRate": 95,
-          "activeDuration": 0.46331065759637186
+          "activeDuration": 0.4633560090702948
         },
         "ipa-uh": {
           "duration": 0.4532426303854875,
@@ -1124,7 +1232,7 @@
         },
         "ipa-ua": {
           "duration": 0.6363718820861678,
-          "sha256": "62ccc1433e4220f7e7d188530929c858b2aa1d66ce600343229c7637e2f322b8",
+          "sha256": "5f6a1eb51e405b1f0924262c3788130a9db0068ececc628147e16e1b79f44fc2",
           "ipa": "ʊə",
           "phonemes": [
             "ua"
@@ -1135,7 +1243,7 @@
         },
         "ipa-p": {
           "duration": 0.5773696145124717,
-          "sha256": "340191dd55273444aa0a27bea3671f8d4fa6e5d99b3153c7f7f266ea1c1a009d",
+          "sha256": "0d79d04ec1a4e4c12efc628bf1befc223d0cd6c423ce03ac1095de7ebfe1c261",
           "ipa": "p",
           "phonemes": [
             "p"
@@ -1146,18 +1254,18 @@
         },
         "ipa-b": {
           "duration": 0.5112018140589569,
-          "sha256": "cefb3ae790e5640731e9d2eb86fbf13966c3a94b016f779df47cfa9c5d749709",
+          "sha256": "a05d0d35db77f0a059d0058f78e3df787f60ea5340ed0f52b86284db46cac40f",
           "ipa": "b",
           "phonemes": [
             "b"
           ],
           "synthesisInput": "b",
           "synthesisRate": 115,
-          "activeDuration": 0.037188208616780044
+          "activeDuration": 0.03723356009070295
         },
         "ipa-t": {
           "duration": 0.5389115646258503,
-          "sha256": "f6ba8d40fb302d9428afe818549a080d71df9e1d0b58203da90d333260ca18ed",
+          "sha256": "3d57c9cd7fabf47c6a1818c7545b929aa902cfa77fccc51d03593597928b5ced",
           "ipa": "t",
           "phonemes": [
             "t"
@@ -1168,18 +1276,18 @@
         },
         "ipa-d": {
           "duration": 0.5109750566893424,
-          "sha256": "e4e5623b6970337f68204bb0ee5033445db03692bbb26054744971791afe2e71",
+          "sha256": "0293cade0c9499299e620d06f2a55e17bc871a69cfe1eec31c886928444ca6bc",
           "ipa": "d",
           "phonemes": [
             "d"
           ],
           "synthesisInput": "d",
           "synthesisRate": 115,
-          "activeDuration": 0.03668934240362812
+          "activeDuration": 0.03700680272108844
         },
         "ipa-k": {
           "duration": 0.5386848072562358,
-          "sha256": "910fc250d389867c9c88b8148f23270a6a4dfaa6cff65dbfa6b56eaefeb4c2f2",
+          "sha256": "e4895c0dda1bec55bbc35fd3b0aa203a4847e871fd59be18d7a2a4a2f8552aed",
           "ipa": "k",
           "phonemes": [
             "k"
@@ -1190,29 +1298,29 @@
         },
         "ipa-g": {
           "duration": 0.5205442176870748,
-          "sha256": "520b1fd2112669d9a0b0a9361ffb65d7b3b84932e676591940f54b131b81d9ed",
+          "sha256": "925f6e40f3c3051e45b5379304d996d06dcb135350b4f63d83fab23909a8987d",
           "ipa": "g",
           "phonemes": [
             "g"
           ],
           "synthesisInput": "g",
           "synthesisRate": 115,
-          "activeDuration": 0.04526077097505669
+          "activeDuration": 0.04625850340136054
         },
         "ipa-f": {
           "duration": 0.4473015873015873,
-          "sha256": "fcdc02c68e8b913016a5101bdc2f0e0c5b548f25e1a1b1ab56e267c93de8842a",
+          "sha256": "a43d297bbc995dd75bc14fe194e3b28efffc956a59048e6a88836886cff97bde",
           "ipa": "f",
           "phonemes": [
             "f"
           ],
           "synthesisInput": "f",
           "synthesisRate": 115,
-          "activeDuration": 0.14321995464852608
+          "activeDuration": 0.14335600907029478
         },
         "ipa-v": {
           "duration": 0.38825396825396824,
-          "sha256": "30a5c12d2df16872f6b541537d7d310582b4076002ac9d8de43a0815347761c5",
+          "sha256": "64b2b09cd569311283b8fce05779de7d625d07e41220a52bd2581c155ee45578",
           "ipa": "v",
           "phonemes": [
             "v"
@@ -1223,7 +1331,7 @@
         },
         "ipa-theta": {
           "duration": 0.4165532879818594,
-          "sha256": "596e2ac4b1e865c7dc6f29e62044544f691117ab755d420f8faf565ba64ec9b2",
+          "sha256": "54f78c33953fb8ada7052c9af4f1ad9912cccc5848d41398a4850a6c40732bfe",
           "ipa": "θ",
           "phonemes": [
             "theta"
@@ -1234,7 +1342,7 @@
         },
         "ipa-dh": {
           "duration": 0.38798185941043084,
-          "sha256": "afd6afb9a69948da4018e010586cb900f2639eb9ec17f47bbad9e3d3ad5609ef",
+          "sha256": "0b77257aa79fcf4923ffc4b362aa35fddce0edcdf1e435d3f948cb5baa8d2da7",
           "ipa": "ð",
           "phonemes": [
             "dh"
@@ -1245,7 +1353,7 @@
         },
         "ipa-s": {
           "duration": 0.44580498866213153,
-          "sha256": "7c54841c35015ecc1f82b07faa81fbc0da17150417b450f5c345d32aeb8080dc",
+          "sha256": "09eaa2c255814e3d7ac29a15c7b4e5140ac2e17d47bc9e21068aa75c7056aedf",
           "ipa": "s",
           "phonemes": [
             "s"
@@ -1256,7 +1364,7 @@
         },
         "ipa-z": {
           "duration": 0.4068480725623583,
-          "sha256": "a69381b7da62041d8ec87b31c10f7589e7b8dbd0dd13c2e743927f60bc7022a6",
+          "sha256": "c98014dc2188b8cd875bfb4ce24c3ad3d3dc09e10c3009c4aaec9191dc0160c2",
           "ipa": "z",
           "phonemes": [
             "z"
@@ -1267,7 +1375,7 @@
         },
         "ipa-sh": {
           "duration": 0.44571428571428573,
-          "sha256": "61e8c943e73ca0ef9ca7bbcd38d8e5f757263acebaba4dab162a83ba2cbb21d6",
+          "sha256": "d0457358246ed31e867494772f16294f0be21bc71fcdfaae0843c47c9d5bce3c",
           "ipa": "ʃ",
           "phonemes": [
             "sh"
@@ -1278,7 +1386,7 @@
         },
         "ipa-zh": {
           "duration": 0.39773242630385486,
-          "sha256": "e1eeb057f365077376d28fa1cde2e4344a4d12401aff6b39077f15a6527a83e4",
+          "sha256": "42d1d8d2dae09d3f8a124e5a500b3a58663eb7d5abba0a0bc35efec7e1aec208",
           "ipa": "ʒ",
           "phonemes": [
             "zh"
@@ -1289,18 +1397,18 @@
         },
         "ipa-h": {
           "duration": 0.39206349206349206,
-          "sha256": "24dda83ea4fae5b9155bf5dd0ee7514208cbc396aad7a00db146c84d77dae2c6",
+          "sha256": "4e78ba80808d1fb010b062886bafd18a01ccfd2a0ba81e0408a4d21b960485a5",
           "ipa": "h",
           "phonemes": [
             "h"
           ],
           "synthesisInput": "h",
           "synthesisRate": 115,
-          "activeDuration": 0.08793650793650794
+          "activeDuration": 0.08839002267573697
         },
         "ipa-ch": {
           "duration": 0.5910204081632653,
-          "sha256": "83ec948bbd5fbc33fd46ef06f5eb59390705c4bbc1f877903b2f7a8b49cab2ba",
+          "sha256": "c6d68fb18e9dde15506d6110a47b169fc158be6ab77e5ae00799e4c3d52f3a23",
           "ipa": "tʃ",
           "phonemes": [
             "ch"
@@ -1311,7 +1419,7 @@
         },
         "ipa-jh": {
           "duration": 0.5669387755102041,
-          "sha256": "d79cd9f0910a2a223dc0940e110eaf886adf45bfda24086f9e8bab1715881efb",
+          "sha256": "39c09a2fb8d920656efea5c4a0afc13833df5da0af0101c6f6b0a421d4fee3a9",
           "ipa": "dʒ",
           "phonemes": [
             "jh"
@@ -1322,73 +1430,73 @@
         },
         "ipa-m": {
           "duration": 0.3222675736961451,
-          "sha256": "758ebc467e7eec77745e66e97ed84b98fa0b8e64ac294f9816cdff18a24748ba",
+          "sha256": "481c3f0dbc792a1140ea84539904890705e171294477fcfc8981ca45cf3e2d61",
           "ipa": "m",
           "phonemes": [
             "m"
           ],
           "synthesisInput": "m",
           "synthesisRate": 115,
-          "activeDuration": 0.02816326530612245
+          "activeDuration": 0.028299319727891157
         },
         "ipa-n": {
           "duration": 0.3221768707482993,
-          "sha256": "d2e5c4666a0e68d1e55817a02a0f7abe643c9c4a882a045cf104db024defdea0",
+          "sha256": "719a8433cdf5749b0ac8c5d3eb32ebbb960a217e6fb767ebcd59506bd91c7fd2",
           "ipa": "n",
           "phonemes": [
             "n"
           ],
           "synthesisInput": "n",
           "synthesisRate": 115,
-          "activeDuration": 0.02816326530612245
+          "activeDuration": 0.02820861678004535
         },
         "ipa-ng": {
           "duration": 0.3361904761904762,
-          "sha256": "639a662ff26f4f76fbaca04129e64db870a5587ab9feacd412da7dd7f507e408",
+          "sha256": "97c9b7aa3c711aba27a8aeedf047240458bd212b0fb1eff06a758b4aebcb0511",
           "ipa": "ŋ",
           "phonemes": [
             "ng"
           ],
           "synthesisInput": "N",
           "synthesisRate": 115,
-          "activeDuration": 0.04163265306122449
+          "activeDuration": 0.04213151927437642
         },
         "ipa-l": {
           "duration": 0.34988662131519277,
-          "sha256": "664feae98be946d474c287150a67e3551cb233a3f52cf4c3d644b53c552f3715",
+          "sha256": "f0ac9bb3015f78dfb756297e5fbf7205ca5c5297348f6fee408ded3760957589",
           "ipa": "l",
           "phonemes": [
             "l"
           ],
           "synthesisInput": "l",
           "synthesisRate": 115,
-          "activeDuration": 0.05487528344671202
+          "activeDuration": 0.05582766439909297
         },
         "ipa-r": {
           "duration": 0.365124716553288,
-          "sha256": "f8c31974b8bfdb6522fca9df1ed658fa4806a9054f512d7568a28608dd61cf0f",
+          "sha256": "4a6ea1909721b6864869ed39958486f527891981fa981862bead511d5854aed3",
           "ipa": "r",
           "phonemes": [
             "r"
           ],
           "synthesisInput": "r",
           "synthesisRate": 115,
-          "activeDuration": 0.07111111111111111
+          "activeDuration": 0.07115646258503401
         },
         "ipa-j": {
           "duration": 0.3638095238095238,
-          "sha256": "e60e3fe365c8c57eeea9e95b66ac193eddd2d6843166630e120ddc31341a3dba",
+          "sha256": "1e6dc7b1d910f254d6db2c10aa18621c5dfc7450f9cbce0bd35a5af1aa36b903",
           "ipa": "j",
           "phonemes": [
             "j"
           ],
           "synthesisInput": "j",
           "synthesisRate": 115,
-          "activeDuration": 0.06934240362811792
+          "activeDuration": 0.06956916099773243
         },
         "ipa-w": {
           "duration": 0.3928344671201814,
-          "sha256": "726f3ddfde82d1048a1c78b9cc91d3c5817d6aecb70f3edff40d13e143f35e23",
+          "sha256": "262e4c8030996a8f9c94140e4330dcd9513d606cd831e36bb543108f09523261",
           "ipa": "w",
           "phonemes": [
             "w"
@@ -1399,7 +1507,7 @@
         },
         "ipa-ts": {
           "duration": 0.6807709750566894,
-          "sha256": "236bfcc1e0e8aef745104609c7d19139ac5f585b6114cdb1ed8a3f78fab8fd70",
+          "sha256": "f0bdd11c03d2b32b86f0a3463bfad843a2529b4b14471c6bdcbc64067d14fe2d",
           "ipa": "ts",
           "phonemes": [
             "ts"
@@ -1410,234 +1518,320 @@
         },
         "ipa-dz": {
           "duration": 0.604625850340136,
-          "sha256": "1adb8229a9b1547a06661863b3f5fbcc8dfc09276e6dbc177441942148c42ad1",
+          "sha256": "26130df8cc1a9aae82bbfaeece13a5fdb9cebd663e56a93d70bbcf354149ff8b",
           "ipa": "dz",
           "phonemes": [
             "dz"
           ],
           "synthesisInput": "dz",
           "synthesisRate": 115,
-          "activeDuration": 0.13047619047619047
+          "activeDuration": 0.1306575963718821
         },
         "ipa-tr": {
           "duration": 0.616281179138322,
-          "sha256": "41e53852ec8b6c0a774b3ee4f8fa5cd5b5686ab8623596581146331e43c2974c",
+          "sha256": "ed1866eb5d00b3e3482b0728f38db12772cfb3a0395e66c3753646c88518cba9",
           "ipa": "tr",
           "phonemes": [
             "tr"
           ],
           "synthesisInput": "tr",
           "synthesisRate": 115,
-          "activeDuration": 0.13229024943310658
+          "activeDuration": 0.13233560090702948
         },
         "ipa-dr": {
           "duration": 0.5687074829931973,
-          "sha256": "cf2b41d085da1575def7f96e7e0896b84ea5a0d4ae97b667423bb32c7122164a",
+          "sha256": "c5f28ea2276812a70914d884356cc7363951352201ff1d323889ce62e77202ca",
           "ipa": "dr",
           "phonemes": [
             "dr"
           ],
           "synthesisInput": "dr",
           "synthesisRate": 115,
-          "activeDuration": 0.08476190476190476
+          "activeDuration": 0.08480725623582766
         },
         "letter-A": {
-          "duration": 0.6453514739229025,
-          "sha256": "c5f1168ff69c43de4956ed5dca638ae96b1ab5cdbe405a6b4af20882dc6e7067",
           "ipa": "eɪ",
           "phonemes": [
             "ei"
-          ]
+          ],
+          "synthesisInput": "eɪ",
+          "engineVoice": "bm_george",
+          "duration": 1.0053061224489797,
+          "sha256": "45bb80a9a7c63536e12aec87125ce8b522889d7571a40a0ec1e26e761e9dd610",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-B": {
-          "duration": 0.6917460317460318,
-          "sha256": "902a9186bd900c7d0b90ce292a9ba9f3b19c130a0b2c5f62b85ffc8ba72c583b",
           "ipa": "biː",
           "phonemes": [
             "b",
             "i"
-          ]
+          ],
+          "synthesisInput": "biː",
+          "engineVoice": "bm_george",
+          "duration": 0.9840362811791383,
+          "sha256": "4b7ab75d3b0dfbf2ebd09ea7b4d19e5d549c21a9f48f315e807d7790ed1e7202",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-C": {
-          "duration": 0.7165079365079365,
-          "sha256": "a75ea3f439d3e22c60de26208c41cb9d15ebedf63ad88c1a9e7fb85119d3aa3b",
           "ipa": "siː",
           "phonemes": [
             "s",
             "i"
-          ]
+          ],
+          "synthesisInput": "siː",
+          "engineVoice": "bm_george",
+          "duration": 0.92,
+          "sha256": "1942a02fb57fab59307892eb7044fbbf92995619efe316afb3555ead7a6cdab9",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-D": {
-          "duration": 0.6482086167800454,
-          "sha256": "4d7ebf14e5ec0ff7994023c41764f40baa55db81f3dbf6e15d74144658a1adeb",
           "ipa": "diː",
           "phonemes": [
             "d",
             "i"
-          ]
+          ],
+          "synthesisInput": "diː",
+          "engineVoice": "bm_george",
+          "duration": 0.9626757369614513,
+          "sha256": "597022ef0996e14475de1870fe492187480cb6be689b18dbdaa3270cfe569637",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-E": {
-          "duration": 0.605578231292517,
-          "sha256": "d9b95b4cfc4af8c455cd4eb05b213025f50caca84a1c00f2fb2d42e7e70bcaf0",
           "ipa": "iː",
           "phonemes": [
             "i"
-          ]
+          ],
+          "synthesisInput": "iː",
+          "engineVoice": "bm_george",
+          "duration": 0.92,
+          "sha256": "ffc53ff4bd30478d208e6d296c69b1cf2fd59e09e707657284f33dde7d7163b0",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-F": {
-          "duration": 0.6783673469387755,
-          "sha256": "904232d7a92ccba7459e770d1a0c202f3043c432b47bf0e80767512572a6d137",
           "ipa": "ef",
           "phonemes": [
             "e",
             "f"
-          ]
+          ],
+          "synthesisInput": "ef",
+          "engineVoice": "bm_george",
+          "duration": 0.8346938775510204,
+          "sha256": "ebd63581aae62d87dfad9caf62bbce91a9fddcbcf09d06c2dcfb373fba4e9612",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-G": {
-          "duration": 0.6700226757369615,
-          "sha256": "acccef77add99a87187180f6f1da1dcb8272b1b7f07bc858d291cd01766f3e8e",
           "ipa": "dʒiː",
           "phonemes": [
             "jh",
             "i"
-          ]
+          ],
+          "synthesisInput": "dʒiː",
+          "engineVoice": "bm_george",
+          "duration": 1.0053061224489797,
+          "sha256": "e642ae3ad826ff95b09d5a89b7d488077670028f02281b943100447031b15184",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-H": {
-          "duration": 0.7163718820861678,
-          "sha256": "1400b746fafc8fa5d9ce9b13f91506904a475eea4d7b563cf653a95e4a55ddc5",
           "ipa": "eɪtʃ",
           "phonemes": [
             "ei",
             "ch"
-          ]
+          ],
+          "synthesisInput": "eɪtʃ",
+          "engineVoice": "bm_george",
+          "duration": 0.9413605442176871,
+          "sha256": "944b7e72d9c9c495e325a0c1e5c2a04a4fb67e1c6ceb4c6115294b6f625ad282",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-I": {
-          "duration": 0.6957823129251701,
-          "sha256": "a1f4d4712e50e59769910558d5c778ef01a4c841d091b9833996e108fdfad905",
           "ipa": "aɪ",
           "phonemes": [
             "ai"
-          ]
+          ],
+          "synthesisInput": "aɪ",
+          "engineVoice": "bm_george",
+          "duration": 0.898639455782313,
+          "sha256": "0ce66160991a95c158b90184d8b4e7e3d8323fda37e02137a0d75e90dbaa8d36",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-J": {
-          "duration": 0.7003628117913833,
-          "sha256": "5589024f443744a03741f794df805407e8859f7c6ede06e6738dc52a573d193c",
           "ipa": "dʒeɪ",
           "phonemes": [
             "jh",
             "ei"
-          ]
+          ],
+          "synthesisInput": "dʒeɪ",
+          "engineVoice": "bm_george",
+          "duration": 1.0693424036281178,
+          "sha256": "093e857a296c16b7c18b0178021c9db177b4690f549c6ff5d6b9d4222b30d734",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-K": {
-          "duration": 0.7015873015873015,
-          "sha256": "2499639ee26112e6e52ad1fb60b8f1f3c9c477dbc5f96573046cc788c0c294b9",
           "ipa": "keɪ",
           "phonemes": [
             "k",
             "ei"
-          ]
+          ],
+          "synthesisInput": "keɪ",
+          "engineVoice": "bm_george",
+          "duration": 1.0266666666666666,
+          "sha256": "09266afc263718b722f9b0f997ebe0490a4e54a197d4b90462523c6007197995",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-L": {
-          "duration": 0.6555555555555556,
-          "sha256": "2b4814cfe46449dc2e66fba0df250c9eea17450b5b5089adff14a29b26aef21e",
           "ipa": "el",
           "phonemes": [
             "e",
             "l"
-          ]
+          ],
+          "synthesisInput": "el",
+          "engineVoice": "bm_george",
+          "duration": 0.8346938775510204,
+          "sha256": "6c496aa30ae117f5121c30383fbaba167bdcca4afe920cf155444b769be6d2ff",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-M": {
-          "duration": 0.7160544217687075,
-          "sha256": "242c9a8c9c5912b9a7170a99c85ffc9b52bacfd9c09f6daa678cd1939a944c15",
           "ipa": "em",
           "phonemes": [
             "e",
             "m"
-          ]
+          ],
+          "synthesisInput": "em",
+          "engineVoice": "bm_george",
+          "duration": 0.8133333333333334,
+          "sha256": "6a32b264142f02dc66f6ed1d0c92cf38e071eff7411b93f9c03ff011f12bb426",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-N": {
-          "duration": 0.686485260770975,
-          "sha256": "8ef7193ee0d6b448bd6aedebf96bae602a75001158083bfcce37b3efdf6ec23f",
           "ipa": "en",
           "phonemes": [
             "e",
             "n"
-          ]
+          ],
+          "synthesisInput": "en",
+          "engineVoice": "bm_george",
+          "duration": 0.8560090702947846,
+          "sha256": "31b47c2b3eacbd41b6596c11b9e63ff92c4849b8603fd1dd8d695728817c2b4e",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-O": {
-          "duration": 0.6749206349206349,
-          "sha256": "fdec08679c945a0c2d43cc8ef2ed9a8bacf3cbef33e357e9e07a54ae707a4e0b",
           "ipa": "əʊ",
           "phonemes": [
             "ou"
-          ]
+          ],
+          "synthesisInput": "əʊ",
+          "engineVoice": "bm_george",
+          "duration": 0.9413605442176871,
+          "sha256": "df96d40423d2a31bbc254443e731c284eb32c280c66da74fd545fc5caece3a66",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-P": {
-          "duration": 0.645124716553288,
-          "sha256": "b69fbd03002260888f7fe2affed9c8ef3098176a227b6dea6b127307c42bda54",
           "ipa": "piː",
           "phonemes": [
             "p",
             "i"
-          ]
+          ],
+          "synthesisInput": "piː",
+          "engineVoice": "bm_george",
+          "duration": 0.92,
+          "sha256": "502a65a33f2f962a839c3766130774a87ca9384728a0c9107b5fa726dffd7592",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-Q": {
-          "duration": 0.7927437641723356,
-          "sha256": "f85a02624b7bae39c2cec3d3d532c490b97b98bd3678cbf9bf1edebea3300b9a",
           "ipa": "kjuː",
           "phonemes": [
             "k",
             "j",
             "u"
-          ]
+          ],
+          "synthesisInput": "kjuː",
+          "engineVoice": "bm_george",
+          "duration": 0.9840362811791383,
+          "sha256": "be31e47f8bee2d1f22b0e0bd884366f957dcbec8850c92a390d4a0cb57f1adef",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-R": {
-          "duration": 0.686031746031746,
-          "sha256": "6a0e067372292052248c1565aabaa4102a5ba7f3c2aa54d30ddefec803678af8",
           "ipa": "ɑː",
           "phonemes": [
             "ah"
-          ]
+          ],
+          "synthesisInput": "ɑː",
+          "engineVoice": "bm_george",
+          "duration": 0.92,
+          "sha256": "cebd6b07b771e42fd779da086a5bb7f1de80ae5783a945045ea17ca0398ccbf0",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-S": {
-          "duration": 0.6768253968253968,
-          "sha256": "7c9ab7ff2314ec4928e445b6c558e19fc0b94e83b7bf59fda013701d769efb53",
           "ipa": "es",
           "phonemes": [
             "e",
             "s"
-          ]
+          ],
+          "synthesisInput": "es",
+          "engineVoice": "bm_george",
+          "duration": 0.8346938775510204,
+          "sha256": "fdc23406f10b69da5763a7254502d956a7832ad2359060deb41c7bb1f27e01fe",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-T": {
-          "duration": 0.6542403628117914,
-          "sha256": "c3e5281f2368206f6b53bdcb65325b436251f6afff4b94dd4f27e80bb2ac7b16",
           "ipa": "tiː",
           "phonemes": [
             "t",
             "i"
-          ]
+          ],
+          "synthesisInput": "tiː",
+          "engineVoice": "bm_george",
+          "duration": 0.9413605442176871,
+          "sha256": "0eb4894e748930caf23e98aaaa0c69e70ae2c68c7d3518692d28ee10d1fab2e3",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-U": {
-          "duration": 0.7485714285714286,
-          "sha256": "32c3187458fafb765938815b7da4d9726584ebc26c62e67fcd2601d34ed22f3f",
           "ipa": "juː",
           "phonemes": [
             "j",
             "u"
-          ]
+          ],
+          "synthesisInput": "juː",
+          "engineVoice": "bm_george",
+          "duration": 0.9840362811791383,
+          "sha256": "286232395d9580df63e39ebf142908d5c5235b45f5836107c0e24548c4d2c34b",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-V": {
-          "duration": 0.777233560090703,
-          "sha256": "fbbfab0174e910d5f556aeb9f2f3ac364840f6090f360ef9c1bb4b6c2de4f29f",
           "ipa": "viː",
           "phonemes": [
             "v",
             "i"
-          ]
+          ],
+          "synthesisInput": "viː",
+          "engineVoice": "bm_george",
+          "duration": 0.9413605442176871,
+          "sha256": "24bc8ea83595a6c14db77960fb4be4275245095b29d8ce4c8a293ed9aa4c3b53",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-W": {
-          "duration": 1.0681179138321995,
-          "sha256": "5578abae9cb95cecb0c92861d3f0dc86f6848ab41dd52969f5b40abb82e8a4db",
           "ipa": "dʌbəljuː",
           "phonemes": [
             "d",
@@ -1647,174 +1841,196 @@
             "l",
             "j",
             "u"
-          ]
+          ],
+          "synthesisInput": "dʌbəljuː",
+          "engineVoice": "bm_george",
+          "duration": 1.3466666666666667,
+          "sha256": "785f2dacc9d5c7f1c51e32cc52897eb61176a6d3dd21a9f47995c00b171f9dfe",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-X": {
-          "duration": 0.7658049886621315,
-          "sha256": "7fef6a4d87d6568efbc506610f07967c663e9760beaced45347769f5e7aa6779",
           "ipa": "eks",
           "phonemes": [
             "e",
             "k",
             "s"
-          ]
+          ],
+          "synthesisInput": "eks",
+          "engineVoice": "bm_george",
+          "duration": 0.7919727891156463,
+          "sha256": "02853788cd77db27c539bba170aab6209c9eeb5c8cf6e1baa7cbb0137b30a93c",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-Y": {
-          "duration": 0.7996825396825397,
-          "sha256": "958343eb598c72cbd0eb611cd857d26117aef60fe69fba677a6751976a617a2d",
           "ipa": "waɪ",
           "phonemes": [
             "w",
             "ai"
-          ]
+          ],
+          "synthesisInput": "waɪ",
+          "engineVoice": "bm_george",
+          "duration": 1.0266666666666666,
+          "sha256": "8ef969fe4c823ce7fa58d167c2c25d97fafd5b820859657fc4a39200c2e71070",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "letter-Z": {
-          "duration": 0.78562358276644,
-          "sha256": "f16aaf7dc166505ebc79c111a92da85d003e8120fd16fa639cd285ed41f233d6",
           "ipa": "zed",
           "phonemes": [
             "z",
             "e",
             "d"
-          ]
+          ],
+          "synthesisInput": "zed",
+          "engineVoice": "bm_george",
+          "duration": 0.9413605442176871,
+          "sha256": "32c45b9e8fa36f8dc851fc6f6c32e27c92eb2cac7c9c760c22151301f5221809",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         },
         "alphabet": {
-          "duration": 23.802902494331065,
-          "sha256": "19cf2ff2eea8e4943edeef4f12fce21d3db4efca66a95c0855d7df2f664affb2",
           "segments": [
             {
               "letter": "A",
               "start": 0.0,
-              "end": 0.6453514739229025
+              "end": 1.0053061224489797
             },
             {
               "letter": "B",
-              "start": 0.8453514739229024,
-              "end": 1.5370975056689342
+              "start": 1.2053061224489796,
+              "end": 2.189342403628118
             },
             {
               "letter": "C",
-              "start": 1.7370975056689342,
-              "end": 2.4536054421768707
+              "start": 2.389342403628118,
+              "end": 3.309342403628118
             },
             {
               "letter": "D",
-              "start": 2.653605442176871,
-              "end": 3.301814058956916
+              "start": 3.509342403628118,
+              "end": 4.47201814058957
             },
             {
               "letter": "E",
-              "start": 3.501814058956916,
-              "end": 4.107392290249433
+              "start": 4.672018140589569,
+              "end": 5.592018140589569
             },
             {
               "letter": "F",
-              "start": 4.3073922902494335,
-              "end": 4.985759637188209
+              "start": 5.792018140589569,
+              "end": 6.62671201814059
             },
             {
               "letter": "G",
-              "start": 5.185759637188209,
-              "end": 5.85578231292517
+              "start": 6.826712018140589,
+              "end": 7.832018140589569
             },
             {
               "letter": "H",
-              "start": 6.05578231292517,
-              "end": 6.772154195011338
+              "start": 8.03201814058957,
+              "end": 8.973378684807257
             },
             {
               "letter": "I",
-              "start": 6.9721541950113375,
-              "end": 7.667936507936508
+              "start": 9.173378684807256,
+              "end": 10.072018140589568
             },
             {
               "letter": "J",
-              "start": 7.867936507936508,
-              "end": 8.568299319727892
+              "start": 10.27201814058957,
+              "end": 11.341360544217688
             },
             {
               "letter": "K",
-              "start": 8.768299319727891,
-              "end": 9.469886621315192
+              "start": 11.541360544217687,
+              "end": 12.568027210884354
             },
             {
               "letter": "L",
-              "start": 9.669886621315193,
-              "end": 10.325442176870748
+              "start": 12.768027210884354,
+              "end": 13.602721088435374
             },
             {
               "letter": "M",
-              "start": 10.52544217687075,
-              "end": 11.241496598639456
+              "start": 13.802721088435375,
+              "end": 14.616054421768707
             },
             {
               "letter": "N",
-              "start": 11.441496598639455,
-              "end": 12.127981859410431
+              "start": 14.816054421768708,
+              "end": 15.672063492063492
             },
             {
               "letter": "O",
-              "start": 12.32798185941043,
-              "end": 13.002902494331066
+              "start": 15.872063492063493,
+              "end": 16.81342403628118
             },
             {
               "letter": "P",
-              "start": 13.202902494331065,
-              "end": 13.848027210884354
+              "start": 17.01342403628118,
+              "end": 17.933424036281178
             },
             {
               "letter": "Q",
-              "start": 14.048027210884353,
-              "end": 14.840770975056689
+              "start": 18.13342403628118,
+              "end": 19.117460317460317
             },
             {
               "letter": "R",
-              "start": 15.04077097505669,
-              "end": 15.726802721088436
+              "start": 19.317460317460316,
+              "end": 20.237460317460318
             },
             {
               "letter": "S",
-              "start": 15.926802721088436,
-              "end": 16.603628117913832
+              "start": 20.437460317460317,
+              "end": 21.27215419501134
             },
             {
               "letter": "T",
-              "start": 16.80362811791383,
-              "end": 17.457868480725622
+              "start": 21.47215419501134,
+              "end": 22.413514739229026
             },
             {
               "letter": "U",
-              "start": 17.657868480725625,
-              "end": 18.406439909297053
+              "start": 22.613514739229025,
+              "end": 23.59755102040816
             },
             {
               "letter": "V",
-              "start": 18.606439909297052,
-              "end": 19.383673469387755
+              "start": 23.797551020408164,
+              "end": 24.73891156462585
             },
             {
               "letter": "W",
-              "start": 19.583673469387755,
-              "end": 20.651791383219955
+              "start": 24.93891156462585,
+              "end": 26.28557823129252
             },
             {
               "letter": "X",
-              "start": 20.851791383219954,
-              "end": 21.617596371882087
+              "start": 26.485578231292518,
+              "end": 27.277551020408165
             },
             {
               "letter": "Y",
-              "start": 21.817596371882086,
-              "end": 22.617278911564625
+              "start": 27.477551020408164,
+              "end": 28.50421768707483
             },
             {
               "letter": "Z",
-              "start": 22.817278911564625,
-              "end": 23.602902494331065
+              "start": 28.70421768707483,
+              "end": 29.645578231292518
             }
-          ]
+          ],
+          "engineVoice": "bm_george",
+          "duration": 29.845578231292517,
+          "sha256": "090eb4ea54d4a5069a2538c46247e662fe804cdf9dd9c911f89b6f460d294009",
+          "engine": "Kokoro v1.0 / kokoro-onnx 0.6.1",
+          "synthesisSpeed": 0.9
         }
-      }
+      },
+      "naturalVoice": "bm_george"
     }
   }
 }

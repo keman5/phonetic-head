@@ -7,15 +7,16 @@ await mkdir('qa',{recursive:true});
 const browser=await chromium.launch({executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',headless:true,args:['--use-angle=metal']});
 const page=await browser.newPage({viewport:{width:1440,height:1000}});
 const errors=[];page.on('pageerror',e=>errors.push(e.message));
-async function choose(id,value){await page.locator(`#${id} [role=combobox]`).click();await page.locator(`#${id} [role=option][data-value="${value}"]`).click();}
+async function choose(id,value){
+    if(id==='entry-select'){await page.locator(`[data-sound="${value}"]`).click();return;}await page.locator(`#${id} [role=combobox]`).click();await page.locator(`#${id} [role=option][data-value="${value}"]`).click();}
 async function scrub(value){await page.locator('#timeline').fill(String(value));await page.locator('#timeline').dispatchEvent('input');await page.waitForFunction(v=>window.labSnapshot().progress===v/1000,value);}
 const vowels=Object.values(PHONEMES).filter(p=>['vowel','diphthong'].includes(p.category));
 try{
- await page.goto(process.env.LAB_URL||'http://127.0.0.1:4173');
+ await page.goto(process.env.LAB_URL||'http://127.0.0.1:4173/lab.html');
  await page.waitForFunction(()=>window.labSnapshot?.().ready,{},{timeout:60000});
  await page.locator('[data-preset=surface]').click();
  await choose('library-mode','vowels');
- assert.equal(await page.locator('#entry-select [role=option]').count(),20);
+ assert.equal(await page.locator('#vowel-picker [data-sound]').count(),20);
  assert.equal(await page.locator('[data-vowel]').count(),20);
  for(const head of ['human','mickey','tom']){
   await choose('head-model',head);
@@ -23,7 +24,7 @@ try{
    await page.locator(`[data-vowel="${p.id}"]`).click();
    const s=await page.evaluate(()=>window.labSnapshot());
    assert.equal(s.sound,'ipa:'+p.id);assert.equal(s.progress,.5);assert(s.morphMeshes>0&&s.skinMorphMeshes>0);
-   assert.equal(await page.locator('#entry-select').evaluate(e=>e.value),'ipa:'+p.id);
+   assert.equal(await page.locator('#vowel-picker [aria-pressed=true]').getAttribute('data-sound'),'ipa:'+p.id);
    assert.equal(await page.locator(`[data-vowel="${p.id}"]`).getAttribute('aria-pressed'),'true');
   }
   await page.locator('[data-view=lips]').click();
@@ -47,7 +48,7 @@ try{
  assert(a.JawOpen>b.JawOpen&&a.LipRound<b.LipRound);
  await page.locator('#motion-only').check();await page.locator('#play').click();
  await page.waitForFunction(()=>window.labSnapshot().progress>.1);
- assert((await page.evaluate(()=>window.labSnapshot())).audio.paused);
+ assert(!(await page.evaluate(()=>window.labSnapshot())).audio.paused);
  await page.locator('#play').click();const held=await page.evaluate(()=>window.labSnapshot().progress);
  await page.waitForTimeout(150);assert.equal(await page.evaluate(()=>window.labSnapshot().progress),held);
  await scrub(990);await page.locator('#play').click();await page.waitForFunction(()=>!window.labSnapshot().playing&&window.labSnapshot().progress===1);
@@ -62,8 +63,8 @@ try{
  await choose('head-model','tom');await page.locator('[data-vowel=u]').click();
  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
  await page.screenshot({path:'qa/vowels-mobile.png',fullPage:true});
- await choose('library-mode','letters');assert(await page.locator('#vowel-picker').isHidden());
- await choose('library-mode','ipa');await choose('category','fricative');assert(await page.locator('#vowel-picker').isHidden());
+ await choose('library-mode','letters');assert(await page.locator('#vowel-picker').isVisible());
+ await choose('library-mode','ipa');await choose('category','fricative');assert(await page.locator('#vowel-picker').isVisible());
  await choose('category','vowel');await page.locator('[data-vowel=ai]').click();assert.equal(await page.locator('#category').evaluate(e=>e.value),'diphthong');
  assert.deepEqual(errors,[]);
  console.log('VOWEL_UI_PASSED: 20 vowels x 3 heads, visible mouth changes, diphthong endpoints, silent playback/pause/seek/loop, audio failure isolation, desktop/mobile');

@@ -81,15 +81,20 @@ export function makeTimeline(sequence){
 }
 export function timelinePose(timeline,seconds){
  const {clips,duration}=timeline;const s=Math.max(0,Math.min(duration,seconds));
- const sample=c=>phonemePose(c.id,Math.max(0,Math.min(1,(s-c.start)/(c.end-c.start))));
+ const progress=c=>Math.max(0,Math.min(1,(s-c.start)/(c.end-c.start)));
+ const sample=c=>phonemePose(c.id,progress(c));
  let index=clips.findIndex(c=>s<c.end);if(index<0)index=clips.length-1;
  let result=sample(clips[index]);
  // A symmetric 90 ms window lets the next articulator prepare before the boundary.
  for(let i=1;i<clips.length;i++)if(Math.abs(s-clips[i].start)<.045){
   const a=sample(clips[i-1]),b=sample(clips[i]),t=ease((s-clips[i].start+.045)/.09);
-  result={weights:blend(a.weights,b.weights,t),air:a.air*(1-t)+b.air*t,nasal:a.nasal*(1-t)+b.nasal*t};break;
+  const air=a.air*(1-t)+b.air*t;
+  // Route the remaining flow, not the velum blend: a closing nasal cannot leak through a sealed mouth.
+  const nasal=air>0?(a.air*a.nasal*(1-t)+b.air*b.nasal*t)/air:0;
+  result={weights:blend(a.weights,b.weights,t),air,nasal};break;
  }
  const envelope=ease(s/.08)*ease((duration-s)/.10);
- result.weights=blend({},result.weights,envelope);result.air*=envelope;result.nasal*=envelope;
- return {...result,phoneme:clips[index].id,letter:clips[index].letter,voiced:result.weights.Voice>.1,step:s/duration<.3?0:s/duration<.62?1:2,t:s/duration};
+ result.weights=blend({},result.weights,envelope);result.air*=envelope;
+ const phonemeProgress=progress(clips[index]);
+ return {...result,phoneme:clips[index].id,nextPhoneme:clips[index+1]?.id||null,letter:clips[index].letter,phonemeProgress,voiced:result.weights.Voice>.1,step:phonemeProgress<.3?0:phonemeProgress<.62?1:2,t:s/duration};
 }

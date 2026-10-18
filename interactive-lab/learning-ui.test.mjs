@@ -1,19 +1,20 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {mkdir} from 'node:fs/promises';
-import {chromium} from 'playwright';
+import {launchBrowser} from './browser-test-utils.mjs';
 
 test('child learning flow uses real playback and accessible local interactions', {timeout:180000}, async t => {
-  const browser = await chromium.launch({channel:'chrome', headless:true});
+  const browser = await launchBrowser();
   t.after(() => browser.close());
   const page = await browser.newPage({viewport:{width:1440,height:1080}});
   const errors=[]; page.on('pageerror',e=>errors.push(e.message));
-  await page.goto('http://127.0.0.1:4173/');
+  await page.goto('http://127.0.0.1:4173/lab.html');
   await page.waitForFunction(()=>window.labSnapshot?.().ready,{}, {timeout:60000});
   const lesson=()=>page.evaluate(()=>learningSnapshot());
   const lab=()=>page.evaluate(()=>labSnapshot());
   await mkdir('qa',{recursive:true});
   async function choose(id,value) {
+    if(id==='entry-select'){await page.locator(`[data-sound="${value}"]`).click();return;}
     await page.locator(`#${id} [role=combobox]`).click();
     await page.locator(`#${id} [role=option][data-value="${value}"]`).click();
   }
@@ -24,7 +25,8 @@ test('child learning flow uses real playback and accessible local interactions',
     assert.equal((await lesson()).mode,'watch');
     assert.equal(await page.locator('#loop').isChecked(),false);
     assert.equal((await lab()).audio.rate,.65);
-    assert.equal((await lab()).audio.paused,true);
+    await page.waitForFunction(()=>labSnapshot().audio.currentTime>0);
+    assert.equal((await lab()).audio.paused,false);
     await page.waitForFunction(()=>labSnapshot().progress>.2);
     await page.locator('#practice-next').click();
     assert.equal((await lab()).playing,false);

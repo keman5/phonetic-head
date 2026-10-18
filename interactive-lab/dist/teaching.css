@@ -6,26 +6,26 @@
 .coach-heading { font-size: 16px; font-weight: 650; letter-spacing: -.03em; margin: 0; }
 .coach-actions { display: grid; gap: 8px; margin: 22px 0 28px; }
 .coach-actions button { display: flex; align-items: center; gap: 12px; min-height: 46px; border: 1px solid var(--line); border-radius: 10px; background: white; color: var(--ink); font-size: 12px; font-weight: 550; text-align: left; padding: 10px 12px; }
-.coach-actions button > span:first-child { display: grid; place-items: center; width: 23px; height: 23px; border-radius: 7px; background: var(--bg); color: #9994ae; font-size: 10px; font-weight: 400; }
-.coach-actions button > span:last-child { margin-left: auto; color: #a19cae; font-size: 15px; }
-.coach-actions button:hover { border-color: #d4ccf4; background: #faf9ff; }
+.coach-actions button > span:first-child { display: grid; place-items: center; width: 23px; height: 23px; border-radius: 7px; background: var(--bg); color: #81998b; font-size: 10px; font-weight: 400; }
+.coach-actions button > span:last-child { margin-left: auto; color: #81998b; font-size: 15px; }
+.coach-actions button:hover { border-color: #bed6c6; background: #f4f8f3; }
 .coach-actions button:first-child { background: var(--soft); border-color: transparent; color: var(--blue); }
-.coach-actions button:first-child > span:first-child { background: #e4defb; color: var(--blue); }
+.coach-actions button:first-child > span:first-child { background: #d9ecdf; color: var(--blue); }
 .cue-heading { font-size: 11px; color: var(--muted); font-weight: 500; margin: 0 0 15px; }
 .lesson-cues { margin: 0; font-size: 14px; line-height: 1.85; }
 .lesson-cues > div { display: grid; grid-template-columns: 35px minmax(0, 1fr); gap: 10px; margin-bottom: 16px; }
-.lesson-cues dt { font-weight: 600; color: #72728b; }
-.lesson-cues dd { margin: 0; color: #555c72; }
+.lesson-cues dt { font-weight: 600; color: #526c60; }
+.lesson-cues dd { margin: 0; color: #536a5d; }
 .voice-cue { border-radius: 6px; background: #f0f6f3; color: #5f8a79; display: inline-flex; align-items: center; gap: 6px; font-size: 10px; padding: 5px 8px; margin-left: 45px; }
 .voice-cue::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: #6f9d8a; }
 .voice-cue.vibrating::before { animation: voice-pulse .5s ease-in-out infinite alternate; }
 @keyframes voice-pulse { to { transform: scale(1.4); opacity: .45; } }
-.cue-reminder { font-size: 12px; line-height: 1.8; color: #756b81; background: #faf8f4; border-radius: 10px; padding: 12px; margin: 20px 0 16px; }
-.contrast-button { width: 100%; min-height: 43px; border: 1px solid #e1dcf4; border-radius: 10px; background: white; color: var(--blue); font-size: 12px; }
+.cue-reminder { font-size: 12px; line-height: 1.8; color: #6b7162; background: #faf8f4; border-radius: 10px; padding: 12px; margin: 20px 0 16px; }
+.contrast-button { width: 100%; min-height: 43px; border: 1px solid #d7e5dc; border-radius: 10px; background: white; color: var(--blue); font-size: 12px; }
 #practice-checks, #teacher-tools { margin-top: 20px; font-size: 12px; border-top: 1px solid var(--line); padding-top: 16px; }
-summary { cursor: pointer; color: #656b81; min-height: 28px; line-height: 1.7; }
+summary { cursor: pointer; color: #596f62; min-height: 28px; line-height: 1.7; }
 #practice-checks p { color: var(--muted); line-height: 1.8; font-size: 11px; margin: 10px 0; }
-#practice-checks label { display: flex; align-items: center; gap: 7px; margin: 12px 0; line-height: 1.6; color: #5b6378; }
+#practice-checks label { display: flex; align-items: center; gap: 7px; margin: 12px 0; line-height: 1.6; color: #536d5e; }
 .detail-toggle { display: flex; gap: 7px; align-items: center; margin: 10px 0; }
 .teaching-legend { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; color: var(--muted); font-size: 11px; }
 .teaching-legend i { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 7px; }
@@ -35,3 +35,51 @@ summary { cursor: pointer; color: #656b81; min-height: 28px; line-height: 1.7; }
   .coach-actions button { font-size: 13px; min-height: 48px; }
 }
 @media (prefers-reduced-motion: reduce) { .voice-cue.vibrating::before { animation: none; } }
+.anatomy-reference { margin-top: 12px; padding: 15px 16px; background: #fff; border: 1px solid var(--line); border-radius: 14px; }
+.anatomy-reference-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px; font-size: 12px; }
+.anatomy-reference-heading span { color: var(--muted); font-size: 11px; }
+.anatomy-key { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 12px; }
+.anatomy-key button { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); border-radius: 8px; background: #fff; padding: 8px 10px; min-height: 36px; color: var(--ink); font-size: 12px; }
+.anatomy-key button[aria-pressed=true] { background: var(--soft); border-color: #8caf9d; }
+.anatomy-key button small { color: var(--muted); font-size: 11px; }
+.anatomy-key button { min-height: 42px; }
+.part-activity { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 10px 12px; margin-top: 10px; border-radius: 10px; background: #f4f7f1; }
+.part-activity[hidden] { display: none; }
+.part-activity p { margin: 0; flex: 1 1 220px; color: #466052; font-size: 13px; line-height: 1.7; }
+.part-activity button { flex-shrink: 0; min-height: 42px; padding: 8px 12px; border: 1px solid #bcd2c3; border-radius: 8px; color: #315c47; background: #fff; font-size: 12px; }
+.anatomy-note { margin: 12px 0 0; font-size: 11px; line-height: 1.7; color: var(--muted); }
+#anatomy-guides button[aria-pressed=true] { border-color: var(--organ-color); box-shadow: 0 0 0 2px #ffffffb0; color: #284638; font-weight: 650; }
+#anatomy-guides path.is-selected { stroke: #466a59; stroke-width: 1.8; opacity: 1; stroke-dasharray: none; }
+.anatomy-key i, #anatomy-guides button i { width: 8px; height: 8px; border-radius: 50%; background: var(--organ-color); display: inline-block; flex-shrink: 0; }
+#part-description { margin: 10px 0 0; color: var(--muted); font-size: 12px; line-height: 1.8; }
+#anatomy-guides button { display: flex; gap: 5px; align-items: center; color: #395e52; }
+#anatomy-guides [data-guide=voice] { border-color: #d5a452; background: #fff8e8; color: #6a4e1e; font-weight: 600; }
+.voice-location { fill: #efb85230; stroke: #b78329; stroke-width: 2; }
+.vocal-card { display: flex; gap: 12px; align-items: center; padding-top: 12px; margin-top: 12px; border-top: 1px solid var(--line); }
+.vocal-card svg { width: 100px; height: 58px; flex-shrink: 0; border-radius: 10px; background: #faf6ed; }
+.vocal-card strong { font-size: 12px; }
+.vocal-card p { font-size: 12px; color: #8b621d; margin: 3px 0; }
+.vocal-card small { font-size: 10px; color: var(--muted); }
+.vocal-card button { border: 1px solid var(--line); border-radius: 8px; background: #fff; color: var(--blue); padding: 8px 10px; margin-left: auto; flex-shrink: 0; }
+.fold { fill: #efc577; stroke: #b2853c; stroke-width: 2; }
+.fold-left { transform: translateX(calc(-1 * var(--fold-gap, 1px))); }
+.fold-right { transform: translateX(var(--fold-gap, 1px)); }
+.is-vibrating .fold-left { animation: fold-left .4s ease-in-out infinite alternate; }
+.is-vibrating .fold-right { animation: fold-right .4s ease-in-out infinite alternate; }
+@keyframes fold-left { to { transform: translateX(-3px); } }
+@keyframes fold-right { to { transform: translateX(3px); } }
+@media (max-width: 760px) {
+  .vocal-card { flex-wrap: wrap; gap: 8px; }
+  .vocal-card svg { width: 68px; height: 50px; }
+  .vocal-card > div { flex: 1; min-width: 150px; }
+  .vocal-card button { min-height: 40px; }
+  #anatomy-guides button { font-size: 10px; padding: 5px 6px; }
+  .anatomy-key button { flex: 1 1 100px; justify-content: center; }
+  .anatomy-key button small { display: none; }
+  .part-activity { flex-wrap: wrap; }
+  .part-activity p { flex-basis: 100%; }
+}
+@media (prefers-reduced-motion: reduce) { .fold { animation: none !important; } }
+
+#tongue-landmarks{position:absolute;inset:0;pointer-events:none;z-index:5}
+#tongue-landmarks span{position:absolute;transform:translate(-50%,-50%);padding:4px 7px;border:1px solid #d97791;border-radius:7px;background:#fff7fa;color:#83374d;font-size:11px;font-weight:600;white-space:nowrap;box-shadow:0 1px 3px #64273912}

@@ -5,9 +5,12 @@ const browser=await chromium.launch({executablePath:'/Applications/Google Chrome
 const page=await browser.newPage({viewport:{width:1440,height:1080}}),errors=[];
 page.on('pageerror',e=>errors.push(e.message));
 page.on('console',m=>{if(m.type()==='error'&&/THREE|shader/i.test(m.text()))errors.push(m.text());});
-async function choose(id,value){await page.locator(`#${id} [role=combobox]`).click();await page.locator(`#${id} [role=option][data-value="${value}"]`).click();}
+async function choose(id,value){
+    if(id==='entry-select'){await page.locator(`[data-sound="${value}"]`).click();return;}
+ await page.locator(`#${id} [role=combobox]`).click();await page.locator(`#${id} [role=option][data-value="${value}"]`).click();
+}
 try{
- await page.goto('http://127.0.0.1:4173');await page.waitForFunction(()=>window.labSnapshot?.().ready,{},{timeout:60000});
+ await page.goto('http://127.0.0.1:4173/lab.html');await page.waitForFunction(()=>window.labSnapshot?.().ready,{},{timeout:60000});
  const simplified=await page.evaluate(()=>window.teachingSnapshot());assert(simplified.childMode);assert.equal(simplified.visibleDetails,0);assert(simplified.hiddenDetailCaps>10);
  assert.equal(simplified.visibleSkeleton,0);assert.equal(simplified.filledContours,1);
  for(const role of ['tongue','teeth','palate','airway','voice'])assert(simplified.visibleRoles.includes(role),role);
@@ -37,7 +40,7 @@ try{
   assert((await page.locator('#cue-tongue').innerText()).length>=4);
  }
  await choose('category','vowel');await choose('entry-select','ipa:i');await page.locator('#contrast-sound').click();assert.equal((await page.evaluate(()=>window.labSnapshot())).sound,'ipa:ih');
- await page.locator('#watch-demo').click();await page.waitForFunction(()=>window.labSnapshot().progress>.15);assert((await page.evaluate(()=>window.labSnapshot())).audio.paused);
+ await page.locator('#watch-demo').click();await page.waitForFunction(()=>window.labSnapshot().progress>.15);assert(!(await page.evaluate(()=>window.labSnapshot())).audio.paused);
  await page.locator('#play').click();await page.locator('#listen-demo').click();await page.waitForFunction(()=>window.labSnapshot().audio.currentTime>0&&!window.labSnapshot().audio.paused);
  await page.locator('#try-demo').click();assert(!(await page.evaluate(()=>window.labSnapshot())).playing);assert(await page.locator('#practice-checks').evaluate(e=>e.open));
  await page.locator('#practice-checks input').first().check();await page.locator('#contrast-sound').click();assert(!(await page.locator('#practice-checks input').first().isChecked()));

@@ -158,36 +158,73 @@ export function smoothMedianNormals(meshes){
   return joined;
 }
 
+// World-space metres after the atlas recenter transform. The lower centre follows
+// Trachea (-.120..-.089 in y, centre z ~.007.. .010), not the vertical pharynx.
+// Scalar GLSL keeps the same rounded profile in both complementary materials.
+const airwayProfileGLSL=`
+float sectionAirwayDistance(float y, float z) {
+  float h=clamp(y,-0.114,0.022);
+  float lower=smoothstep(-0.114,-0.065,h);
+  float upper=smoothstep(-0.012,0.022,h);
+  float centre=mix(0.007,0.016,lower)+0.009*upper;
+  float radius=mix(0.007,0.006,lower)+0.003*upper;
+  float dy=y-h;
+  float dz=z-centre;
+  return sqrt(dy*dy+dz*dz)-radius;
+}
+float sectionSmoothUnion(float a, float b) {
+  float h=max(0.004-abs(a-b),0.0)/0.004;
+  return min(a,b)-h*h*0.001;
+}
+`;
+
 // Match the owning tissue, while keeping mouth and airway openings in the backing.
 export function createSectionFillMaterial(source,character=false,childMode=false,fillContour=false){
  const material=source.clone();
  material.userData.filledContour=fillContour;
+ if(fillContour){
+  material.userData.sectionBackdrop=true;
+  material.transparent=false;
+  material.depthWrite=false;
+  material.blending=THREE.CustomBlending;
+  material.blendEquation=THREE.AddEquation;
+  material.blendSrc=THREE.SrcAlphaFactor;
+  material.blendDst=THREE.OneMinusSrcAlphaFactor;
+  material.blendSrcAlpha=THREE.OneFactor;
+  material.blendDstAlpha=THREE.OneMinusSrcAlphaFactor;
+ }
  const compile=source.onBeforeCompile;
  material.onBeforeCompile=(shader,renderer)=>{
   if(!fillContour)compile.call(material,shader,renderer);
   shader.vertexShader='varying vec3 sectionWorld;\n'+shader.vertexShader;
   shader.vertexShader=shader.vertexShader.replace('#include <project_vertex>','#include <project_vertex>\nsectionWorld=(modelMatrix*vec4(transformed,1.0)).xyz;');
-  shader.fragmentShader='varying vec3 sectionWorld;\n'+shader.fragmentShader;
+  shader.fragmentShader='varying vec3 sectionWorld;\n'+airwayProfileGLSL+shader.fragmentShader;
   shader.fragmentShader=shader.fragmentShader.replace('#include <clipping_planes_fragment>',`#include <clipping_planes_fragment>
     vec2 oral=(sectionWorld.yz-vec2(${character?'0.001':childMode?'-0.021':'-0.016'},0.057))/vec2(${childMode&&!character?'0.036':'0.023'},0.047);
     bool mouth=dot(oral,oral)<1.0 && sectionWorld.z>0.013;
-    bool airway=abs(sectionWorld.z-0.016)<0.006 && sectionWorld.y>-0.096 && sectionWorld.y<${character?'0.006':'-0.009'};
+    float airwayDistance=sectionAirwayDistance(sectionWorld.y,sectionWorld.z);
+    bool airway=${character?'abs(sectionWorld.z-0.016)<0.006 && sectionWorld.y>-0.096 && sectionWorld.y<0.006':childMode?'airwayDistance<0.0':'airwayDistance<0.0 && sectionWorld.y<-0.009'};
     vec2 nasal=(sectionWorld.yz-vec2(0.026,0.053))/vec2(0.015,0.036);
     bool nose=dot(nasal,nasal)<1.0;
-    bool nasalGate=sectionWorld.z>0.013 && sectionWorld.z<0.030 && sectionWorld.y>-0.004 && sectionWorld.y<0.028;
+    float nasalDistance=(length(nasal)-1.0)*0.015;
+    bool nasalGate=sectionSmoothUnion(airwayDistance,nasalDistance)<0.0;
+    // This is a cavity colour key, not a patent nasal airflow path. The actual
+    // animated soft palate/uvula remain separate foreground anatomy; phoneme
+    // logic alone selects oral versus nasal airflow.
+    // The colour key occupies only the regions discarded by the child tissue
+    // cap. Complementary masks avoid both depth fighting and double blending.
+    ${fillContour?'if(!(mouth||airway||nose||nasalGate)) discard;':''}
     if(${fillContour||character?'false':childMode?'mouth||airway||nose||nasalGate':'mouth||airway'}) discard;
   `);
   if(fillContour){
-    shader.uniforms.nasalFill={value:new THREE.Color('#a8dbdc')};
+    shader.uniforms.nasalFill={value:new THREE.Color('#d5eaf5')};
     shader.uniforms.oralFill={value:new THREE.Color('#ffe9df')};
-    shader.uniforms.palateFill={value:new THREE.Color('#ae95e8')};
-    shader.fragmentShader='uniform vec3 nasalFill; uniform vec3 oralFill; uniform vec3 palateFill;\n'+shader.fragmentShader;
+    shader.fragmentShader='uniform vec3 nasalFill; uniform vec3 oralFill;\n'+shader.fragmentShader;
     shader.fragmentShader=shader.fragmentShader.replace('#include <color_fragment>',`#include <color_fragment>
       vec3 contourColor=diffuseColor.rgb;
       if(mouth)contourColor=oralFill;
       if(nose||nasalGate||airway)contourColor=nasalFill;
-      float roof=0.001+0.005*smoothstep(0.03,0.06,sectionWorld.z)-0.004*smoothstep(0.07,0.09,sectionWorld.z);
-      if(abs(sectionWorld.y-roof)<0.002 && sectionWorld.z>0.033 && sectionWorld.z<0.089)contourColor=palateFill;
+      // The palate is a real curved mesh, never a painted stripe on this plane.
       diffuseColor.rgb=contourColor;
     `);
     shader.fragmentShader=shader.fragmentShader.replace('#include <emissivemap_fragment>','#include <emissivemap_fragment>\ntotalEmissiveRadiance=contourColor*0.22;');

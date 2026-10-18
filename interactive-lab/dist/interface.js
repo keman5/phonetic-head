@@ -19,20 +19,3 @@ tabs.forEach((tab, index) => {
     showInspector(tabs[next].id, true);
   });
 });
-const mobile = matchMedia('(max-width: 760px)');
-const library = document.getElementById('sound-library');
-function syncLibrary() { library.open = !mobile.matches; }
-syncLibrary();
-mobile.addEventListener('change', syncLibrary);
-library.addEventListener('click', event => {
-  if (mobile.matches && event.target.closest('[data-vowel]')) {
-    library.open = false;
-    library.querySelector('summary').focus({preventScroll: true});
-  }
-});
-library.addEventListener('change', event => {
-  if (mobile.matches && event.target.id === 'entry-select') {
-    library.open = false;
-    library.querySelector('summary').focus({preventScroll: true});
-  }
-});

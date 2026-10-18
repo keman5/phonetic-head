@@ -7,6 +7,7 @@ const browser=await chromium.launch({executablePath:'/Applications/Google Chrome
 const page=await browser.newPage({viewport:{width:1440,height:1000},deviceScaleFactor:1});
 async function choose(selector,value){
  const root=page.locator(selector);
+ if(selector==='#entry-select'){await page.locator(`[data-sound="${value}"]`).click();return;}
  if(await root.getAttribute('type')==='range'){await root.fill(value);await root.dispatchEvent('input');return;}
  await root.locator('[role="combobox"]').click();
  const options=await root.locator('[role="option"]').all();
@@ -27,7 +28,7 @@ async function checkCanvas(){
  assert(probe.colors>30&&probe.dark>100,JSON.stringify(probe));return probe;
 }
 try{
-await page.goto('http://127.0.0.1:4173/');
+await page.goto('http://127.0.0.1:4173/lab.html');
 await page.waitForFunction(()=>window.labSnapshot?.().ready,{},{timeout:60000});
 await page.locator('#teacher-tools summary').click();await page.locator('#anatomy-details').check();await page.locator('[data-preset="surface"]').click();
 await sound('theta');
@@ -117,7 +118,7 @@ for(const category of Object.keys(CATEGORIES)){
   await choose('#entry-select','ipa:'+p.id);
   await page.locator('#timeline').fill('500');await page.locator('#timeline').dispatchEvent('input');
   await page.waitForFunction(id=>window.labSnapshot().sound==='ipa:'+id&&window.labSnapshot().morphMeshes>0,p.id);
-  assert.equal(await page.locator('#entry-select [role="option"]').count(),Object.values(PHONEMES).filter(x=>x.category===category).length);
+  assert.equal(await page.locator('#vowel-picker [data-sound]').count(),Object.values(PHONEMES).filter(x=>x.category===category).length);
   visited++;
  }
 }

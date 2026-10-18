@@ -1,0 +1,275 @@
+{
+  "source_sha256": {
+    "refined-lips.glb": "0ce8b56ac86698c2106122fe8c6ad6558a465bf07a90409a94d0b7308e88e060",
+    "repaired-skin.glb": "f2c106891cdb7393b740b1246e98bd33aff0451c5fa228176c68d7e9e882ca88"
+  },
+  "method": "Local superior/inferior/posterior excision; separate inner and outer sheets with constrained Delaunay interior sampling and slope-aware fairing. Posterior ellipse radii 4.8/7 mm and depth slab 13..50 mm. Retain all surviving vertex and morph coordinates.",
+  "sides": [
+    {
+      "side": "left",
+      "before": {
+        "name": "Lip-refined skin__left",
+        "vertices": 82968,
+        "faces": 163469,
+        "components": [
+          {
+            "vertices": 82968,
+            "faces": 163469,
+            "chi": -14,
+            "bounds": [
+              [
+                -2.3283064365386963e-10,
+                0.1440451592206955
+              ],
+              [
+                -0.11633267998695374,
+                0.10686185210943222
+              ],
+              [
+                1.4303351640701294,
+                1.7084075212478638
+              ]
+            ]
+          }
+        ],
+        "morphs": [
+          "Basis",
+          "JawOpen",
+          "LipClose",
+          "LipSpread",
+          "JawForward",
+          "LipRound",
+          "LipProtrude",
+          "LipBite",
+          "BreathPressure"
+        ],
+        "ear_boundary_edges": 0,
+        "ear_nonmanifold_edges": 0,
+        "ear_inconsistent_winding_edges": 0
+      },
+      "after": {
+        "name": "Ear-refined skin__left",
+        "vertices": 84314,
+        "faces": 166145,
+        "components": [
+          {
+            "vertices": 84314,
+            "faces": 166145,
+            "chi": -6,
+            "bounds": [
+              [
+                -2.3283064365386963e-10,
+                0.1440451592206955
+              ],
+              [
+                -0.11633267998695374,
+                0.10686185210943222
+              ],
+              [
+                1.4303351640701294,
+                1.7084075212478638
+              ]
+            ]
+          }
+        ],
+        "morphs": [
+          "Basis",
+          "JawOpen",
+          "LipClose",
+          "LipSpread",
+          "JawForward",
+          "LipRound",
+          "LipProtrude",
+          "LipBite",
+          "BreathPressure"
+        ],
+        "ear_boundary_edges": 0,
+        "ear_nonmanifold_edges": 0,
+        "ear_inconsistent_winding_edges": 0
+      },
+      "patches": [
+        {
+          "patch": "superior",
+          "removed_faces": 644,
+          "sheet_rim_vertices": [
+            37,
+            43
+          ],
+          "center_yz": [
+            -0.0055,
+            1.593
+          ],
+          "radius_yz": [
+            0.0042,
+            0.0048
+          ]
+        },
+        {
+          "patch": "inferior",
+          "removed_faces": 715,
+          "sheet_rim_vertices": [
+            46,
+            39
+          ],
+          "center_yz": [
+            -0.01,
+            1.567
+          ],
+          "radius_yz": [
+            0.0048,
+            0.006
+          ]
+        },
+        {
+          "patch": "posterior",
+          "removed_faces": 1492,
+          "sheet_rim_vertices": [
+            87,
+            89
+          ],
+          "center_yz": [
+            0.0593,
+            1.5587
+          ],
+          "radius_yz": [
+            0.0048,
+            0.007
+          ]
+        }
+      ]
+    },
+    {
+      "side": "right",
+      "before": {
+        "name": "Lip-refined skin__right",
+        "vertices": 82858,
+        "faces": 163243,
+        "components": [
+          {
+            "vertices": 82858,
+            "faces": 163243,
+            "chi": -14,
+            "bounds": [
+              [
+                -0.14404742419719696,
+                5.816281145598623e-08
+              ],
+              [
+                -0.11633254587650299,
+                0.1068628802895546
+              ],
+              [
+                1.4303598403930664,
+                1.7083996534347534
+              ]
+            ]
+          }
+        ],
+        "morphs": [
+          "Basis",
+          "JawOpen",
+          "LipClose",
+          "LipSpread",
+          "JawForward",
+          "LipRound",
+          "LipProtrude",
+          "LipBite",
+          "BreathPressure"
+        ],
+        "ear_boundary_edges": 0,
+        "ear_nonmanifold_edges": 0,
+        "ear_inconsistent_winding_edges": 0
+      },
+      "after": {
+        "name": "Ear-refined skin__right",
+        "vertices": 84186,
+        "faces": 165883,
+        "components": [
+          {
+            "vertices": 84186,
+            "faces": 165883,
+            "chi": -6,
+            "bounds": [
+              [
+                -0.14404742419719696,
+                5.816281145598623e-08
+              ],
+              [
+                -0.11633254587650299,
+                0.1068628802895546
+              ],
+              [
+                1.4303598403930664,
+                1.7083996534347534
+              ]
+            ]
+          }
+        ],
+        "morphs": [
+          "Basis",
+          "JawOpen",
+          "LipClose",
+          "LipSpread",
+          "JawForward",
+          "LipRound",
+          "LipProtrude",
+          "LipBite",
+          "BreathPressure"
+        ],
+        "ear_boundary_edges": 0,
+        "ear_nonmanifold_edges": 0,
+        "ear_inconsistent_winding_edges": 0
+      },
+      "patches": [
+        {
+          "patch": "superior",
+          "removed_faces": 648,
+          "sheet_rim_vertices": [
+            43,
+            33
+          ],
+          "center_yz": [
+            -0.0055,
+            1.593
+          ],
+          "radius_yz": [
+            0.0042,
+            0.0048
+          ]
+        },
+        {
+          "patch": "inferior",
+          "removed_faces": 692,
+          "sheet_rim_vertices": [
+            45,
+            43
+          ],
+          "center_yz": [
+            -0.01,
+            1.567
+          ],
+          "radius_yz": [
+            0.0048,
+            0.006
+          ]
+        },
+        {
+          "patch": "posterior",
+          "removed_faces": 1521,
+          "sheet_rim_vertices": [
+            91,
+            94
+          ],
+          "center_yz": [
+            0.0593,
+            1.5587
+          ],
+          "radius_yz": [
+            0.0048,
+            0.007
+          ]
+        }
+      ]
+    }
+  ]
+}

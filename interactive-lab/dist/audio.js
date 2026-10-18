@@ -1,15 +1,17 @@
 export const VOICES=[['female','女声 · 英式'],['male','男声 · 英式']];
 export const audioCatalog=fetch('./assets/audio/manifest.json').then(r=>{if(!r.ok)throw new Error('Missing audio manifest');return r.json();});
+export const curriculumCatalog=fetch('./assets/audio/curriculum-manifest.json').then(r=>{if(!r.ok)throw new Error('Missing lesson audio manifest');return r.json();});
 
 export class PronunciationAudio {
-  constructor(onEnd,onError){this.onEnd=onEnd;this.onError=onError;this.audio=new Audio();this.key='';this.rate=1;this.muted=false;}
+  constructor(onEnd,onError,onMetadata=()=>{}){this.onEnd=onEnd;this.onError=onError;this.onMetadata=onMetadata;this.audio=new Audio();this.key='';this.rate=1;this.muted=false;}
   select(sound,voice,force=false){
     const key=voice+'/'+sound.replace(':','-');if(key===this.key&&!force)return;
     this.audio.pause();this.controller?.abort();if(this.objectURL)URL.revokeObjectURL(this.objectURL);
     this.key=key;this.sound=sound;this.voice=voice;this.loadError=null;
     this.source=new URL('./assets/audio/'+key+'.wav',import.meta.url).href;
     const audio=new Audio();this.audio=audio;
-    audio.preload='auto';audio.muted=this.muted;audio.preservesPitch=true;audio.playbackRate=this.rate;
+    audio.ondurationchange=()=>{if(this.audio===audio)this.onMetadata();};
+    audio.preload='auto';audio.muted=this.muted;audio.preservesPitch=true;audio.defaultPlaybackRate=audio.playbackRate=this.rate;
     audio.onended=()=>{if(this.audio===audio)this.onEnd();};
     audio.onerror=()=>{if(this.audio===audio){this.loadError=new Error('音频加载失败，请重试。');this.onError(this.loadError);}};
     const controller=this.controller=new AbortController();
@@ -43,7 +45,7 @@ export class PronunciationAudio {
   get duration(){return Number.isFinite(this.audio.duration)?this.audio.duration:0;}
   setRate(rate){
     if(!Number.isFinite(rate))return;
-    this.rate=Math.max(.2,Math.min(3,rate));this.audio.playbackRate=this.rate;
+    this.rate=Math.max(.2,Math.min(3,rate));this.audio.defaultPlaybackRate=this.audio.playbackRate=this.rate;
   }
   setMuted(muted){this.muted=muted;this.audio.muted=muted;}
 }

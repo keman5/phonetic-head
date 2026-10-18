@@ -1,0 +1,16 @@
+html[data-embedded=true], html[data-embedded=true] body { overflow: hidden; }
+html[data-embedded=true] .app-header,
+html[data-embedded=true] .lessons,
+html[data-embedded=true] .controls,
+html[data-embedded=true] footer,
+html[data-embedded=true] .workspace > :not(.stage) { display: none !important; }
+html[data-embedded=true] main { display: block; padding: 0; margin: 0; max-width: none; }
+html[data-embedded=true] .stage { height: 100vh; min-height: 0; border: 0; border-radius: 0; }
+html[data-embedded=true] .stage-bottom { left: auto; right: 16px; }
+html[data-embedded=true] .stage-bottom > span:first-child { display: none; }
+html[data-embedded=true] .view-buttons button { min-height: 36px; }
+html[data-embedded=true] .phase-chip,
+html[data-embedded=true] .voice-meter,
+html[data-embedded=true] [data-view="oblique"],
+html[data-embedded=true] [data-view="left"],
+html[data-embedded=true] [data-view="voice"] { display:none; }

@@ -37,7 +37,7 @@ export function poseAt(sound,t){
     const smooth=(a,b,x)=>{const v=Math.max(0,Math.min(1,(x-a)/(b-a)));return v*v*(3-2*v);};
     const pose=phonemePose(p.id,smooth(.4,.75,t));
     const envelope=smooth(0,.2,t)*(1-smooth(.87,1,t));
-    return {...pose,weights:blend({},pose.weights,envelope),air:pose.air*envelope,voiced:envelope>.1,phoneme:p.id,step:t<.4?0:t<.75?1:2,t};
+    return {...pose,weights:blend({},pose.weights,envelope),air:pose.air*envelope,voiced:envelope>.1,phoneme:p.id,phonemeProgress:t,step:t<.4?0:t<.75?1:2,t};
   }
   return timelinePose(SOUNDS[sound].timeline,t*SOUNDS[sound].timeline.duration);
 }

@@ -33,6 +33,16 @@ test('alphabet intervals correspond exactly to the individual letter recordings'
   for(const s of segments){const w=wave(voice+'/letter-'+s.letter+'.wav');assert(Math.abs(s.end-s.start-w.duration)<1e-6);const at=Math.round(s.start*alphabet.rate)*2;assert.deepEqual(alphabet.data.subarray(at,at+w.data.length),w.data);}
  }
 });
+test('letter recordings use British neural voices without clipping',()=>{
+ for(const [voice,voiceId] of [['female','bf_emma'],['male','bm_george']]){
+  for(const [key,entry] of Object.entries(manifest.voices[voice].entries).filter(([key])=>key.startsWith('letter-'))){
+   assert.match(entry.engine,/Kokoro/);assert.equal(entry.engineVoice,voiceId);
+   const {data,duration}=wave(voice+'/'+key+'.wav');
+   assert(duration>.3&&duration<4,key+' should be one short letter name');
+   for(let at=0;at<data.length;at+=2)assert(Math.abs(data.readInt16LE(at))<32000,key+' clips');
+  }
+ }
+});
 test('isolated long/short vowels retain distinct phoneme inputs and clear voiced durations',()=>{
  function activeDuration(w){
   let first=-1,last=0;
@@ -48,6 +58,18 @@ test('isolated long/short vowels retain distinct phoneme inputs and clear voiced
    assert(longDuration/shortDuration>=1.8,voice+' '+long+'/'+short);
    assert(longDuration-shortDuration>=.18);
    assert(Math.abs(a.activeDuration-longDuration)<1e-6);
+  }
+ }
+});
+
+test('isolated phonemes have audible peaks with headroom',()=>{
+ for(const [voice,{entries}] of Object.entries(manifest.voices)){
+  for(const key of Object.keys(entries).filter(key=>key.startsWith('ipa-'))){
+   const {data}=wave(voice+'/'+key+'.wav');
+   let peak=0;
+   for(let at=0;at<data.length;at+=2)peak=Math.max(peak,Math.abs(data.readInt16LE(at)));
+   assert(peak>=16384,voice+'/'+key+' is too quiet');
+   assert(peak<32000,voice+'/'+key+' clips');
   }
  }
 });

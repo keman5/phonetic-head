@@ -1,6 +1,6 @@
 """Build offline English phoneme/letter demonstrations with explicit eSpeak input.
 
-Run: .audio-venv/bin/python generate-audio.py
+Run: bash build.sh all
 Build dependency: espeakng-loader==0.2.4 (not needed by the browser).
 """
 import array
@@ -11,6 +11,7 @@ from pathlib import Path
 import subprocess
 import wave
 import espeakng_loader
+from normalize_audio import normalize
 
 ROOT = Path(__file__).resolve().parent
 OUT = ROOT / 'dist/assets/audio'
@@ -74,7 +75,7 @@ for voice,engine_voice in [('female','en+f3'),('male','en+m3')]:
             codes=("'" if pid!='schwa' else '')+codes
             # Deliberately clearer isolated duration contrast, not a speech rule.
             speed=95 if 'ː' in p['ipa'] else 170
-        samples=synth(codes,p['category'] in ['plosive','affricate','cluster'],speed)
+        samples=normalize(synth(codes,p['category'] in ['plosive','affricate','cluster'],speed))
         active=[i for i,s in enumerate(samples) if abs(s)>40]
         write('ipa-'+pid,samples,ipa=p['ipa'],phonemes=[pid],synthesisInput=codes,
               synthesisRate=speed,activeDuration=(active[-1]-active[0]+1)/rate)

@@ -1,0 +1,21 @@
+{
+  "source_sha256": "f2c106891cdb7393b740b1246e98bd33aff0451c5fa228176c68d7e9e882ca88",
+  "boundary_loops": 2,
+  "corrected_boundary_backtracks": 81,
+  "rim_vertices": 287,
+  "support_vertices": 3528,
+  "source_vertices": 163309,
+  "morphs": [
+    "JawOpen",
+    "LipClose",
+    "LipSpread",
+    "JawForward",
+    "LipRound",
+    "LipProtrude",
+    "LipBite",
+    "BreathPressure"
+  ],
+  "max_rim_depth_correction": 0.00236898680648176,
+  "unexpected_boundary_edges": 0,
+  "method": "Topology-ordered monotone lip rims; symmetric depth per sheet; local support smoothing; shared authored skin motion."
+}
