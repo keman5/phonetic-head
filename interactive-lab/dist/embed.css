@@ -8,7 +8,7 @@ html[data-embedded=true] main { display: block; padding: 0; margin: 0; max-width
 html[data-embedded=true] .stage { height: 100vh; min-height: 0; border: 0; border-radius: 0; }
 html[data-embedded=true] .stage-bottom { left: auto; right: 16px; }
 html[data-embedded=true] .stage-bottom > span:first-child { display: none; }
-html[data-embedded=true] .view-buttons button { min-height: 36px; }
+html[data-embedded=true] .view-buttons button { min-height: 44px; min-width: 44px; }
 html[data-embedded=true] .phase-chip,
 html[data-embedded=true] .voice-meter,
 html[data-embedded=true] [data-view="oblique"],

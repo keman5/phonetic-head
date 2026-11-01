@@ -21,6 +21,7 @@ import {mountCurriculum} from './curriculum-ui.js';
 import {curriculumSound,curriculumPose} from './curriculum-playback.js';
 
 let voicePractice;
+const embedded=new URLSearchParams(location.search).has('embed');
 const $=s=>document.querySelector(s);
 const state={sound:'ipa:i',progress:0,playing:false,speed:1,loop:false,air:true,palette:'human',alpha:{left:0,right:0,skin:0,bone:0,muscle:0,organ:0},focus:null,voice:'female'};
 const mount=$('#viewer'),meshes=[],sectionCaps=[];
@@ -110,7 +111,7 @@ const nasalPath=new THREE.CatmullRomCurve3([
  new THREE.Vector3(0,-.11,.013),new THREE.Vector3(0,-.058,.018),new THREE.Vector3(0,-.007,.02),
  new THREE.Vector3(0,.019,.035),new THREE.Vector3(0,.023,.078),new THREE.Vector3(0,.02,.135),
 ]);
-function fail(error){console.error(error);ready=false;coach?.ready(false);curriculum?.setReady(false);$('#play').disabled=true;$('#restart').disabled=true;$('#load-state').hidden=false;$('#load-state b').textContent='模型暂时无法显示';$('#load-detail').textContent='请保持本地服务运行，然后重新加载。';$('.spinner').hidden=true;$('#retry').hidden=false;pausePlayback();}
+function fail(error){console.error(error);ready=false;coach?.ready(false);curriculum?.setReady(false);$('#play').disabled=true;$('#restart').disabled=true;$('#load-state').hidden=false;$('#load-state b').textContent='模型暂时无法显示';$('#load-detail').textContent='请检查网络连接，然后重试。';$('.spinner').hidden=true;$('#retry').hidden=false;pausePlayback();}
 $('#retry').onclick=()=>location.reload();
 
 function buildUI(){
@@ -339,13 +340,15 @@ function explainOrgan(id){
   }
 }
 function setView(view,smooth=false){
+  if(view==='lips'||embedded&&view==='front')preset('surface');
+  else if(embedded&&['right','mouth'].includes(view))preset('cutaway');
   const distance=view==='voice'?.22:view==='lips'?(state.palette==='human'?.24:.34):view==='mouth'?.26:mount.clientWidth<450?.7:.59;
   const target=view==='voice'?new THREE.Vector3(0,-.073,.015):['mouth','lips'].includes(view)?new THREE.Vector3(0,state.palette==='human'?-.025:0,.065):new THREE.Vector3(0,.023,.013);
   const dirs={voice:new THREE.Vector3(-1,.1,.35),lips:new THREE.Vector3(0,0,1),mouth:new THREE.Vector3(-1,.12,.28),oblique:new THREE.Vector3(-.85,.23,.9),front:new THREE.Vector3(0,.04,1),right:new THREE.Vector3(-1,.015,0),left:new THREE.Vector3(1,.015,0)};
   const position=target.clone().add(dirs[view].normalize().multiplyScalar(distance));
   cameraTween=smooth&&!coach?.reducedMotion?{from:camera.position.clone(),targetFrom:controls.target.clone(),position,target,start:performance.now()}:null;
   if(!cameraTween){camera.position.copy(position);controls.target.copy(target);controls.update();}
-  document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('chosen',b.dataset.view===view));
+  document.querySelectorAll('[data-view]').forEach(b=>{b.classList.toggle('chosen',b.dataset.view===view);b.setAttribute('aria-pressed',String(b.dataset.view===view));});
 }
 function animatePose(pose){
   let pinned=null;
@@ -619,7 +622,7 @@ $('#speed').oninput=e=>{
 $('#voice').onchange=e=>{const resume=state.playing;pausePlayback();state.voice=e.target.value;state.progress=0;player.select(state.sound,state.voice);$('#audio-status').textContent='本地合成示范音';if(resume)startPlayback();};
 $('#sound-toggle').onchange=e=>{player.setMuted(!e.target.checked);if(!e.target.checked)coach?.interrupt('声音已关闭。准备好后，点“听示范音”再听一次。');};
 $('#loop').onchange=e=>state.loop=e.target.checked;$('#air-toggle').onchange=e=>state.air=e.target.checked;
-document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{if(controls){if(b.dataset.view==='voice')explainOrgan('voice');else setView(b.dataset.view,true);}});$('#reset-view').onclick=()=>controls&&setView('oblique',true);
+document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{if(controls){if(b.dataset.view==='voice')explainOrgan('voice');else setView(b.dataset.view,true);}});$('#reset-view').onclick=()=>controls&&setView(embedded?'right':'oblique',true);
 document.querySelectorAll('[data-preset]').forEach(b=>b.onclick=()=>preset(b.dataset.preset));$('#reset-opacity').onclick=()=>preset('cutaway');
 $('#swap-sides').onclick=()=>{[state.alpha.left,state.alpha.right]=[state.alpha.right,state.alpha.left];syncAlpha();clearPreset();};
 $('#clear-focus').onclick=()=>focusOn(null);
@@ -652,7 +655,7 @@ coach=createLearningCoach({
   }
 });
 coach.ready(ready);
-if(!new URLSearchParams(location.search).has('embed'))voicePractice=mountVoicePractice($('#voice-practice'),{
+if(!embedded)voicePractice=mountVoicePractice($('#voice-practice'),{
   getLesson:()=>isCurriculum()?{...LESSONS[state.sound.slice(7)],exampleURL:player.source}:{id:state.sound.replace(':','-'),text:currentSound().title,hint:currentSound().tip,exampleURL:player.source},
   onBeforeAudio:pausePlayback
 });

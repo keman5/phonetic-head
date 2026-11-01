@@ -25,7 +25,7 @@ test('all pages share five reachable navigation links and one route-aware select
     ['/learn.html?course=dog','课程'], ['/practice.html?course=cat','语音教练'],
     ['/practice.html?mode=sing&course=bird','唱歌练习'], ['/lab.html?lesson=dog-sound','实验室'],
   ]) {
-    await page.goto(origin+route,{waitUntil:'networkidle'});
+    await page.goto(origin+route,{waitUntil:'domcontentloaded'});
     await selection(selected);
     for (const width of [320,390,768,1440]) {
       await page.setViewportSize({width,height:900});
@@ -52,6 +52,7 @@ test('all pages share five reachable navigation links and one route-aware select
   await selection('每日路径');
   await navigation.getByRole('link',{name:'唱歌练习',exact:true}).click();
   await selection('唱歌练习');
+  await page.locator('#sing-reference').waitFor({state:'visible'});
   assert(await page.locator('#sing-reference').isVisible());
   await navigation.getByRole('link',{name:'语音教练',exact:true}).click();
   await selection('语音教练');

@@ -1,0 +1,30 @@
+test.upit.top:443 {
+    tls internal
+    root * /etc/caddy/phonetic-head/current
+    encode zstd gzip
+    header {
+        X-Content-Type-Options nosniff
+        Referrer-Policy same-origin
+        Permissions-Policy "camera=(), microphone=(self)"
+        Cache-Control no-cache
+    }
+    @private path */.*
+    respond @private 404
+    handle /api/coach/status {
+        header Content-Type application/json
+        respond `{"configured":false}` 200
+    }
+    handle /api/* {
+        header Content-Type application/json
+        respond `{"error":"AI 教练尚未配置，请先使用录音对比。"}` 503
+    }
+    handle {
+        file_server {
+            precompressed br gzip
+        }
+    }
+}
+
+http://test.upit.top {
+    redir https://test.upit.top{uri} 308
+}

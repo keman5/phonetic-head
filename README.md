@@ -12,7 +12,15 @@ npm ci
 npm start
 ```
 
-打开 http://127.0.0.1:4173/ 。仅绑定本机，不部署线上。
+打开 http://127.0.0.1:4173/ 。本地服务仅绑定本机。
+
+## 线上部署
+
+线上地址：https://test.upit.top/ 。在项目根目录运行 `bash deploy.sh`：通过根目录 `build.sh` 在本地安装依赖、运行数据/资产与服务端测试，打包现有 `interactive-lab/dist`，上传到 `51tokens` 后校验并热加载 Caddy。VPS 不执行构建。仅生成部署包可运行 `bash build.sh /tmp/phonetic-head-site.tar.gz`。
+
+Cloudflare 中 `test` 为已代理的 A 记录，指向 `89.116.220.139`。源站使用现有 Caddy 的内部证书，与当前 Cloudflare Full 回源方式配合；不要直接用于 Full (strict)。部署文件位于 `/opt/cf-origin-ssl/phonetic-head`，`current` 指向对应 release；配置校验或源站检查失败时脚本恢复先前配置与版本。
+
+线上由 Caddy 直接提供课程、三维模型、音频和浏览器录音功能；学习进度仍只保存在浏览器。AI 教练接口明确返回未配置，不上传任何本地 `.env` 或密钥。部署包不包含 Blender 源文件、Python 语音模型或开发依赖。
 
 ## 文件入口
 
