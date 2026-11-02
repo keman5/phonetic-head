@@ -12,7 +12,7 @@ async function load(name){
   const bytes=readFileSync(new URL('./dist/assets/'+name,import.meta.url));
   const gltf=await new GLTFLoader().parseAsync(bytes.buffer.slice(bytes.byteOffset,bytes.byteOffset+bytes.byteLength),'');
   gltf.scene.updateMatrixWorld(true);const meshes=[];
-  gltf.scene.traverse(m=>{if(m.isMesh){m.material.side=DoubleSide;meshes.push(m);}});return meshes;
+  gltf.scene.traverse(m=>{if(m.isMesh){m.material.side=DoubleSide;m.morphTargetInfluences?.fill(0);meshes.push(m);}});return meshes;
 }
 const atlas=(await load('smooth-articulators.glb')).filter(m=>m.userData.anatomyName==='Tongue');
 const roof=await load('teaching-palate.glb');
@@ -39,16 +39,38 @@ function gap(){
   return Math.min(...gaps);
 }
 
-test('teaching contacts preserve the resting tongue, atlas and sagittal morph caps',()=>{
+test('teaching tongue narrows the underside, preserving the atlas, dorsal surface and morph caps',()=>{
   for(const [i,m]of tongue.entries()){
     assert.deepEqual(atlas[i].geometry.attributes.position.array,original[i]);
-    assert.deepEqual(m.geometry.attributes.position.array,original[i]);
+    assert.notDeepEqual(m.geometry.attributes.position.array,original[i]);
+    const p=new Vector3();let lifted=0;
+    for(let j=0;j<m.geometry.attributes.position.count;j++){
+      const before=new Vector3().fromBufferAttribute(atlas[i].geometry.attributes.position,j).applyMatrix4(atlas[i].matrixWorld);
+      p.fromBufferAttribute(m.geometry.attributes.position,j).applyMatrix4(m.matrixWorld);
+      assert(p.y>=before.y-1e-7,'underside cannot extend farther into the chin');
+      assert(Math.abs(p.x-before.x)<1e-7&&Math.abs(p.z-before.z)<1e-7);
+      const samples=[0,.004,.008,.012,.016,.020].map(x=>posedSurfaceHeight([atlas[i]],x*(i===0?1:-1),before.z,true)).filter(y=>y!==null);
+      const top=samples.length?Math.max(...samples):posedSurfaceHeight([atlas[i]],before.x,before.z,true);
+      if(top!==null&&top-before.y<=.003)assert(p.distanceTo(before)<1e-7,'dorsal contact surface must stay fixed');
+      if(top!==null&&before.z>.04)assert(top-p.y<.020,'lateral underside must not retain the deep atlas fin');
+      if(p.y>before.y+.002)lifted++;
+    }
+    assert(lifted>100,'the broad atlas underside must actually be reduced');
     assert.equal(m.geometry.morphAttributes.position.length,Object.keys(m.morphTargetDictionary).length);
     const cap=buildSectionGeometry(m.geometry,m.userData.side);
     assert(cap.geometry);assert.equal(cap.unclosed,0);
     assert.equal(cap.geometry.morphAttributes.position.length,m.geometry.morphAttributes.position.length);
     for(const attribute of [m.geometry.attributes.position,...m.geometry.morphAttributes.position,...m.geometry.morphAttributes.normal])assert(attribute.array.every(Number.isFinite));
   }
+});
+
+test('teaching body and tip have a thin side profile separate from the deep atlas root',()=>{
+ for(const m of tongue)m.morphTargetInfluences.fill(0);
+ for(const z of [.04,.05,.06,.07,.075]){
+  const top=posedSurfaceHeight(tongue,0,z,true),bottom=posedSurfaceHeight(tongue,0,z);
+  assert(top!==null&&bottom!==null);
+  assert(top-bottom<.020,`tongue body is too thick at ${z}: ${top-bottom}`);
+ }
 });
 
 test('tip and back closures meet the teaching roof without penetrating it',()=>{

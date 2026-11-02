@@ -17,6 +17,7 @@ import './voice-practice.test.mjs';
 import './curriculum-audio.test.mjs';
 import './connected-speech-model.test.mjs';
 import './teaching-tongue.test.mjs';
+import './classroom-models.test.mjs';
 import './tongue-airflow.test.mjs';
 
 test('plosives block airflow during closure and release it afterward',()=>{

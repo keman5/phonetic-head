@@ -15,7 +15,7 @@ try{
  const readyMs=Math.round(performance.now()-start);
  const frame=page.frameLocator('#model-frame');
  const assets=await frame.locator('body').evaluate(()=>performance.getEntriesByType('resource').filter(r=>r.name.endsWith('.glb')).map(r=>({file:new URL(r.name).pathname.split('/').pop(),encodedBytes:r.encodedBodySize,decodedBytes:r.decodedBodySize,transferBytes:r.transferSize,durationMs:Math.round(r.duration)})));
- assert.equal(assets.length,5);assert(assets.every(a=>a.encodedBytes>0&&a.decodedBytes>0));
+ assert.deepEqual(assets.map(a=>a.file).sort(),['classroom.glb','ear-refined-skin.glb']);assert(assets.every(a=>a.encodedBytes>0&&a.decodedBytes>0));
  const encodings=await Promise.all(responses.map(async r=>({file:new URL(r.url()).pathname.split('/').pop(),encoding:(await r.allHeaders())['content-encoding']||'identity'})));
  assert.deepEqual(errors,[]);
  const result={url:page.url(),readyMs,encodedBytes:assets.reduce((sum,a)=>sum+a.encodedBytes,0),decodedBytes:assets.reduce((sum,a)=>sum+a.decodedBytes,0),assets,encodings};

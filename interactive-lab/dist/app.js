@@ -13,7 +13,7 @@ import {teachingRole,lessonFor,CHILD_LABELS} from './teaching.js';
 import {createLearningCoach} from './learning.js';
 import {setOpacity,sectionOpacityPolicy,pickClosest,surfaceLabel} from './render-utils.js';
 import {childToothGeometry} from './child-teeth.js';
-import {teachingTongueGeometry,teachingTongueWeights} from './teaching-tongue.js';
+import {teachingTongueWeights} from './teaching-tongue.js';
 import {createOralAirPath} from './tongue-airflow.js';
 import {ANATOMY_GUIDES,ANATOMY_INTRO} from './anatomy-guide.js';
 import {LESSONS,LESSON_SERIES,DEMONSTRATION_RATE} from './curriculum.js';
@@ -517,6 +517,48 @@ async function warmMaterials(){
     warmScene.clear();
   }
 }
+const loader=new GLTFLoader();
+let detailsLoaded=false,detailsLoading=null;
+function addModelMeshes(root){
+    const added=[];model.add(root);model.updateMatrixWorld(true);
+    root.traverse(m=>{if(!m.isMesh)return;
+      const metadata=m.userData.anatomyName?m.userData:m.parent?.userData||{};m.userData={...m.userData,...metadata};
+      if(!m.userData.variant&&['skin','eye'].includes(m.userData.layer))m.userData.variant='human';
+      if(!m.userData.side||!m.userData.layer)throw new Error('Missing anatomy metadata: '+m.name);
+      const {color,material}=createTeachingMaterial(m.userData,state.palette,childMode);m.material=material;
+      m.userData.baseColor=new THREE.Color(color);m.geometry.computeBoundingBox();m.userData.center=m.geometry.boundingBox.getCenter(new THREE.Vector3());m.frustumCulled=false;meshes.push(m);added.push(m);
+      m.userData.morphBindings=Object.entries(m.morphTargetDictionary||{});
+      m.userData.motionKeys=[...new Set(Object.values(FOCUS).filter(f=>f.match(m.userData.anatomyName)).flatMap(f=>f.keys))];
+    });
+    medianNormalGroups=smoothMedianNormals(meshes);
+    for(const source of added){
+      if(source.userData.solidVolume||source.userData.lumen||source.userData.anatomyName==='Trachea'||['detail','whisker','brow','mouth'].includes(source.userData.feature))continue;
+      const whiteSection=['skin','eye'].includes(source.userData.layer);
+      const result=buildSectionGeometry(source.geometry,source.userData.side,{fillShell:whiteSection,solidEnvelope:source.userData.variant==='human'&&source.userData.layer==='skin'});
+      if(!result.geometry)continue;
+      const cap=new THREE.Mesh(result.geometry,source.material);cap.name=source.name+' section';
+      cap.userData={...source.userData,isSectionCap:true,whiteSection,unclosed:result.unclosed};
+      cap.renderOrder=source.userData.layer==='organ'?6:source.userData.layer==='bone'?4:source.userData.layer==='muscle'?3:/Muzzle|Face mask/.test(source.userData.anatomyName)?2:1;
+      if(source.morphTargetInfluences){cap.morphTargetInfluences=source.morphTargetInfluences;cap.morphTargetDictionary=source.morphTargetDictionary;}
+      cap.sourceMesh=source;source.add(cap);model.attach(cap);sectionCaps.push(cap);
+      if(whiteSection&&source.userData.variant==='human'&&source.userData.layer==='skin'){
+        // Complementary shader masks provide the pedagogical cavity colours at
+        // the same cut plane, without a second full silhouette or a 4 mm slab.
+        const backing=cap.clone();backing.name=cap.name+' cavity colour fill';backing.userData.contourFill=true;backing.sourceMesh=source;
+        if(source.morphTargetInfluences){backing.morphTargetInfluences=source.morphTargetInfluences;backing.morphTargetDictionary=source.morphTargetDictionary;}
+        model.add(backing);sectionCaps.push(backing);
+      }
+    }
+    syncTeachingGeometry();syncAlpha();
+}
+async function loadAnatomyDetails(){
+  if(detailsLoaded)return;
+  if(!detailsLoading)detailsLoading=loader.loadAsync('./assets/anatomy-details.glb').then(async gltf=>{
+    addModelMeshes(gltf.scene);model.updateMatrixWorld(true);await warmMaterials();
+    detailsLoaded=true;invalidate();
+  }).catch(error=>{detailsLoading=null;throw error;});
+  return detailsLoading;
+}
 buildUI();
 curriculum=mountCurriculum({
   onSelect:id=>selectSound('lesson:'+id),
@@ -555,59 +597,12 @@ try{
   const resize=()=>{const w=mount.clientWidth,h=mount.clientHeight;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h);invalidate();};new ResizeObserver(resize).observe(mount);resize();setView('oblique');
   mount.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key))return;e.preventDefault();cameraTween=null;const offset=camera.position.clone().sub(controls.target);const s=new THREE.Spherical().setFromVector3(offset);s.theta+=(e.key==='ArrowLeft'?.1:e.key==='ArrowRight'?-.1:0);s.phi+=e.key==='ArrowUp'?-.1:e.key==='ArrowDown'?.1:0;s.makeSafe();camera.position.copy(controls.target).add(new THREE.Vector3().setFromSpherical(s));controls.update();});
   renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();cancelAnimationFrame(frame);fail(new Error('WebGL context lost'));});
-  const loader=new GLTFLoader();
-  Promise.all([loader.loadAsync('./assets/phonetic-head.glb'),loader.loadAsync('./assets/ear-refined-skin.glb'),loader.loadAsync('./assets/solid-human-core.glb'),loader.loadAsync('./assets/smooth-articulators.glb'),loader.loadAsync('./assets/teaching-palate.glb')]).then(async([gltf,repaired,solidCore,articulators,teachingPalate])=>{
-    const refinedNames=new Set();articulators.scene.traverse(m=>{if(m.isMesh)refinedNames.add(m.userData.anatomyName);});
-    const replaced=[];gltf.scene.traverse(m=>{if(m.isMesh&&(m.userData.layer==='skin'||refinedNames.has(m.userData.anatomyName)))replaced.push(m);});
-    for(const m of replaced){m.parent.remove(m);m.geometry.dispose();m.material.dispose();}
-    gltf.scene.add(repaired.scene,solidCore.scene,articulators.scene);
-    // Preserve the atlas reference; only the child view uses the simplified roof.
-    const teachingNames=new Set();teachingPalate.scene.traverse(m=>{if(m.isMesh)teachingNames.add(m.userData.anatomyName);});
-    gltf.scene.traverse(m=>{if(m.isMesh&&teachingNames.has(m.userData.anatomyName))m.userData.teacherOnly=true;});
-    gltf.scene.add(teachingPalate.scene);
-    gltf.scene.updateMatrixWorld(true);
-    const roof=[],tongues=[];
-    teachingPalate.scene.traverse(m=>{if(m.isMesh)roof.push(m);});
-    gltf.scene.traverse(m=>{if(m.isMesh&&m.userData.anatomyName==='Tongue')tongues.push(m);});
-    for(const source of tongues){
-      const {geometry,dictionary}=teachingTongueGeometry(source,roof);
-      const teaching=source.clone();teaching.geometry=geometry;teaching.updateMorphTargets();
-      teaching.morphTargetDictionary=dictionary;
-      teaching.userData={...source.userData,teachingOnly:true,teachingTongue:true};
-      source.userData.teacherOnly=true;source.parent.add(teaching);
-    }
-    model=gltf.scene;model.updateMatrixWorld(true);scene.add(model);
-    model.traverse(m=>{if(!m.isMesh)return;
-      const metadata=m.userData.anatomyName?m.userData:m.parent?.userData||{};m.userData={...m.userData,...metadata};
-      if(!m.userData.variant&&['skin','eye'].includes(m.userData.layer))m.userData.variant='human';
-      if(!m.userData.side||!m.userData.layer)throw new Error('Missing anatomy metadata: '+m.name);
-      const {color,material}=createTeachingMaterial(m.userData,state.palette,childMode);m.material=material;
-      m.userData.baseColor=new THREE.Color(color);m.geometry.computeBoundingBox();m.userData.center=m.geometry.boundingBox.getCenter(new THREE.Vector3());m.frustumCulled=false;meshes.push(m);
-      m.userData.morphBindings=Object.entries(m.morphTargetDictionary||{});
-      m.userData.motionKeys=[...new Set(Object.values(FOCUS).filter(f=>f.match(m.userData.anatomyName)).flatMap(f=>f.keys))];
-    });
-    medianNormalGroups=smoothMedianNormals(meshes);
-    for(const source of meshes){
-      if(source.userData.solidVolume||source.userData.lumen||source.userData.anatomyName==='Trachea'||['detail','whisker','brow','mouth'].includes(source.userData.feature))continue;
-      const whiteSection=['skin','eye'].includes(source.userData.layer);
-      const result=buildSectionGeometry(source.geometry,source.userData.side,{fillShell:whiteSection,solidEnvelope:source.userData.variant==='human'&&source.userData.layer==='skin'});
-      if(!result.geometry)continue;
-      const cap=new THREE.Mesh(result.geometry,source.material);cap.name=source.name+' section';
-      cap.userData={...source.userData,isSectionCap:true,whiteSection,unclosed:result.unclosed};
-      cap.renderOrder=source.userData.layer==='organ'?6:source.userData.layer==='bone'?4:source.userData.layer==='muscle'?3:/Muzzle|Face mask/.test(source.userData.anatomyName)?2:1;
-      if(source.morphTargetInfluences){cap.morphTargetInfluences=source.morphTargetInfluences;cap.morphTargetDictionary=source.morphTargetDictionary;}
-      cap.sourceMesh=source;source.add(cap);model.attach(cap);sectionCaps.push(cap);
-      if(whiteSection&&source.userData.variant==='human'&&source.userData.layer==='skin'){
-        // Complementary shader masks provide the pedagogical cavity colours at
-        // the same cut plane, without a second full silhouette or a 4 mm slab.
-        const backing=cap.clone();backing.name=cap.name+' cavity colour fill';backing.userData.contourFill=true;backing.sourceMesh=source;
-        if(source.morphTargetInfluences){backing.morphTargetInfluences=source.morphTargetInfluences;backing.morphTargetDictionary=source.morphTargetDictionary;}
-        model.add(backing);sectionCaps.push(backing);
-      }
-    }
+  $('#anatomy-details').disabled=true;
+  Promise.all([loader.loadAsync('./assets/classroom.glb'),loader.loadAsync('./assets/ear-refined-skin.glb')]).then(async([gltf,skin])=>{
+    model=new THREE.Group();scene.add(model);gltf.scene.add(skin.scene);addModelMeshes(gltf.scene);
     syncTeachingGeometry();preset('cutaway');setView('right');model.updateMatrixWorld(true);
     $('#load-detail').textContent='正在准备透明观察效果…';await warmMaterials();
-    ready=true;coach?.ready();curriculum?.setReady(true);$('#load-state').hidden=true;$('#play').disabled=false;$('#restart').disabled=false;tick(performance.now());
+    $('#anatomy-details').disabled=false;ready=true;coach?.ready();curriculum?.setReady(true);$('#load-state').hidden=true;$('#play').disabled=false;$('#restart').disabled=false;tick(performance.now());
   }).catch(fail);
 }catch(error){fail(error);}
 
@@ -626,8 +621,15 @@ document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{if(controls){
 document.querySelectorAll('[data-preset]').forEach(b=>b.onclick=()=>preset(b.dataset.preset));$('#reset-opacity').onclick=()=>preset('cutaway');
 $('#swap-sides').onclick=()=>{[state.alpha.left,state.alpha.right]=[state.alpha.right,state.alpha.left];syncAlpha();clearPreset();};
 $('#clear-focus').onclick=()=>focusOn(null);
-$('#anatomy-details').onchange=e=>{
-  childMode=!e.target.checked;refreshMaterials();
+$('#anatomy-details').onchange=async e=>{
+  const input=e.target;
+  if(input.checked&&!detailsLoaded){
+    input.disabled=true;$('#display-mode').textContent='正在加载解剖细节…';
+    try{await loadAnatomyDetails();}
+    catch{input.checked=false;$('#display-mode').textContent='解剖细节加载失败，可重新勾选重试';return;}
+    finally{input.disabled=false;}
+  }
+  childMode=!input.checked;refreshMaterials();
   document.querySelectorAll('[data-focus]').forEach(b=>b.querySelector('span').textContent=focusLabel(b.dataset.focus));
   focusOn(null);$('#display-mode').textContent=childMode?'儿童简化模型':'教师解剖对照';
   $('#focus-heading').textContent=!childMode&&state.palette==='human'?'观察肌肉配合':'观察发音动作';
@@ -699,7 +701,7 @@ window.opacitySnapshot=()=>({
     offsetX:m.position.x,reveal:m.userData.opacityPolicy?.reveal,oppositeOpacity:m.userData.opacityPolicy?.oppositeOpacity,policyOpacity:m.userData.opacityPolicy?.capOpacity,contourFill:!!m.userData.contourFill,depthWrite:m.material.depthWrite,renderOrder:m.renderOrder,transparent:m.material.transparent,blending:m.material.blending}))
 });
 // Read-only diagnostic snapshot for local checks; no UI simulation or random scoring.
-window.teachingSnapshot=()=>({childMode,lesson:lessonKey,visibleSkeleton:meshes.filter(m=>m.visible&&m.userData.layer==='bone'&&teachingRole(m.userData)!=='teeth').length,filledContours:sectionCaps.filter(m=>m.visible&&m.userData.contourFill).length,visibleDetails:meshes.filter(m=>m.visible&&teachingRole(m.userData)==='detail').length,visibleRoles:[...new Set(meshes.filter(m=>m.visible).map(m=>teachingRole(m.userData)))],hiddenDetailCaps:sectionCaps.filter(m=>!m.visible&&teachingRole(m.userData)==='detail').length});
+window.teachingSnapshot=()=>({childMode,detailsLoaded,lesson:lessonKey,visibleSkeleton:meshes.filter(m=>m.visible&&m.userData.layer==='bone'&&teachingRole(m.userData)!=='teeth').length,filledContours:sectionCaps.filter(m=>m.visible&&m.userData.contourFill).length,visibleDetails:meshes.filter(m=>m.visible&&teachingRole(m.userData)==='detail').length,visibleRoles:[...new Set(meshes.filter(m=>m.visible).map(m=>teachingRole(m.userData)))],hiddenDetailCaps:sectionCaps.filter(m=>!m.visible&&teachingRole(m.userData)==='detail').length});
 window.learningSnapshot=()=>({...coach.snapshot(),cameraMoving:!!cameraTween});
 window.sectionMaterials=()=>sectionCaps.filter(c=>c.visible).map(c=>({name:c.sourceMesh.userData.anatomyName,color:c.material.color.getHexString(),source:c.sourceMesh.material.color.getHexString(),type:c.material.type,sourceType:c.sourceMesh.material.type,emissive:c.material.emissive?.getHexString(),sourceEmissive:c.sourceMesh.material.emissive?.getHexString()}));
 window.labSnapshot=()=>({ready,audio:{voice:state.voice,src:player.source,paused:player.audio.paused,currentTime:player.audio.currentTime,duration:player.duration,rate:player.rate,playbackRate:player.audio.playbackRate,muted:player.muted},solidCoreMeshes:meshes.filter(m=>m.userData.solidVolume).length,visibleSolidCoreMeshes:meshes.filter(m=>m.userData.solidVolume&&m.visible).length,medianNormalGroups,sectionCapCount:sectionCaps.length,visibleWhiteSections:sectionCaps.filter(c=>c.visible&&c.userData.whiteSection).length,whiteSectionColors:[...new Set(sectionCaps.filter(c=>c.visible&&c.userData.whiteSection).map(c=>c.material.color.getHexString()))],humanEyeColors:meshes.filter(m=>m.userData.layer==='eye').map(m=>m.material.color.getHexString()),visibleSectionCaps:sectionCaps.filter(c=>c.visible).length,visibleMuscleCaps:sectionCaps.filter(c=>c.visible&&c.userData.layer==='muscle').length,palette:state.palette,visibleSourceMeshes:meshes.filter(m=>m.visible&&!m.userData.variant).length,characterTongue:meshes.filter(m=>m.userData.variant===state.palette&&m.userData.feature==='tongue').map(m=>({visible:m.visible,weights:Object.fromEntries(Object.entries(m.morphTargetDictionary||{}).map(([key,index])=>[key,m.morphTargetInfluences[index]]))})),repairedSkinMeshes:meshes.filter(m=>m.userData.layer==='skin'&&m.userData.variant==='human'&&!m.userData.solidVolume).length,visibleHeadVariants:[...new Set(meshes.filter(m=>m.visible&&m.userData.variant).map(m=>m.userData.variant))],visibleHeadMeshes:meshes.filter(m=>m.userData.variant===state.palette&&m.visible).length,headModels:[...new Set(meshes.map(m=>m.userData.variant).filter(Boolean))],skinMorphMeshes:meshes.filter(m=>m.userData.layer==='skin'&&!m.userData.solidVolume&&m.userData.variant===state.palette&&m.morphTargetInfluences?.some(w=>w>0)).length,playing:state.playing,sound:state.sound,progress:state.progress,alpha:{...state.alpha},meshCount:meshes.length,pose:currentPose(),airVisible:airGroup.visible,airPosition:particles.instanceMatrix.array.slice(12,15),visibleSides:{left:meshes.filter(m=>m.userData.side==='left'&&m.visible).length,right:meshes.filter(m=>m.userData.side==='right'&&m.visible).length},morphMeshes:meshes.filter(m=>m.morphTargetInfluences?.some(w=>w>0)).length});

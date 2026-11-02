@@ -1,0 +1,32 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {launchBrowser} from './browser-test-utils.mjs';
+
+test('classroom loads only teaching assets; anatomy can fail, retry and stay cached',{timeout:180000},async t=>{
+ const browser=await launchBrowser();t.after(()=>browser.close());
+ const page=await browser.newPage({viewport:{width:1440,height:1000}}),requests=[],errors=[];
+ page.on('request',r=>{if(r.url().endsWith('.glb'))requests.push(new URL(r.url()).pathname.split('/').pop());});
+ page.on('pageerror',e=>errors.push(e.message));
+ await page.goto((process.env.TEST_APP_URL||'http://127.0.0.1:4173')+'/lab.html');
+ await page.waitForFunction(()=>window.labSnapshot?.().ready,null,{timeout:90000});
+ assert.deepEqual(requests.sort(),['classroom.glb','ear-refined-skin.glb']);
+ assert.equal(await page.evaluate(()=>teachingSnapshot().detailsLoaded),false);
+ await page.locator('#tab-model').click();
+ await page.route('**/anatomy-details.glb',route=>route.abort());
+ await page.locator('#anatomy-details').click();
+ await page.waitForFunction(()=>document.querySelector('#display-mode').textContent.includes('加载失败'));
+ assert.equal(await page.evaluate(()=>teachingSnapshot().childMode),true);
+ assert.equal(await page.locator('#anatomy-details').isChecked(),false);
+ await page.unroute('**/anatomy-details.glb');
+ await page.locator('#anatomy-details').check();
+ await page.waitForFunction(()=>!teachingSnapshot().childMode,null,{timeout:60000});
+ assert.equal(await page.evaluate(()=>teachingSnapshot().detailsLoaded),true);
+ assert((await page.evaluate(()=>teachingSnapshot().visibleDetails))>20);
+ const loaded=requests.length;
+ await page.locator('#anatomy-details').uncheck();
+ await page.locator('#anatomy-details').check();
+ assert.equal(requests.length,loaded);
+ await page.locator('#anatomy-details').uncheck();
+ assert.equal(await page.evaluate(()=>teachingSnapshot().visibleDetails),0);
+ assert.deepEqual(errors,[]);
+});

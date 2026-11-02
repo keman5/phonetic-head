@@ -4,9 +4,8 @@ import {posedSurfaceHeight} from './tongue-airflow.js';
 
 const smooth = (a,b,x) => {const t=Math.max(0,Math.min(1,(x-a)/(b-a)));return t*t*(3-2*t);};
 
-// Fit the two contact gestures to the actual teaching roof. Keep the atlas
-// resting volume: the thick tongue root is anatomy, not an enlarged tongue tip.
-// The reference geometry stays untouched for the teacher's anatomy view.
+// Keep the dorsal contact surface; narrow the teaching underside so the deep
+// atlas root is not mistaken for a tongue extending into the chin.
 export function teachingTongueGeometry(source, palateMeshes) {
   const geometry=source.geometry.clone(),base=geometry.attributes.position;
   const dictionary={...source.morphTargetDictionary};
@@ -20,6 +19,23 @@ export function teachingTongueGeometry(source, palateMeshes) {
     return copy;
   });
   const inverse=source.matrixWorld.clone().invert();
+  const dorsal=new Map(),side=source.userData.side==='left'?1:-1;
+  for(let i=0;i<base.count;i++){
+    const rest=new Vector3().fromBufferAttribute(base,i).applyMatrix4(source.matrixWorld);
+    // The atlas has a gap at the midline; sample across the half to avoid retaining its lower fin.
+    if(!dorsal.has(rest.z)){
+      const samples=[0,.004,.008,.012,.016,.020].map(x=>posedSurfaceHeight([probe],x*side,rest.z,true)).filter(y=>y!==null);
+      dorsal.set(rest.z,samples.length?Math.max(...samples):null);
+    }
+    const top=dorsal.get(rest.z)??posedSurfaceHeight([probe],rest.x,rest.z,true);
+    if(top===null)continue;
+    const depth=top-rest.y;
+    const limit=.028-.012*smooth(.018,.048,rest.z)-.009*smooth(.068,.092,rest.z);
+    if(depth<=.003)continue;
+    const lift=depth-.003-(limit-.003)*(1-Math.exp(-(depth-.003)/(limit-.003)));
+    p.copy(rest);p.y+=lift;p.applyMatrix4(inverse);base.setXYZ(i,p.x,p.y,p.z);
+  }
+  probe.geometry=geometry;
   const extra=[];
   for(const [key,front] of [['TipAlveolar',true],['BackSeal',false]]) {
     const index=dictionary[key],original=geometry.morphAttributes.position[index];

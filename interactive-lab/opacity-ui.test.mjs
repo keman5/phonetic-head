@@ -17,6 +17,7 @@ test('half and layer transparency includes internal tissues and caps; both modes
     [50,50,0,0],[65,30,40,55],[100,100,0,0],[100,0,100,0]];
   for(const teacher of [false,true]){
   await page.locator('#anatomy-details').setChecked(teacher);
+  await page.waitForFunction(teacher=>teachingSnapshot().childMode===!teacher,teacher);
   for (const [left,right,skin,organ] of cases) {
     for (const [id,value] of [['left-alpha',left],['right-alpha',right],['layer-skin',skin],['layer-organ',organ]]) await page.locator('#'+id).fill(String(value));
     await page.waitForFunction(([l,r,s,o]) => { const a=labSnapshot().alpha; return a.left===l&&a.right===r&&a.skin===s&&a.organ===o; }, [left,right,skin,organ]);
@@ -48,6 +49,7 @@ test('half and layer transparency includes internal tissues and caps; both modes
   await page.locator('#anatomy-details').uncheck();
   assert.equal(await page.evaluate(()=>opacitySnapshot().meshes.filter(m=>m.childTeeth).length),28);
   await page.locator('#anatomy-details').check();
+  await page.waitForFunction(()=>!teachingSnapshot().childMode);
   assert.equal(await page.evaluate(()=>opacitySnapshot().meshes.filter(m=>m.childTeeth).length),28,'anatomy details must not restore long roots');
   await page.locator('#anatomy-details').uncheck();
   assert.equal(await page.evaluate(()=>opacitySnapshot().meshes.filter(m=>m.childTeeth).length),28);

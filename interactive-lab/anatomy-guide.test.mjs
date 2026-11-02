@@ -16,13 +16,14 @@ test('expanded help, coloured anatomy guides and vocal zoom work in the real bro
   await page.locator('#tab-model').click();
   await page.locator('[data-preset=surface]').click();
   let tissues=await page.evaluate(()=>opacitySnapshot().meshes);
-  assert.equal(tissues.filter(m=>m.teachingOnly&&m.visible).length,6,'one hard/soft/uvula mesh per half');
-  assert.equal(tissues.filter(m=>m.teacherOnly&&m.visible).length,0,'atlas palate cannot overlap the child roof');
+  assert.equal(tissues.filter(m=>m.teachingOnly&&/palate/i.test(m.name)&&m.visible).length,6,'one hard/soft/uvula mesh per half');
+  assert.equal(tissues.filter(m=>m.teacherOnly&&/palate/i.test(m.name)&&m.visible).length,0,'atlas palate cannot overlap the child roof');
   assert(tissues.filter(m=>m.name==='Epiglottis').every(m=>!m.visible),'unneeded flap is hidden');
   await page.locator('#anatomy-details').check();
+  await page.waitForFunction(()=>!teachingSnapshot().childMode);
   tissues=await page.evaluate(()=>opacitySnapshot().meshes);
-  assert.equal(tissues.filter(m=>m.teachingOnly&&m.visible).length,0);
-  assert.equal(tissues.filter(m=>m.teacherOnly&&m.visible).length,4,'source soft palate and uvula preserved for teacher');
+  assert.equal(tissues.filter(m=>m.teachingOnly&&/palate/i.test(m.name)&&m.visible).length,0);
+  assert.equal(tissues.filter(m=>m.teacherOnly&&/palate/i.test(m.name)&&m.visible).length,4,'source soft palate and uvula preserved for teacher');
   await page.locator('#anatomy-details').uncheck();
   await page.locator('[data-preset=cutaway]').click();
   for(const [id,description] of [['nasal','鼻腔通道'],['velum','硬腭'],['airway','不是器官']]){

@@ -6,6 +6,7 @@ if command -v go >/dev/null 2>&1; then go clean -cache; fi
 rm -rf .artifacts interactive-lab/.artifacts
 cd interactive-lab
 npm ci --no-audit --no-fund
+bash models/build.sh
 npm test
 npm run test:server
 test -s dist/index.html

@@ -70,6 +70,7 @@ test('neutral human model: opacity, picking, idle rendering and animation',{time
   await page.waitForFunction(()=>labSnapshot().alpha.left===45);
   await page.screenshot({path:'qa/neutral-half.png',fullPage:true});
   await page.locator('#anatomy-details').check();
+  await page.waitForFunction(()=>!teachingSnapshot().childMode);
   assert((await page.evaluate(()=>teachingSnapshot())).visibleDetails>0);
   assert.equal(await page.locator('#tongue-landmarks').isVisible(),false);
   await page.locator('#anatomy-details').uncheck();

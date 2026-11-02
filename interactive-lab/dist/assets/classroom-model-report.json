@@ -1,0 +1,17 @@
+{
+  "sourceHash": "7e08ac307e01522c30f0e8fd59afcb009bcdff0b4582abc4de9091e7d0ed0269",
+  "sha256": {
+    "classroom.glb": "58d3385a6c5b251c6858b5c1fd55557b7937e6ef1f94edbf4c841f1b87afb7ed",
+    "anatomy-details.glb": "fce16e29ec77dfb8b1c0f3449f4b977bb229ff676eb4e4fd0712b9e24ba6ae31"
+  },
+  "bundles": {
+    "classroom.glb": {
+      "bytes": 5116460,
+      "meshes": 40
+    },
+    "anatomy-details.glb": {
+      "bytes": 22459324,
+      "meshes": 234
+    }
+  }
+}

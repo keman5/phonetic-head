@@ -45,6 +45,7 @@ test('modern interface preserves the working pronunciation lab', {timeout: 12000
     assert.match(await page.locator('#selection').innerText(), /舌头/);
     assert.equal(await page.locator('#teacher-tools').evaluate(e=>e.open),true);
     await page.locator('#anatomy-details').check();
+  await page.waitForFunction(()=>!teachingSnapshot().childMode);
     assert.equal((await page.evaluate(() => teachingSnapshot())).childMode, false);
     await page.locator('#anatomy-details').uncheck();
     await page.locator('[data-preset="surface"]').click();
