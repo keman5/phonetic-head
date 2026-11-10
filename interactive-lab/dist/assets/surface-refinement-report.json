@@ -1,0 +1,17 @@
+{
+  "sourceHash": "48ec7b3da37fae626b42364cb590c382a39c85e164cef267bb07562a365ff4c1",
+  "sha256": "b4de842b9a63d5a9538256a3483c5ed8949290feb83e3867ad1d7237524a2816",
+  "scalpSheets": 2,
+  "baseSheets": 2,
+  "baseHeight": 1.437,
+  "morphs": [
+    "JawOpen",
+    "LipClose",
+    "LipSpread",
+    "JawForward",
+    "LipRound",
+    "LipProtrude",
+    "LipBite",
+    "BreathPressure"
+  ]
+}

@@ -9,7 +9,7 @@ test('classroom loads only teaching assets; anatomy can fail, retry and stay cac
  page.on('pageerror',e=>errors.push(e.message));
  await page.goto((process.env.TEST_APP_URL||'http://127.0.0.1:4173')+'/lab.html');
  await page.waitForFunction(()=>window.labSnapshot?.().ready,null,{timeout:90000});
- assert.deepEqual(requests.sort(),['classroom.glb','ear-refined-skin.glb']);
+ assert.deepEqual(requests.sort(),['classroom-skin.glb','classroom.glb']);
  assert.equal(await page.evaluate(()=>teachingSnapshot().detailsLoaded),false);
  await page.locator('#tab-model').click();
  await page.route('**/anatomy-details.glb',route=>route.abort());

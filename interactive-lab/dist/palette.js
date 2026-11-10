@@ -7,6 +7,8 @@ export const PALETTES={
   human:{skin:'#ffdcbd',bone:'#fff9ed',muscle:'#bad4eb',organ:'#ffc2b5',eye:'#ffdcbd',tongue:'#f47791',palate:'#ae95e8',trachea:'#64cabc',active:'#ffd28c',background:'#f2f8fb'},
 };
 const ramp=new THREE.DataTexture(new Uint8Array([150,180,210,240]),4,1,THREE.RedFormat);
+// Internal anatomy shares the cropped bust's base, just inside its closing face.
+const bustPlane=new THREE.Plane(new THREE.Vector3(0,1,0),.111);
 ramp.minFilter=THREE.LinearFilter;ramp.magFilter=THREE.LinearFilter;ramp.needsUpdate=true;
 export function createTeachingMaterial(meta,palette,childMode=false){
   if(meta.solidVolume){
@@ -24,6 +26,16 @@ export function createTeachingMaterial(meta,palette,childMode=false){
   const character=meta.variant&&meta.variant!=='human';
   const material=character?new THREE.MeshStandardMaterial({color,roughness:.85,metalness:0,side:THREE.DoubleSide}):new THREE.MeshToonMaterial({color,gradientMap:ramp,side:THREE.DoubleSide});
   material.forceSinglePass=true;
+  if(meta.layer!=='skin'){
+    material.clippingPlanes=[bustPlane];
+    // MSAA edge samples must clip inside the triangle, not extrapolate past it.
+    material.onBeforeCompile=shader=>{
+      for(const stage of ['vertex','fragment']){
+        const chunk='clipping_planes_pars_'+stage;
+        shader[stage+'Shader']=shader[stage+'Shader'].replace('#include <'+chunk+'>',THREE.ShaderChunk[chunk].replace('varying vec3 vClipPosition;','centroid varying vec3 vClipPosition;'));
+      }
+    };
+  }
   // A translucent skin shell should not blend its own back faces over the face.
   // The cutaway has dedicated double-sided closing surfaces.
   if(meta.layer==='skin'&&!meta.solidVolume){

@@ -5,6 +5,9 @@ import {createHash} from 'node:crypto';
 import * as THREE from 'three';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {smoothMedianNormals,buildSectionGeometry} from './dist/sections.js';
+import {poseAt} from './dist/motion.js';
+import {childToothGeometry} from './dist/child-teeth.js';
+import {createTeachingMaterial} from './dist/palette.js';
 
 async function load(name) {
   const bytes=readFileSync(new URL('./dist/assets/'+name,import.meta.url));
@@ -13,7 +16,7 @@ async function load(name) {
   return meshes;
 }
 
-for(const asset of ['repaired-skin.glb','refined-lips.glb','ear-refined-skin.glb']) {
+for(const asset of ['repaired-skin.glb','refined-lips.glb','ear-refined-skin.glb','classroom-skin.glb']) {
 test(asset+': closed eyelids cover both sockets with skin geometry, not a floating eyeball',async()=>{
   const report=JSON.parse(readFileSync(new URL('./dist/assets/skin-repair-report.json',import.meta.url)));
   assert.equal(report.closed_eyelids,true);
@@ -82,7 +85,7 @@ test('lip refinement is a finite eight-channel derivative of the untouched repai
   }
 });
 
-for(const asset of ['refined-lips.glb','ear-refined-skin.glb']) {
+for(const asset of ['refined-lips.glb','ear-refined-skin.glb','classroom-skin.glb']) {
 test(asset+': exported lip boundaries wind smoothly without angular backtracking',async()=>{
   const vertices=new Map(),edges=new Map();
   for(const mesh of await load(asset)){
@@ -153,7 +156,7 @@ test('solid core cut faces never cross the sagittal cap during a morph',async()=
   }
 });
 
-for(const asset of ['repaired-skin.glb','refined-lips.glb','ear-refined-skin.glb']) {
+for(const asset of ['repaired-skin.glb','refined-lips.glb','ear-refined-skin.glb','classroom-skin.glb']) {
 test(asset+': lip aperture does not turn into a horizontal gap across the cutaway neck',async()=>{
   const skin=(await load(asset)).find(m=>m.userData.side==='left');
   const {geometry}=buildSectionGeometry(skin.geometry,'left',{fillShell:true,solidEnvelope:true});
@@ -170,3 +173,66 @@ test(asset+': lip aperture does not turn into a horizontal gap across the cutawa
   }
 });
 }
+
+test('shipped skin closes the scalp tunnel and bust base with outward facing surfaces',async()=>{
+  const skin=await load('classroom-skin.glb');
+  for(const m of skin){m.material=new THREE.MeshBasicMaterial({side:THREE.FrontSide});m.updateMatrixWorld(true);}
+  for(const id of ['ah','f','m','u']){
+    const weights=poseAt('ipa:'+id,.5).weights;
+    for(const m of skin)for(const [key,index]of Object.entries(m.morphTargetDictionary))m.morphTargetInfluences[index]=weights[key]||0;
+    for(const x of [-.004,0,.004])for(const z of [-.015,-.011,-.007]){
+      const hit=new THREE.Raycaster(new THREE.Vector3(x,.4,z),new THREE.Vector3(0,-1,0)).intersectObjects(skin,false)[0];
+      assert(hit&&hit.point.y>.155,`${id}: scalp tunnel at ${x},${z}`);
+    }
+    for(const x of [-.04,0,.04])for(const z of [-.05,-.025,0]){
+      const hit=new THREE.Raycaster(new THREE.Vector3(x,-.4,z),new THREE.Vector3(0,1,0)).intersectObjects(skin,false)[0];
+      assert(hit&&Math.abs(hit.point.y+.113)<2e-6,`${id}: open bust at ${x},${z}`);
+      assert(hit.face.normal.y<-.99,'base must face outward with a flat normal');
+    }
+  }
+  for(const layer of ['bone','muscle','organ','eye'])for(const child of [true,false]){
+    const {material}=createTeachingMaterial({layer,anatomyName:'Trachea'},'human',child);
+    assert(material.clippingPlanes[0].distanceToPoint(new THREE.Vector3(0,-.114,0))<0,'anatomy must end inside the base');
+    assert(material.clippingPlanes[0].distanceToPoint(new THREE.Vector3(0,-.11,0))>0);
+    material.dispose();
+  }
+});
+
+test('labiodental poses cover the lower teeth without moving the upper lip behind the incisors',async()=>{
+  const skin=await load('classroom-skin.glb');
+  const teeth=(await load('classroom.glb')).filter(m=>/Lower (medial|lateral) incisor/.test(m.userData.anatomyName));
+  assert.equal(teeth.length,4);
+  for(const m of teeth){m.geometry=childToothGeometry(m.geometry,false);m.updateMorphTargets();}
+  for(const m of [...skin,...teeth])m.updateMatrixWorld(true);
+  for(const id of ['f','v']){
+    const weights=poseAt('ipa:'+id,.5).weights;
+    for(const m of [...skin,...teeth])for(const [key,index]of Object.entries(m.morphTargetDictionary||{}))m.morphTargetInfluences[index]=weights[key]||0;
+    let samples=0;
+    for(const m of teeth)for(let i=0;i<m.geometry.attributes.position.count;i+=40){
+      const point=m.getVertexPosition(i,new THREE.Vector3()).applyMatrix4(m.matrixWorld);
+      if(point.z<.075)continue;
+      const hit=new THREE.Raycaster(new THREE.Vector3(point.x,point.y,.3),new THREE.Vector3(0,0,-1)).intersectObjects(skin,false)[0];
+      assert(hit&&hit.point.z>=point.z-.0001,`${id}: lower tooth protrudes through lip`);samples++;
+    }
+    assert(samples>20);
+  }
+});
+
+test('closed lips meet at the aperture while the nose stays in place',async()=>{
+  let rimVertices=0;
+  for(const mesh of await load('classroom-skin.glb')){
+    const p=mesh.geometry.attributes.position,index=mesh.geometry.index,edges=new Map();
+    const close=mesh.geometry.morphAttributes.position[mesh.morphTargetDictionary.LipClose];
+    for(let i=0;i<index.count;i+=3)for(const [a,b]of [[0,1],[1,2],[2,0]]){
+      const ids=[index.getX(i+a),index.getX(i+b)].sort((a,b)=>a-b),key=ids.join(',');
+      const edge=edges.get(key);if(edge)edge.count++;else edges.set(key,{ids,count:1});
+    }
+    for(const {ids,count}of edges.values())if(count===1)for(const i of ids){
+      if(Math.abs(p.getX(i))<1e-6||p.getZ(i)<.074||Math.abs(p.getY(i)-1.5315)>.005)continue;
+      assert(Math.abs(p.getY(i)+close.getY(i)-1.5315)<.00001,'LipClose leaves the aperture open');rimVertices++;
+    }
+    for(let i=0;i<p.count;i++)if(p.getZ(i)>.085&&p.getY(i)>1.551&&p.getY(i)<1.57)
+      assert(new THREE.Vector3().fromBufferAttribute(close,i).length()<.00003,'closed lips must not pull the nostrils downward');
+  }
+  assert(rimVertices>200);
+});

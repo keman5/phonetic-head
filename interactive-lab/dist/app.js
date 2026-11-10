@@ -590,7 +590,7 @@ $('#part-demo').onclick=()=>previewPart();
 $('#part-compare').onclick=()=>previewPart(true);
 $('#zoom-voice').onclick=()=>explainOrgan('voice');
 try{
-  renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio,1.75));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.0;mount.appendChild(renderer.domElement);
+  renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});renderer.localClippingEnabled=true;renderer.setPixelRatio(Math.min(devicePixelRatio,1.75));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.0;mount.appendChild(renderer.domElement);
   controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.minDistance=.22;controls.maxDistance=1.2;controls.enablePan=true;
   controls.addEventListener('change',invalidate);
   controls.addEventListener('start',()=>{cameraTween=null;});
@@ -598,7 +598,7 @@ try{
   mount.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key))return;e.preventDefault();cameraTween=null;const offset=camera.position.clone().sub(controls.target);const s=new THREE.Spherical().setFromVector3(offset);s.theta+=(e.key==='ArrowLeft'?.1:e.key==='ArrowRight'?-.1:0);s.phi+=e.key==='ArrowUp'?-.1:e.key==='ArrowDown'?.1:0;s.makeSafe();camera.position.copy(controls.target).add(new THREE.Vector3().setFromSpherical(s));controls.update();});
   renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();cancelAnimationFrame(frame);fail(new Error('WebGL context lost'));});
   $('#anatomy-details').disabled=true;
-  Promise.all([loader.loadAsync('./assets/classroom.glb'),loader.loadAsync('./assets/ear-refined-skin.glb')]).then(async([gltf,skin])=>{
+  Promise.all([loader.loadAsync('./assets/classroom.glb'),loader.loadAsync('./assets/classroom-skin.glb')]).then(async([gltf,skin])=>{
     model=new THREE.Group();scene.add(model);gltf.scene.add(skin.scene);addModelMeshes(gltf.scene);
     syncTeachingGeometry();preset('cutaway');setView('right');model.updateMatrixWorld(true);
     $('#load-detail').textContent='正在准备透明观察效果…';await warmMaterials();

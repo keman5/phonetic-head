@@ -19,6 +19,7 @@ import './connected-speech-model.test.mjs';
 import './teaching-tongue.test.mjs';
 import './classroom-models.test.mjs';
 import './tongue-airflow.test.mjs';
+import './surface-quality.test.mjs';
 
 test('plosives block airflow during closure and release it afterward',()=>{
   for(const sound of ['p','k']){
