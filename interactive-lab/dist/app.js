@@ -85,7 +85,7 @@ async function startPlayback(){
   state.playing=true;syncPlay();$('#audio-status').textContent='正在准备声音…';
   try{
     await player.play(state.progress);
-    if(attempt===playbackAttempt&&state.playing){$('#audio-status').textContent='本地合成示范音';curriculum?.setStatus('先听完整示范，再跟读；可用下方进度条暂停和回看。');coach?.resume(slowMotion?'watch':'listen');}
+    if(attempt===playbackAttempt&&state.playing){$('#audio-status').textContent='课程示范音 · 口型为教学辅助';curriculum?.setStatus('先听完整示范，再跟读；可用下方进度条暂停和回看。');coach?.resume(slowMotion?'watch':'listen');}
   }catch(error){if(attempt===playbackAttempt)audioFailure(error);}
 }
 
@@ -678,6 +678,7 @@ window.teachingPlayer={
   get ready(){return ready;},
   get status(){return {playing:state.playing,progress:state.progress,wordIndex:currentPose().wordIndex};}
 };
+window.dispatchEvent(new Event('teaching-ready'));
 let down=null;
 mount.addEventListener('pointerdown',e=>down={x:e.clientX,y:e.clientY});
 mount.addEventListener('pointerup',e=>{

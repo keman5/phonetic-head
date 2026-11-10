@@ -9,14 +9,17 @@ npm ci --no-audit --no-fund
 bash models/build.sh
 npm test
 npm run test:server
+npm run test:admin-ui
 test -s dist/index.html
 test -s dist/learn.html
 test -s dist/assets/phonetic-head.glb
 # The checked-in browser assets are the build; do not regenerate authored audio/models.
 staging="$(mktemp -d /tmp/phonetic-head-build.XXXXXX)"
 trap 'rm -rf "$staging"' EXIT
-cp -R dist "$staging/site"
-node compress-models.mjs "$staging/site/assets"
-COPYFILE_DISABLE=1 tar --no-xattrs -czf "$output" -C "$staging/site" .
+cp -R dist "$staging/dist"
+cp package.json server.mjs admin-service.mjs course-store.mjs speech.mjs "$staging/"
+chmod 755 "$staging"
+node compress-models.mjs "$staging/dist/assets"
+COPYFILE_DISABLE=1 tar --no-xattrs -czf "$output" -C "$staging" .
 tar -tzf "$output" >/dev/null
 echo "Built: $output"

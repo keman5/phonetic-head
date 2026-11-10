@@ -1,5 +1,5 @@
 import {analyzeVoice} from './voice-analysis.js';
-import {LESSONS,DEMONSTRATION_RATE} from './curriculum.js';
+import {LESSONS,DEMONSTRATION_RATE,lessonAudioURL} from './curriculum.js';
 
 export function mountVoicePractice(container, {getLesson, onActivity = () => {}, onBeforeAudio = () => {}}) {
   const panel = document.createElement('section');
@@ -11,7 +11,7 @@ export function mountVoicePractice(container, {getLesson, onActivity = () => {},
     <div class="voice-actions">
       <button type="button" data-voice="record">开始录音</button>
       <button type="button" data-voice="replay" disabled>听我的录音</button>
-      <button type="button" data-voice="example">听示范 · 0.85×</button>
+      <button type="button" data-voice="example">听示范 · 1×</button>
       <button type="button" data-voice="delete" disabled>删除录音</button>
     </div>
     <p class="voice-status" role="status" aria-live="polite">准备好后，点开始录音。</p>
@@ -44,7 +44,7 @@ export function mountVoicePractice(container, {getLesson, onActivity = () => {},
   function exampleURL() {
     const lesson = getLesson();
     if (lesson && Object.hasOwn(lesson, 'exampleURL')) return typeof lesson.exampleURL === 'string' ? lesson.exampleURL.trim() : null;
-    return LESSONS[lesson?.id] ? `./assets/audio/female/lesson-${lesson.id}.wav` : null;
+    return LESSONS[lesson?.id] ? lessonAudioURL(lesson.id) : null;
   }
   function pauseAudio() { own.pause(); example.pause(); }
   function render() {

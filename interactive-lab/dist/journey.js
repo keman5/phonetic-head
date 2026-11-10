@@ -12,6 +12,9 @@ export const SCENES={
  lion:{icon:'🦁',place:'动物园的大狮子',question:'动物园里有一只大狮子。怎样把它介绍给家人？',answer:'一只大狮子',choices:['一只大狮子','一只小鸟','一只可爱的熊猫'],transfer:'比较 big dog 和 big lion，说说哪些声音变了。'},
  panda:{icon:'🐼',place:'竹林里的熊猫',question:'你看到一只可爱的熊猫。怎样用英语赞美它？',answer:'一只可爱的熊猫',choices:['一只黑猫','一只可爱的熊猫','一匹棕马'],transfer:'选择一种喜欢的动物，和老师一起用 cute 描述它。'}
 };
+for(const series of LESSON_SERIES) {
+ if(series.scene) SCENES[series.id]={icon:SCENES[series.id]?.icon||'📘',...series.scene};
+}
 const KEY='phonetic-journey-v1';
 export function readProgress(storage){
  try{

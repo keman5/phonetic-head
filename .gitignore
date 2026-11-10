@@ -24,3 +24,4 @@ __pycache__/
 
 # Local neural voice build dependencies and model weights
 interactive-lab/.audio-neural/
+interactive-lab/data/

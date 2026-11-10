@@ -14,7 +14,8 @@ export function curriculumPose(id, progress, entry) {
   const duration = entry?.duration || lesson.duration;
   const clips = entry?.clips || lesson.segments;
   const seconds = Math.max(0, Math.min(1, progress)) * duration;
-  const pose = timelinePose({clips, duration}, seconds);
+  const pose = clips.length ? timelinePose({clips, duration}, seconds)
+    : {weights:{},air:0,nasal:0,voiced:false,step:0,t:duration?seconds/duration:0};
   const word = (entry?.words || []).findIndex(w => seconds >= w.start && seconds < w.end);
   const segment = clips.find(c => seconds >= c.start && seconds < c.end);
   const active = !!segment;

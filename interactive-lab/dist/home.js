@@ -1,6 +1,7 @@
 import {LESSON_SERIES,LESSONS} from './curriculum.js';
 import {SCENES,CHAPTERS,readProgress} from './journey.js';
 import {getStudyPlan,readStudyPlan,localDateKey} from './study-plan.js';
+import {escapeHTML as html} from './html.js';
 const $=id=>document.getElementById(id);
 const legacy=new URLSearchParams(location.search).get('lesson');
 if(LESSONS[legacy])location.replace('./learn.html?course='+LESSONS[legacy].seriesId);
@@ -10,7 +11,7 @@ const todaySeries=LESSON_SERIES.find(s=>s.id===(current?.id||plan.newCourseId||p
 const word=LESSONS[todaySeries.lessonIds[1]],sentence=LESSONS[todaySeries.lessonIds[3]];
 $('continue').href='./learn.html?course='+todaySeries.id+(plan.allComplete?'#step-5':'');
 $('continue').textContent=current?'继续：'+CHAPTERS[progress[current.id].step]+' →':plan.allComplete?'开始今天的复习 →':'开始今天的小课 →';
-$('preview-word').innerHTML=`<small>/${todaySeries.soundIpa}/</small>${word.text}<span aria-hidden="true">${SCENES[todaySeries.id].icon}</span>`;
+$('preview-word').innerHTML=`<small>/${html(todaySeries.soundIpa)}/</small>${html(word.text)}<span aria-hidden="true">${SCENES[todaySeries.id].icon}</span>`;
 $('preview-sentence').textContent=sentence.text;
 $('preview-count').textContent=String(LESSON_SERIES.indexOf(todaySeries)+1).padStart(2,'0')+' / '+LESSON_SERIES.length;
 $('today-date').textContent=new Date().toLocaleDateString('zh-CN',{month:'long',day:'numeric',weekday:'long'});
@@ -20,7 +21,7 @@ $('overall').textContent=plan.completedCount+' / '+plan.totalCourses+' 课已完
 const daily=$('daily-tasks');
 const task=(series,label,description,hash='')=>{
  const a=document.createElement('a');a.className='daily-task';a.href='./learn.html?course='+series.id+hash;
- a.innerHTML=`<span class="daily-icon" aria-hidden="true">${SCENES[series.id].icon}</span><div><small>${label}</small><h3>${SCENES[series.id].place}</h3><p>${description}</p></div><span aria-hidden="true">↗</span>`;daily.append(a);
+ a.innerHTML=`<span class="daily-icon" aria-hidden="true">${SCENES[series.id].icon}</span><div><small>${html(label)}</small><h3>${html(SCENES[series.id].place)}</h3><p>${html(description)}</p></div><span aria-hidden="true">↗</span>`;daily.append(a);
 };
 if(!plan.allComplete)task(todaySeries,'今天的新知识',sentence.text);
 for(const id of plan.reviewCourseIds.slice(0,2))task(LESSON_SERIES.find(s=>s.id===id),'复习一下，更容易记住','听完整句，再自己说一遍。','#step-5');
@@ -35,7 +36,7 @@ function renderCards(){
   if(filter==='new'&&count===7||filter==='done'&&count!==7)continue;
   if(query&&!`${series.title} ${SCENES[series.id].place} ${LESSONS[series.lessonIds[3]].text}`.toLowerCase().includes(query))continue;
   const card=document.createElement('a');card.className='course-card';card.href='./learn.html?course='+series.id;
-  card.innerHTML=`<div class="card-art art-${series.id}"><span class="card-letter" aria-hidden="true">${series.letter}${series.letter.toLowerCase()}</span><span class="card-object" aria-hidden="true">${SCENES[series.id].icon}</span><small>LESSON ${String(index+1).padStart(2,'0')}</small></div><div class="card-body"><span class="eyebrow">/${series.soundIpa}/ · ${LESSONS[series.lessonIds[1]].text}</span><h3>${SCENES[series.id].place}</h3><p lang="en">${LESSONS[series.lessonIds[3]].text}</p><progress max="7" value="${count}" aria-label="${series.title}学习进度"></progress><div class="card-meta"><span>${count===7?'已完成 · 可以复习':count?`${count} / 7 个任务`:'5–8 分钟 · 7 个任务'}</span><b>${count===7?'再练一次':count?'继续学习':'开始学习'} ↗</b></div></div>`;
+  card.innerHTML=`<div class="card-art art-${series.id}"><span class="card-letter" aria-hidden="true">${series.letter}${series.letter.toLowerCase()}</span><span class="card-object" aria-hidden="true">${SCENES[series.id].icon}</span><small>LESSON ${String(index+1).padStart(2,'0')}</small></div><div class="card-body"><span class="eyebrow">/${html(series.soundIpa)}/ · ${html(LESSONS[series.lessonIds[1]].text)}</span><h3>${html(SCENES[series.id].place)}</h3><p lang="en">${html(LESSONS[series.lessonIds[3]].text)}</p><progress max="7" value="${count}" aria-label="${html(series.title)}学习进度"></progress><div class="card-meta"><span>${count===7?'已完成 · 可以复习':count?`${count} / 7 个任务`:'5–8 分钟 · 7 个任务'}</span><b>${count===7?'再练一次':count?'继续学习':'开始学习'} ↗</b></div></div>`;
   $('course-grid').append(card);
  }
  $('search-empty').hidden=!!$('course-grid').children.length;

@@ -66,7 +66,7 @@ export function mountCurriculum({onSelect, onPlay, onStop}) {
       word.textContent = text;
       return word;
     }));
-    $('course-ipa').textContent = `/${lesson.ipa}/`;
+    $('course-ipa').textContent = lesson.ipa ? `/${lesson.ipa}/` : '';
     $('course-translation').textContent = lesson.translation;
     $('course-hint').textContent = lesson.hint;
     $('course-previous').disabled = index === 0;

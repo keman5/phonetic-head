@@ -2,7 +2,7 @@ import {createServer} from 'node:http';
 import {readFile,realpath,stat} from 'node:fs/promises';
 import {resolve,extname,sep} from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {LESSONS} from './dist/curriculum.js';
+import {createAdministration} from './admin-service.mjs';
 const root=fileURLToPath(new URL('./dist/',import.meta.url));
 const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json','.wav':'audio/wav','.svg':'image/svg+xml','.png':'image/png','.glb':'model/gltf-binary'};
 export function wordMatch(expected,heard){
@@ -12,18 +12,23 @@ export function wordMatch(expected,heard){
  for(let i=1;i<=a.length;i++){const next=[i];for(let j=1;j<=b.length;j++)next[j]=Math.min(next[j-1]+1,row[j]+1,row[j-1]+(a[i-1]===b[j-1]?0:1));row=next;}
  return Math.round(100*Math.max(0,1-row[b.length]/Math.max(a.length,b.length)));
 }
-export function createApp({key=process.env.AI_API_KEY,baseURL=process.env.AI_BASE_URL||'https://api.openai.com/v1',chatModel=process.env.AI_CHAT_MODEL||'gpt-4.1-mini',transcribeModel=process.env.AI_TRANSCRIBE_MODEL||'whisper-1',fetchImpl=fetch}={}){
+export function createApp({key=process.env.AI_API_KEY,baseURL=process.env.AI_BASE_URL||'https://api.openai.com/v1',chatModel=process.env.AI_CHAT_MODEL||'gpt-4.1-mini',transcribeModel=process.env.AI_TRANSCRIBE_MODEL||'whisper-1',fetchImpl=fetch,dataDir=process.env.DATA_DIR||fileURLToPath(new URL('./data/',import.meta.url)),publicOrigin=process.env.PUBLIC_ORIGIN||''}={}){
+ const administration=createAdministration({dataDir,fetchImpl});
  const json=(res,code,value)=>{res.writeHead(code,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'});res.end(JSON.stringify(value));};
  let active=0;
  return createServer(async(req,res)=>{
   res.setHeader('X-Content-Type-Options','nosniff');res.setHeader('Referrer-Policy','same-origin');res.setHeader('Permissions-Policy','camera=(), microphone=(self)');
   const host=req.headers.host;
-  if(!/^(127\.0\.0\.1|localhost):\d+$/.test(host||''))return json(res,403,{error:'仅允许本机访问。'});
+  const local=/^(127\.0\.0\.1|localhost):\d+$/.test(host||'');
+  if(!local&&(!publicOrigin||host!==new URL(publicOrigin).host))return json(res,403,{error:'访问地址不正确。'});
   const url=new URL(req.url,'http://'+host);
+  const origin=local?`http://${host}`:publicOrigin;
+  if(await administration.handle(req,res,url,origin))return;
+  if(url.pathname==='/admin'){res.writeHead(302,{Location:'/admin.html'});res.end();return;}
   if(url.pathname==='/api/coach/status'&&req.method==='GET')return json(res,200,{configured:!!key});
   if(url.pathname==='/api/coach'){
    if(req.method!=='POST')return json(res,405,{error:'仅支持 POST。'});
-   if(req.headers.origin!==`http://${host}`)return json(res,403,{error:'请从本机课堂页面发起请求。'});
+   if(req.headers.origin!==origin)return json(res,403,{error:'请从本站课堂页面发起请求。'});
    if(Number(req.headers['content-length'])>4*1024*1024)return json(res,413,{error:'录音过长，请录制 15 秒以内的片段。'});
    if(!key)return json(res,503,{error:'AI 教练尚未配置，请先使用本地录音对比。'});
    if(active>=2)return json(res,429,{error:'老师正在听，请稍后再试。'});
@@ -34,8 +39,9 @@ export function createApp({key=process.env.AI_API_KEY,baseURL=process.env.AI_BAS
     if(!req.headers['content-type']?.startsWith('application/json'))return json(res,415,{error:'请求格式不正确。'});
     let size=0,chunks=[];for await(const part of req){size+=part.length;if(size>4*1024*1024)return json(res,413,{error:'录音过长，请录制 15 秒以内的片段。'});chunks.push(part);}
     let data;try{data=JSON.parse(Buffer.concat(chunks));}catch{return json(res,400,{error:'请求格式不正确。'});}
-    if(!data||typeof data!=='object'||!LESSONS[data.lessonId]||!['practice','conversation'].includes(data.mode))return json(res,400,{error:'请先选择一节有效课程。'});
-    const lesson=LESSONS[data.lessonId];
+    if(!data||typeof data!=='object'||typeof data.lessonId!=='string'||!['practice','conversation'].includes(data.mode))return json(res,400,{error:'请先选择一节有效课程。'});
+    const lesson=await administration.lesson(data.lessonId);
+    if(!lesson)return json(res,400,{error:'请先选择一节有效课程。'});
     if(data.mode==='practice'&&lesson.stage==='sound')return json(res,422,{error:'单个音素请使用本地回听和老师点评；语音转写不能可靠评判单音。'});
     let transcript='';
     const call=async(path,options)=>{

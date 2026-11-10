@@ -2,6 +2,7 @@ import {LESSON_SERIES,LESSONS,LESSON_STAGES} from './curriculum.js';
 import {SCENES} from './journey.js';
 import {mountVoicePractice} from './voice-practice.js';
 import {mountAICoach} from './ai-coach.js';
+import {escapeHTML as html} from './html.js';
 const $=id=>document.getElementById(id),params=new URLSearchParams(location.search),sing=params.get('mode')==='sing';
 let series=LESSON_SERIES.find(s=>s.id===params.get('course'))||LESSON_SERIES[0],stage=3,blob=null,voice,coach,noteContext,coachStarting=false;
 const getLesson=()=>sing?{id:'sing-a3',text:'轻轻哼一个音',hint:'放松肩膀，舒适地轻哼，不需要用力。',stage:'sing',exampleURL:null}:LESSONS[series.lessonIds[stage]];
@@ -16,7 +17,7 @@ if(!sing){$('practice-recorder').querySelector('.voice-practice>p').textContent=
 if(!sing)coach=mountAICoach($('ai-coach'),{getLesson,getRecording:()=>blob,startRecording:options=>{coachStarting=true;try{return voice.start(options);}finally{coachStarting=false;}},stopRecording:()=>voice.stop()});
 function render(){
  voice.stop();blob=null;coach?.reset();$('pitch-result').textContent='';
- const lesson=getLesson();$('practice-context').innerHTML=`<span aria-hidden="true">${sing?'♫':SCENES[series.id].icon}</span><div><p>${sing?'声音与节奏入门':SCENES[series.id].place}</p><h2 lang="en">${lesson.text}</h2><p>${lesson.translation||'听见自己的声音'}</p></div>`;
+ const lesson=getLesson();$('practice-context').innerHTML=`<span aria-hidden="true">${sing?'♫':SCENES[series.id].icon}</span><div><p>${sing?'声音与节奏入门':html(SCENES[series.id].place)}</p><h2 lang="en">${html(lesson.text)}</h2><p>${html(lesson.translation||'听见自己的声音')}</p></div>`;
  if(!sing){history.replaceState(null,'',`?course=${series.id}`);$('practice-topics').replaceChildren(...LESSON_SERIES.map(s=>{const b=document.createElement('button');b.textContent=s.title;b.setAttribute('aria-pressed',String(s===series));b.onclick=()=>{series=s;render();};return b;}));$('practice-stages').replaceChildren(...LESSON_STAGES.map((s,i)=>{const b=document.createElement('button');b.textContent=s.label;b.setAttribute('aria-pressed',String(i===stage));b.onclick=()=>{stage=i;render();};return b;}));}
 }
 if(sing){document.querySelector('.practice-info').textContent='先听参考音，再轻哼回听。录音只保存在当前页面，离开即清除。没有麦克风时也可以听音练习。';$('practice-recorder').querySelector('h3').textContent='轻轻哼给自己听';$('practice-title').textContent='用一个音，认识自己的声音。';$('practice-intro').textContent='从轻轻哼唱开始，练习听音和模仿。今天不追求高音，只找到一个舒服、接近参考的声音。';$('practice-topics').hidden=true;$('practice-stages').hidden=true;$('ai-coach').hidden=true;$('sing-guide').hidden=false;$('sing-reference').hidden=false;document.title='唱歌小探索 · 发音探索';}

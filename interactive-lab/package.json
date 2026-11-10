@@ -10,7 +10,8 @@
     "test:ui": "node --test --test-concurrency=1 navigation-ui.test.mjs classroom-views.test.mjs classroom-loading.test.mjs interface.test.mjs learning-ui.test.mjs curriculum-ui.test.mjs curriculum-playback.test.mjs journey-ui.test.mjs journey-recovery.test.mjs voice-practice-ui.test.mjs app-ui.test.mjs ai-coach-ui.test.mjs",
     "test:model": "node --test --test-concurrency=1 model-interaction.test.mjs surface-rendering.test.mjs",
     "build:audio:natural": "bash build.sh natural",
-    "test:server": "node --test server.test.mjs"
+    "test:server": "node --test server.test.mjs admin.test.mjs",
+    "test:admin-ui": "node --test --test-concurrency=1 admin-ui.test.mjs"
   },
   "dependencies": {
     "three": "0.180.0"

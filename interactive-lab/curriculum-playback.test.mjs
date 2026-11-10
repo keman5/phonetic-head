@@ -19,9 +19,9 @@ test('connected lesson playback preserves audio, seek, speed, slow motion and ca
     await page.locator(`#${id} [role="option"][data-value="${value}"]`).click();
   };
   assert.equal((await snapshot()).sound, 'lesson:dog-sentence');
-  assert.equal((await snapshot()).audio.rate, .85);
-  assert.equal((await snapshot()).audio.playbackRate, .85);
-  assert.equal(await page.locator('#speed-value').textContent(), '0.85 ×');
+  assert.equal((await snapshot()).audio.rate, 1);
+  assert.equal((await snapshot()).audio.playbackRate, 1);
+  assert.equal(await page.locator('#speed-value').textContent(), '1.00 ×');
   await page.waitForFunction(() => {
     const duration = labSnapshot().audio.duration;
     return duration > 0 && document.querySelector('#time-label').textContent.includes('/ ' + duration.toFixed(1));

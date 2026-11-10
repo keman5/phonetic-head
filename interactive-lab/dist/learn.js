@@ -3,6 +3,7 @@ import {CHAPTERS,SCENES,readProgress,writeProgress,lessonForChapter} from './jou
 import {recordCompletion,localDateKey} from './study-plan.js';
 import {mountVoicePractice} from './voice-practice.js';
 import {PronunciationAudio,audioCatalog,curriculumCatalog} from './audio.js';
+import {escapeHTML} from './html.js';
 const $=id=>document.getElementById(id);
 const series=LESSON_SERIES.find(s=>s.id===new URLSearchParams(location.search).get('course'))||LESSON_SERIES[0];
 const scene=SCENES[series.id],progress=readProgress();
@@ -112,7 +113,7 @@ function render(){
  $('voice-practice').hidden=![2,4,5,6].includes(step);$('voice-coach-link').hidden=step!==6;$('voice-coach-link').firstElementChild.href='./practice.html?course='+series.id;
  $('reflection').hidden=step!==6;$('reflection').querySelectorAll('input').forEach((input,i)=>input.checked=saved.selfCheck?.date===localDateKey()&&saved.selfCheck.checks[i]);
  $('review').hidden=step!==7;
- if(step===7){$('review').innerHTML='<h2>带走今天的三个收获</h2><ul><li>听懂一句话的意思</li><li>从字母音读到单词、短语和句子</li><li>自己试着表达，并对照示范</li></ul><p>'+scene.transfer+'</p><button type="button" id="review-again">再练完整句 →</button>';$('review-again').onclick=()=>go(5);}
+ if(step===7){$('review').innerHTML='<h2>带走今天的三个收获</h2><ul><li>听懂一句话的意思</li><li>从字母音读到单词、短语和句子</li><li>自己试着表达，并对照示范</li></ul><p>'+escapeHTML(scene.transfer)+'</p><button type="button" id="review-again">再练完整句 →</button>';$('review-again').onclick=()=>go(5);}
  $('previous').disabled=step===0;$('next').hidden=step===7;$('finish').hidden=step!==7;
  const navigation=[$('feedback'),$('storage-warning'),document.querySelector('.lesson-navigation')];
  if(step===6)$('reflection').after(...navigation);else document.querySelector('.lesson-screen').append(...navigation);
@@ -125,9 +126,12 @@ function render(){
 }
 frame.addEventListener('load',()=>{
  frameLoaded=true;model()?.select(lesson.id);
- if(!model())return;
- frame.contentWindow.addEventListener('teaching-ended',event=>{if(usesModel()&&event.detail.sound==='lesson:'+lesson.id)completePlayback();});
- frame.contentWindow.addEventListener('teaching-error',()=>{if(usesModel()){eligible=false;$('feedback').textContent='示范暂时无法播放。可以重试，或改用图文与声音学习。';}});
+ // Module initialization can finish after iframe load when the published catalog is fetched.
+ try{
+  frame.contentWindow.addEventListener('teaching-ready',()=>model()?.select(lesson.id));
+  frame.contentWindow.addEventListener('teaching-ended',event=>{if(usesModel()&&event.detail.sound==='lesson:'+lesson.id)completePlayback();});
+  frame.contentWindow.addEventListener('teaching-error',()=>{if(usesModel()){eligible=false;$('feedback').textContent='示范暂时无法播放。可以重试，或改用图文与声音学习。';}});
+ }catch{/* A failed iframe navigation can point at a browser-owned error page. */}
 });
 $('demo').onclick=async()=>{
  stop();eligible=true;
@@ -169,4 +173,5 @@ function update(){
  setWords(word);requestAnimationFrame(update);
 }
 voicePractice=mountVoicePractice($('voice-practice'),{getLesson:()=>lesson,onBeforeAudio:()=>{stopMedia();eligible=false;}});
+$('text-mode').disabled=false;$('model-mode').disabled=false;
 render();requestAnimationFrame(update);

@@ -9,18 +9,34 @@
 ```sh
 cd interactive-lab
 npm ci
-npm start
+npm run dev
 ```
 
 打开 http://127.0.0.1:4173/ 。本地服务仅绑定本机。
 
 ## 线上部署
 
-线上地址：https://test.upit.top/ 。在项目根目录运行 `bash deploy.sh`：通过根目录 `build.sh` 在本地安装依赖、运行数据/资产与服务端测试，打包现有 `interactive-lab/dist`，上传到 `51tokens` 后校验并热加载 Caddy。VPS 不执行构建。仅生成部署包可运行 `bash build.sh /tmp/phonetic-head-site.tar.gz`。
+线上地址：https://test.upit.top/ 。在项目根目录运行 `bash deploy.sh`：通过根目录 `build.sh` 在本地安装依赖、运行数据/资产、服务端与管理端浏览器测试，打包 `interactive-lab/dist` 和 Node 管理服务，上传到 `51tokens` 后启动 systemd 服务、校验并热加载 Caddy。VPS 不执行构建，也不安装 npm 依赖。仅生成部署包可运行 `bash build.sh /tmp/phonetic-head-site.tar.gz`。
 
 Cloudflare 中 `test` 为已代理的 A 记录，指向 `89.116.220.139`。源站使用现有 Caddy 的内部证书，与当前 Cloudflare Full 回源方式配合；不要直接用于 Full (strict)。部署文件位于 `/opt/cf-origin-ssl/phonetic-head`，`current` 指向对应 release；配置校验或源站检查失败时脚本恢复先前配置与版本。
 
-线上由 Caddy 直接提供课程、三维模型、音频和浏览器录音功能；学习进度仍只保存在浏览器。AI 教练接口明确返回未配置，不上传任何本地 `.env` 或密钥。部署包不包含 Blender 源文件、Python 语音模型或开发依赖。
+仅在已上传的包保持不变、需要修正服务或 Caddy 配置时，可用 `DEPLOY_RESUME_RELEASE=<发布编号> bash deploy.sh` 重新激活该包；源代码有变化时必须重新执行完整构建部署。
+
+线上由 Caddy 提供静态资源，并将 `/api/*` 转发到仅监听 `127.0.0.1:4174` 的 `phonetic-head.service`。学习进度仍只保存在浏览器。课程、管理员密码哈希、语音配置及上传/生成音频保存在 `/var/lib/phonetic-head`，不随 release 替换。部署包不包含这些运行数据、本地 `.env`、Blender 源文件、Python 语音模型或开发依赖。AI 对话教练仍需单独配置，语音服务密钥不等于对话服务密钥。
+
+## 课程管理
+
+入口：https://test.upit.top/admin.html ，初始管理员账号 `admin`、密码 `111111`。首次登录必须设置至少 10 位的新密码；后台提供修改密码和退出登录。新密码不会被后续部署重置。
+
+- 课程管理：修改四阶段的英文、中文、音标、教学提示、情境与听音选择题；复制课程创建新课，保存草稿、发布或下架。已发布内容不会随草稿编辑变化，学生刷新后读取最新发布版本。
+- 示范语音：每阶段的男女声分别选择内置示范、上传 PCM WAV / MP3、ElevenLabs、Azure Neural TTS。上传限 20 MB / 120 秒；单音保留内置音或使用审核过的录音。修改文字后清空旧音标与口型映射，发布会阻止复用不匹配的旧音频。
+- 语音服务：在后台填写 ElevenLabs 密钥、模型和男女声 Voice ID，或 Azure Speech 密钥、资源地区和声音名称。密钥仅在服务端保存，不回传浏览器。预生成音频保存后直接播放；动态音频只在点击播放时生成，按内容和音色缓存，重启及部署后继续复用。修改动态音色后需重新发布对应课程。
+- 额度：默认每日 50000 字符，按 UTC 日期计数，同时最多生成两段；可在后台设置为 0 暂停生成。失败请求也占用本地预算；第三方实际计费及商用授权以供应商为准。媒体总容量限制为 1 GB。
+- 对齐：ElevenLabs 提供可用的字符时间戳时转换为单词时间；Azure REST 和上传文件使用估计词时长。词内音素始终是教学比例示意，不宣称精确口型对齐。未配置音素的新增内容可以听读，不显示错误口型。
+
+本地管理数据默认在被 Git 忽略的 `interactive-lab/data`。Node 22 或更新版本可运行服务；`DATA_DIR` 可指定持久目录，公开部署需设置 `PUBLIC_ORIGIN`。VPS 可选的对话教练环境文件为 `/etc/phonetic-head.env`，它不包含在部署包中。
+
+验证入口：`npm run test:server` 检查权限、持久化、发布与两家 TTS 的模拟接口；`npm run test:admin-ui` 在后台使用已安装浏览器验证编辑、上传、发布、播放与动态缓存。实际供应商音色与账单需要配置真实密钥后试听验证。
 
 ## 文件入口
 

@@ -2,6 +2,12 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {PHONEMES, LETTERS} from './dist/phonemes.js';
 import {LESSON_SERIES, LESSONS, LESSON_STAGES} from './dist/curriculum.js';
+import {curriculumPose} from './dist/curriculum-playback.js';
+
+test('pending or unconfigured course articulation stays at rest while words can still highlight',()=>{
+  const pose=curriculumPose('lesson:dog-sentence',.5,{duration:2,clips:[],words:[{start:0,end:2}]});
+  assert.deepEqual(pose.weights,{});assert.equal(pose.air,0);assert.equal(pose.voiced,false);assert.equal(pose.wordIndex,0);
+});
 
 test('ten courses progress from a spelling sound to a meaningful sentence', () => {
   assert.equal(LESSON_SERIES.length, 10);

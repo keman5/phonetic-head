@@ -1,7 +1,10 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {createApp,wordMatch} from './server.mjs';
-async function server(t,options={}){const app=createApp(options);await new Promise(resolve=>app.listen(0,'127.0.0.1',resolve));t.after(()=>new Promise(resolve=>app.close(resolve)));return 'http://127.0.0.1:'+app.address().port;}
+import {mkdtemp,rm} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import {join} from 'node:path';
+async function server(t,options={}){const dataDir=await mkdtemp(join(tmpdir(),'phonetic-server-test-'));const app=createApp({...options,dataDir});await new Promise(resolve=>app.listen(0,'127.0.0.1',resolve));t.after(async()=>{await new Promise(resolve=>app.close(resolve));await rm(dataDir,{recursive:true,force:true});});return 'http://127.0.0.1:'+app.address().port;}
 const post=(url,body,headers={})=>fetch(url+'/api/coach',{method:'POST',headers:{'Content-Type':'application/json',Origin:url,...headers},body:JSON.stringify(body)});
 test('word comparison measures transcript edit distance, not phonetics',()=>{assert.equal(wordMatch('This is a big dog.','this is a big dog'),100);assert.equal(wordMatch('big dog','big cat'),50);assert.equal(wordMatch('dog',''),0);assert.equal(wordMatch('dog','dog dog'),50);});
 test('static app works without credentials and does not claim AI is connected',async t=>{const url=await server(t,{key:''});assert.equal((await fetch(url+'/practice.html')).status,200);assert.deepEqual(await(await fetch(url+'/api/coach/status')).json(),{configured:false});assert.equal((await post(url,{lessonId:'dog-word',mode:'practice',text:'dog'})).status,503);assert.equal((await fetch(url+'/%2e%2e%2fserver.mjs')).status,403);assert.equal((await fetch(url+'/.env')).status,404);});

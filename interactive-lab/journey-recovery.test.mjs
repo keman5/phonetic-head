@@ -22,7 +22,7 @@ test('lesson can recover from unavailable 3D, rejected storage and paused audio 
  await page.locator('#next').click();await page.waitForFunction(()=>document.body.dataset.chapter==='2');
  await page.locator('#text-mode').click();
  await page.locator('#demo').click();await page.locator('#pause').click();
- assert.equal(await page.evaluate(()=>window.lastPlayedRate),.85, 'next chapter restores the teaching speed');
+ assert.equal(await page.evaluate(()=>window.lastPlayedRate),1, 'next chapter restores natural playback speed');
  assert(await page.locator('#next').isDisabled());
  await page.locator('#scrub').fill('999');await page.locator('#scrub').dispatchEvent('input');
  assert(await page.locator('#next').isDisabled());

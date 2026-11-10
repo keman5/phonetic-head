@@ -10,13 +10,11 @@ test.upit.top:443 {
     }
     @private path */.*
     respond @private 404
-    handle /api/coach/status {
-        header Content-Type application/json
-        respond `{"configured":false}` 200
-    }
     handle /api/* {
-        header Content-Type application/json
-        respond `{"error":"AI 教练尚未配置，请先使用录音对比。"}` 503
+        reverse_proxy 127.0.0.1:4174
+    }
+    handle /admin {
+        redir /admin.html 302
     }
     handle {
         file_server {

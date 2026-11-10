@@ -1,4 +1,4 @@
-export const DEMONSTRATION_RATE = .85;
+export const DEMONSTRATION_RATE = 1;
 import {PHONEMES, LETTERS} from './phonemes.js';
 
 export const LESSON_STAGES = [
@@ -124,4 +124,25 @@ for (const series of LESSON_SERIES) {
     series.lessonIds.push(id);
   }
   delete series.examples;
+}
+
+export function lessonAudioURL(id,voice='female') {
+  const audio=LESSONS[id]?.audio?.[voice];
+  if(audio?.resolveURL){const url=new URL(audio.resolveURL,location.href);url.pathname+='/file';return url.href;}
+  return new URL(`./assets/audio/${voice}/lesson-${audio?.builtinId||id}.wav`,import.meta.url).href;
+}
+
+// Keep the static export usable for offline builds and serve published edits when a CMS is present.
+if (typeof window !== 'undefined' && /^https?:$/.test(location.protocol)) {
+  try {
+    const response = await fetch('/api/curriculum', {cache:'no-store',signal:AbortSignal.timeout(8000)});
+    if (response.ok) {
+      const catalog = await response.json();
+      if (Array.isArray(catalog.series) && catalog.series.length && catalog.lessons) {
+        LESSON_SERIES.splice(0,LESSON_SERIES.length,...catalog.series);
+        for (const id of Object.keys(LESSONS)) delete LESSONS[id];
+        Object.assign(LESSONS,catalog.lessons);
+      }
+    }
+  } catch { /* Offline lessons remain available if the management service is unreachable. */ }
 }

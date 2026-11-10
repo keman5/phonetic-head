@@ -149,7 +149,7 @@ test('listening survives refresh before self-check and teaching speed is explici
  await page.evaluate(()=>localStorage.setItem('phonetic-journey-v1',JSON.stringify({dog:{step:5,done:[0,1,2,3,4]}})));
  await page.goto('http://127.0.0.1:4173/learn.html?course=dog#step-5');
  await page.locator('#text-mode').click();await page.locator('#demo').click();
- assert.equal(await page.evaluate(()=>window.lastPlayedRate),.85);
+ assert.equal(await page.evaluate(()=>window.lastPlayedRate),1);
  await page.waitForFunction(()=>!document.getElementById('next').disabled);
  await page.locator('#next').click();await page.waitForFunction(()=>document.body.dataset.chapter==='6');
  await page.reload();await page.waitForFunction(()=>document.body.dataset.chapter==='6');
@@ -178,7 +178,7 @@ test('classroom speed adjusts live, stays synchronized and carries across chapte
  await page.evaluate(()=>localStorage.setItem('phonetic-journey-v1',JSON.stringify({dog:{step:5,done:[0,1,2,3,4]}})));
  await page.goto('http://127.0.0.1:4173/learn.html?course=dog#step-5');
  await page.waitForFunction(()=>document.getElementById('model-frame').contentWindow.teachingPlayer?.ready,{}, {timeout:60000});
- assert.equal(await page.locator('#demo-rate').inputValue(),'0.85');
+ assert.equal(await page.locator('#demo-rate').inputValue(),'1');
  assert.equal(await page.locator('[data-demo-rate]').count(),6);
  await page.locator('[data-demo-rate="0.5"]').click();await page.locator('#demo').click();
  await page.waitForFunction(()=>document.getElementById('model-frame').contentWindow.labSnapshot().audio.currentTime>.2);
