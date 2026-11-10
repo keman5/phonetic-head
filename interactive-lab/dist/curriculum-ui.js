@@ -1,3 +1,4 @@
+import {t} from './i18n.js';
 import {LESSON_SERIES, LESSONS, LESSON_STAGES} from './curriculum.js';
 
 export function mountCurriculum({onSelect, onPlay, onStop}) {
@@ -23,7 +24,7 @@ export function mountCurriculum({onSelect, onPlay, onStop}) {
   }
   function setPlaying(value) {
     playing = value;
-    $('course-listen').textContent = value ? '停止示范' : '听示范并跟读';
+    $('course-listen').textContent = value ? t('停止示范') : t('听示范并跟读');
     if (!value) setWord(-1);
   }
   function select(id) {
@@ -35,8 +36,8 @@ export function mountCurriculum({onSelect, onPlay, onStop}) {
     const index = series.lessonIds.indexOf(id);
     seriesPicker.value = series.id;
     $('course-title').textContent = series.title;
-    $('course-progress').textContent = `${index + 1} / ${series.lessonIds.length} 步`;
-    $('course-sound-note').textContent = `字母 ${series.letter} 的名称是 /${series.letterNameIpa}/；本系列练习它在单词里的声音 /${series.soundIpa}/。`;
+    $('course-progress').textContent = t("{0} / {1} 步", index + 1, series.lessonIds.length);
+    $('course-sound-note').textContent = t("字母 {0} 的名称是 /{1}/；本系列练习它在单词里的声音 /{2}/。", series.letter, series.letterNameIpa, series.soundIpa);
     stageList.replaceChildren(...series.lessonIds.map((lessonId, i) => {
       const button = document.createElement('button');
       button.type = 'button';
@@ -72,7 +73,7 @@ export function mountCurriculum({onSelect, onPlay, onStop}) {
     $('course-previous').disabled = index === 0;
     $('course-next').disabled = index === series.lessonIds.length - 1;
     setPlaying(false);
-    $('course-status').textContent = '先听一遍，再跟着读；可以随时切换教学阶段。';
+    $('course-status').textContent = t('先听一遍，再跟着读；可以随时切换教学阶段。');
     if (restoreStageFocus) stageList.children[index].focus();
   }
   function move(offset) {

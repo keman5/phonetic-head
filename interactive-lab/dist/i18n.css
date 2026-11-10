@@ -1,0 +1,16 @@
+.language-switch{display:inline-flex;align-items:center;gap:8px;color:#626775;font:500 12px/1.4 system-ui,sans-serif;flex-shrink:0}
+.language-switch select{min-height:44px;max-width:180px;border:1px solid #d9dce3;border-radius:12px;padding:8px 30px 8px 12px;background:#fff;color:#292a30;font:inherit;cursor:pointer}
+.language-switch select:focus-visible{outline:3px solid #7897e6;outline-offset:2px}
+html[lang=en] .site-navigation a{white-space:normal;text-align:center}
+html[lang=en] .school-header,html[lang=en] .app-header,body>header:has(.language-switch){flex-wrap:wrap;gap:12px}
+html[lang=en] button,html[lang=en] .primary{overflow-wrap:break-word}
+html[lang=en] .lesson-cues>div{grid-template-columns:58px minmax(0,1fr)}
+@media(max-width:760px){
+  .language-switch{margin-left:auto}.language-switch>span{display:none}.language-switch select{max-width:150px}
+  .site-navigation{order:1;flex-wrap:wrap}
+  html[lang=en] .site-navigation{display:grid;grid-template-columns:repeat(5,minmax(0,1fr))}
+  html[lang=en] .site-navigation a{min-width:0;padding-inline:4px}
+  html[lang=en] .preview-path{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}
+  html[lang=en] .preview-path i{display:none}
+  html[lang=en] .preview-path span{white-space:normal;text-align:center;padding:6px 2px}
+}

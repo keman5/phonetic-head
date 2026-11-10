@@ -1,3 +1,4 @@
+import {resolveLanguage, translate, translateError} from './dist/i18n.js';
 import {createServer} from 'node:http';
 import {readFile,realpath,stat} from 'node:fs/promises';
 import {resolve,extname,sep} from 'node:path';
@@ -14,9 +15,11 @@ export function wordMatch(expected,heard){
 }
 export function createApp({key=process.env.AI_API_KEY,baseURL=process.env.AI_BASE_URL||'https://api.openai.com/v1',chatModel=process.env.AI_CHAT_MODEL||'gpt-4.1-mini',transcribeModel=process.env.AI_TRANSCRIBE_MODEL||'whisper-1',fetchImpl=fetch,dataDir=process.env.DATA_DIR||fileURLToPath(new URL('./data/',import.meta.url)),publicOrigin=process.env.PUBLIC_ORIGIN||''}={}){
  const administration=createAdministration({dataDir,fetchImpl});
- const json=(res,code,value)=>{res.writeHead(code,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'});res.end(JSON.stringify(value));};
+ const json=(res,code,value)=>{if(value.error)value={...value,error:translateError(value.error,res.locale)};res.writeHead(code,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'});res.end(JSON.stringify(value));};
  let active=0;
  return createServer(async(req,res)=>{
+  const languageHeader=req.headers['accept-language'];
+  res.locale=languageHeader&&languageHeader!=='*'?resolveLanguage('auto',languageHeader.split(',').map(value=>value.split(';')[0].trim())):'zh-CN';
   res.setHeader('X-Content-Type-Options','nosniff');res.setHeader('Referrer-Policy','same-origin');res.setHeader('Permissions-Policy','camera=(), microphone=(self)');
   const host=req.headers.host;
   const local=/^(127\.0\.0\.1|localhost):\d+$/.test(host||'');
@@ -60,9 +63,9 @@ export function createApp({key=process.env.AI_API_KEY,baseURL=process.env.AI_BAS
     else return json(res,400,{error:'请先录音，或输入想说的话。'});
     if(!transcript)return json(res,422,{error:'这次没有听清，靠近麦克风再试一次。'});
     const history=Array.isArray(data.history)?data.history.slice(-6).filter(m=>['user','assistant'].includes(m?.role)&&typeof m.content==='string'&&m.content.length<=1000):[];
-    const response=await call('/chat/completions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:chatModel,max_tokens:300,messages:[{role:'system',content:'You are a warm beginner English tutor. Keep answers under 90 Chinese characters plus one short English example or question. Encourage without flattery. You receive transcription only, NOT audio, so NEVER diagnose pronunciation, tongue position, pitch, volume, or claim a voice is standard/perfect. You may give clearly labelled general practice tips. In conversation mode answer the meaning and ask one easy English question. In practice mode compare wording to the target, praise an accurate word, then suggest one next step. Never invent phonetic scores. Stay focused on age-appropriate learning.'},...history,{role:'user',content:JSON.stringify({mode:data.mode,target:lesson.text,generalTip:lesson.hint,learner:transcript})}]})});
+    const response=await call('/chat/completions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:chatModel,max_tokens:300,messages:[{role:'system',content:'You are a warm beginner English tutor. '+(res.locale==='en'?'Reply in English, using fewer than 60 words and one short example or question.':'Keep answers under 90 Chinese characters plus one short English example or question.')+' Encourage without flattery. You receive transcription only, NOT audio, so NEVER diagnose pronunciation, tongue position, pitch, volume, or claim a voice is standard/perfect. You may give clearly labelled general practice tips. In conversation mode answer the meaning and ask one easy English question. In practice mode compare wording to the target, praise an accurate word, then suggest one next step. Never invent phonetic scores. Stay focused on age-appropriate learning.'},...history,{role:'user',content:JSON.stringify({mode:data.mode,target:lesson.text,generalTip:lesson.hint,learner:transcript})}]})});
     const reply=response.choices?.[0]?.message?.content;if(typeof reply!=='string'||!reply.trim())throw Error('response');
-    json(res,200,{transcript,reply:reply.slice(0,2000),matchPercent:data.mode==='practice'&&lesson.stage!=='sound'?wordMatch(lesson.text,transcript):null,scoreLabel:'文字匹配度（非发音评分）'});
+    json(res,200,{transcript,reply:reply.slice(0,2000),matchPercent:data.mode==='practice'&&lesson.stage!=='sound'?wordMatch(lesson.text,transcript):null,scoreLabel:translate('文字匹配度（非发音评分）',res.locale)});
    }catch{if(!res.destroyed)json(res,502,{error:'AI 暂时没有回应。录音仍在本页，可以重试或继续本地练习。'});}
    finally{active--;res.removeListener('close',disconnect);}
    return;

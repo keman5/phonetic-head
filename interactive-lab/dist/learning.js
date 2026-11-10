@@ -1,3 +1,4 @@
+import {t} from './i18n.js';
 import {PHONEMES} from './phonemes.js';
 import {lessonFor} from './teaching.js';
 
@@ -20,19 +21,19 @@ export class PracticeSession {
 
 export function attentionCue(pose, part = 'tongue') {
   const lesson = lessonFor(pose.phoneme);
-  if (!lesson) return {title: '选一个声音，开始探索', text: '不用着急，一次发现一个小秘密。'};
+  if (!lesson) return {title: t('选一个声音，开始探索'), text: t('不用着急，一次发现一个小秘密。')};
   const p = PHONEMES[pose.phoneme];
-  if (part === 'lips') return {title: '看看嘴唇怎么变', text: lesson.mouth + '。'};
+  if (part === 'lips') return {title: t('看看嘴唇怎么变'), text: lesson.mouth + t('。')};
   if (part === 'air') {
     const blocked = ['plosive', 'affricate', 'cluster'].includes(p.category) && pose.air <= .02;
-    return {title: p.category === 'nasal' ? '气息从鼻子走' : blocked ? '气流暂时被挡住' : '跟着蓝色箭头走',
-      text: lesson.air + '；轻轻做，不要憋气。'};
+    return {title: p.category === 'nasal' ? t('气息从鼻子走') : blocked ? t('气流暂时被挡住') : t('跟着蓝色箭头走'),
+      text: lesson.air + t('；轻轻做，不要憋气。')};
   }
   if (p.category === 'diphthong') return {
-    title: ['先摆好起始口型', '舌头正在滑动', '到达尾音口型'][pose.step],
-    text: '这是一个连续的声音，中间不要停。'
+    title: [t('先摆好起始口型'), t('舌头正在滑动'), t('到达尾音口型')][pose.step],
+    text: t('这是一个连续的声音，中间不要停。')
   };
-  return {title: pose.step === 2 ? pose.nextPhoneme ? '接着读，准备下一个声音' : '看完了，轻轻放松' : '找到粉色的舌头', text: lesson.tongue + '。'};
+  return {title: pose.step === 2 ? pose.nextPhoneme ? t('接着读，准备下一个声音') : t('看完了，轻轻放松') : t('找到粉色的舌头'), text: lesson.tongue + t('。')};
 }
 
 export function createLearningCoach(hooks) {
@@ -52,7 +53,7 @@ export function createLearningCoach(hooks) {
 
   function render() {
     const count = session.done.size;
-    progress.textContent = `${count} / 3 个小任务`;
+    progress.textContent = t("{0} / 3 个小任务", count);
     stars.forEach(star => {
       const complete = session.done.has(star.dataset.practiceStar);
       star.classList.toggle('earned', complete);
@@ -67,13 +68,13 @@ export function createLearningCoach(hooks) {
     }
     nextButton.disabled = !enabled;
     const labels = session.mode === session.next
-      ? {watch:'再看一遍 →', listen:'再听一遍 →', try:'打开自查清单 →'}
-      : {watch:'开始小探索 →', listen:'下一步：听一听 →', try:'轮到我试试 →'};
-    nextButton.textContent = session.running ? '正在演示 · 可暂停'
-      : session.next === 'complete' ? '再探索一次 ↺' : labels[session.next];
+      ? {watch:t('再看一遍 →'), listen:t('再听一遍 →'), try:t('打开自查清单 →')}
+      : {watch:t('开始小探索 →'), listen:t('下一步：听一听 →'), try:t('轮到我试试 →')};
+    nextButton.textContent = session.running ? t('正在演示 · 可暂停')
+      : session.next === 'complete' ? t('再探索一次 ↺') : labels[session.next];
     $('#learning-dock').classList.toggle('all-done', session.next === 'complete');
-    $('.coach-heading').textContent = session.next === 'complete' ? '这次探索完成啦！'
-      : {idle:'准备好一起练习了吗？', watch:'小眼睛，发现嘴巴的秘密', listen:'小耳朵，听清这个声音', try:'轮到你来试试啦！'}[session.mode];
+    $('.coach-heading').textContent = session.next === 'complete' ? t('这次探索完成啦！')
+      : {idle:t('准备好一起练习了吗？'), watch:t('小眼睛，发现嘴巴的秘密'), listen:t('小耳朵，听清这个声音'), try:t('轮到你来试试啦！')}[session.mode];
   }
   function announce(text) { message.textContent = text; }
   function showStage() {
@@ -86,14 +87,14 @@ export function createLearningCoach(hooks) {
     session.begin(mode); activeFocus = mode === 'watch';
     if (mode === 'watch') {
       part = ['p','b','f','v','m'].includes(hooks.phoneme()) ? 'lips' : 'tongue';
-      focus(part); announce('第一步：听慢速声音，只观察一个部位。蓝色箭头表示气流。');
+      focus(part); announce(t('第一步：听慢速声音，只观察一个部位。蓝色箭头表示气流。'));
       hooks.play(); showStage();
     } else if (mode === 'listen') {
       part = 'lips'; markAttention();
-      announce('第二步：听一遍声音。先听清楚，不用抢着跟读。'); hooks.play(); showStage();
+      announce(t('第二步：听一遍声音。先听清楚，不用抢着跟读。')); hooks.play(); showStage();
     } else {
       part = 'lips'; markAttention();
-      announce('轮到你啦！对着镜子轻轻试，再和老师一起自查。');
+      announce(t('轮到你啦！对着镜子轻轻试，再和老师一起自查。'));
       $('#practice-checks').open = true;
       $('#practice-checks').scrollIntoView({block:'nearest', behavior:'auto'});
     }
@@ -115,7 +116,7 @@ export function createLearningCoach(hooks) {
   };
   checks.forEach(input => input.addEventListener('change', () => {
     session.check(checks.map(input => input.checked));
-    announce(session.next === 'complete' ? '三颗探索星！你完成了观察、倾听和自查。读得准不准，请老师帮忙听一听。' : '做得很认真！按实际练习情况勾选，不用着急。');
+    announce(session.next === 'complete' ? t('三颗探索星！你完成了观察、倾听和自查。读得准不准，请老师帮忙听一听。') : t('做得很认真！按实际练习情况勾选，不用着急。'));
     render();
   }));
   render();
@@ -124,15 +125,15 @@ export function createLearningCoach(hooks) {
     reset() {
       session.reset(); part = 'tongue'; activeFocus = false; checks.forEach(input => input.checked = false);
       document.querySelectorAll('[data-attention]').forEach(button => button.setAttribute('aria-pressed', 'false'));
-      announce('先慢速听看，再听完整示范，最后自己试一试。'); render();
+      announce(t('先慢速听看，再听完整示范，最后自己试一试。')); render();
     },
     interrupt(reason) { session.interrupt(); if(reason) announce(reason); render(); },
     clearFocus() { activeFocus = false; document.querySelectorAll('[data-attention]').forEach(button => button.setAttribute('aria-pressed','false')); },
     resume(mode) { if(session.mode === mode && !session.done.has(mode)) { session.running = true; render(); } },
-    fail() { session.interrupt(); announce('示范暂时没播完，没关系，点“再听一遍”重试。'); render(); },
+    fail() { session.interrupt(); announce(t('示范暂时没播完，没关系，点“再听一遍”重试。')); render(); },
     finish(mode) {
       if (!session.finish(mode)) return;
-      announce(mode === 'watch' ? '观察完成！接下来听听这个声音。' : '倾听完成！现在可以轻轻跟读了。'); render();
+      announce(mode === 'watch' ? t('观察完成！接下来听听这个声音。') : t('倾听完成！现在可以轻轻跟读了。')); render();
     },
     update(pose, playing) {
       const cue = attentionCue(pose, part);
@@ -142,7 +143,7 @@ export function createLearningCoach(hooks) {
       }
       const voiced = playing && pose.voiced;
       $('#voice-meter').classList.toggle('is-sounding', !!voiced);
-      const voiceText = voiced ? '声带振动示意' : playing ? '轻轻送气' : '声音准备好啦';
+      const voiceText = voiced ? t('声带振动示意') : playing ? t('轻轻送气') : t('声音准备好啦');
       if($('#voice-meter-label').textContent !== voiceText) $('#voice-meter-label').textContent = voiceText;
       $('#stage').classList.toggle('lesson-playing', playing);
     },

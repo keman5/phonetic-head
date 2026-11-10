@@ -1,3 +1,4 @@
+import {t} from './i18n.js';
 import * as THREE from 'three';
 import {effectiveOpacity} from './motion.js';
 
@@ -49,7 +50,7 @@ export function pickClosest(raycaster, meshes) {
 }
 
 export function surfaceLabel(meta) {
-  if (meta.layer === 'eye') return '眼睛';
-  if (meta.layer === 'skin') return '头部皮肤';
-  return '发音结构';
+  if (meta.layer === 'eye') return t('眼睛');
+  if (meta.layer === 'skin') return t('头部皮肤');
+  return t('发音结构');
 }

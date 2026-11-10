@@ -15,6 +15,14 @@ test('single phonemes never use transcription as a pronunciation judgement',asyn
  let calls=0;const url=await server(t,{key:'test-only',fetchImpl:()=>{calls++;throw Error();}});
  assert.equal((await post(url,{lessonId:'cat-sound',mode:'practice',text:'c'})).status,422);assert.equal(calls,0);
 });
+test('coach language follows the requested interface language and preserves teaching safeguards',async t=>{
+ let prompt='';const url=await server(t,{key:'test-only',fetchImpl:async(_,options)=>{prompt=JSON.parse(options.body).messages[0].content;return Response.json({choices:[{message:{content:'Try saying it again.'}}]});}});
+ const response=await post(url,{lessonId:'dog-word',mode:'practice',text:'dog'},{'Accept-Language':'en'});
+ assert.equal(response.status,200);assert.match((await response.json()).scoreLabel,/not a pronunciation score/);
+ assert.match(prompt,/Reply in English/);assert.match(prompt,/NEVER diagnose pronunciation/);
+ const failed=await post(url,{lessonId:'missing',mode:'practice',text:'dog'},{'Accept-Language':'en'});
+ assert.equal((await failed.json()).error,'Choose a valid lesson first.');
+});
 test('disconnect aborts upstream work and prevents a subsequent chat request',{timeout:5000},async t=>{
  let started,aborted,calls=0;const entered=new Promise(resolve=>started=resolve),cancelled=new Promise(resolve=>aborted=resolve);
  const url=await server(t,{key:'test-only',fetchImpl:async(_,options)=>{calls++;started();return new Promise((resolve,reject)=>{options.signal.addEventListener('abort',()=>{aborted();reject(options.signal.reason);},{once:true});});}});

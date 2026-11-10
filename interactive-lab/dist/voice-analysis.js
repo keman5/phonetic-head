@@ -1,3 +1,4 @@
+import {t} from './i18n.js';
 export function estimatePitch(samples, sampleRate) {
   if (!Number.isFinite(sampleRate) || sampleRate <= 0 || samples.length < sampleRate / 40) return null;
   const size = Math.min(samples.length, Math.ceil(sampleRate * .08));
@@ -51,9 +52,9 @@ export function analyzeVoice(samples, sampleRate) {
   const duration = samples.length / sampleRate, rms = Math.sqrt(sum / samples.length);
   const silenceRatio = quietSamples / samples.length;
   const pitchHz = pitches.length >= 3 ? pitches[Math.floor(pitches.length / 2)] : null;
-  const advice = peak >= .98 ? '声音有些过响。离麦克风远一点，用舒服的音量再试一次。'
-    : silenceRatio > .85 || rms < .015 ? '录音里的声音较轻。靠近麦克风一点，在安静的地方用自然音量再读一次。'
-    : duration < .3 ? '这次录音很短。准备好后，完整读出当前内容。'
-    : '声音已清楚录下。很棒，听听自己，再和示范比较节奏与声音。';
+  const advice = peak >= .98 ? t('声音有些过响。离麦克风远一点，用舒服的音量再试一次。')
+    : silenceRatio > .85 || rms < .015 ? t('录音里的声音较轻。靠近麦克风一点，在安静的地方用自然音量再读一次。')
+    : duration < .3 ? t('这次录音很短。准备好后，完整读出当前内容。')
+    : t('声音已清楚录下。很棒，听听自己，再和示范比较节奏与声音。');
   return {duration, rms, peak, silenceRatio, pitchHz, advice};
 }

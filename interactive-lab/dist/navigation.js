@@ -1,9 +1,10 @@
+import {t} from './i18n.js';
 const destinations = [
-  ['courses', '课程', './index.html'],
-  ['daily', '每日路径', './index.html#daily-path'],
-  ['speech', '语音教练', './practice.html'],
-  ['singing', '唱歌练习', './practice.html?mode=sing'],
-  ['lab', '实验室', './lab.html'],
+  ['courses', t('课程'), './index.html'],
+  ['daily', t('每日路径'), './index.html#daily-path'],
+  ['speech', t('语音教练'), './practice.html'],
+  ['singing', t('唱歌练习'), './practice.html?mode=sing'],
+  ['lab', t('实验室'), './lab.html'],
 ];
 
 function currentDestination() {

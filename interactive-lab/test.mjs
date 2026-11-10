@@ -4,6 +4,7 @@ import {readFileSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 import {poseAt,effectiveOpacity,DEFAULT_ALPHA,SOUNDS} from './dist/motion.js';
 import {CHANNELS} from './dist/phonemes.js';
+import './i18n.test.mjs';
 import './phonemes.test.mjs';
 import './audio.test.mjs';
 import './teaching.test.mjs';

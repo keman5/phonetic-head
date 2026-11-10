@@ -1,8 +1,9 @@
+import {translateError} from './dist/i18n.js';
 import {randomBytes} from 'node:crypto';
 import {openStore,checkPassword,passwordHash,validateCourse,builtinMatches,publicCourse,validId,voices,digest,fail} from './course-store.mjs';
 import {createSpeech,recipeFor,audioEntry,MAX_AUDIO_BYTES} from './speech.mjs';
 
-const json=(res,status,value)=>{res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'});res.end(JSON.stringify(value));};
+const json=(res,status,value)=>{if(value.error)value={...value,error:translateError(value.error,res.locale)};res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'});res.end(JSON.stringify(value));};
 async function body(req,max=256*1024) {
   if (Number(req.headers['content-length'])>max) fail(413,'上传内容过大。');
   let size=0;const chunks=[];

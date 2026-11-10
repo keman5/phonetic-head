@@ -1,3 +1,4 @@
+import {t} from './i18n.js';
 // Shared listbox: focus stays on the trigger; the popup lives in the top layer.
 class LabSelect extends HTMLElement {
   connectedCallback(){
@@ -32,7 +33,7 @@ class LabSelect extends HTMLElement {
     }));this.renderSelection();
   }
   renderSelection(){
-    this.trigger.querySelector('span').textContent=this.options.find(o=>o.value===this.value)?.label||'请选择';
+    this.trigger.querySelector('span').textContent=this.options.find(o=>o.value===this.value)?.label||t('请选择');
     [...this.menu.children].forEach((b,i)=>b.setAttribute('aria-selected',String(this.options[i].value===this.value)));
   }
   show(){

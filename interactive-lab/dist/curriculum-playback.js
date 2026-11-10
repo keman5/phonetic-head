@@ -1,3 +1,4 @@
+import {t} from './i18n.js';
 import {LESSONS} from './curriculum.js';
 import {timelinePose} from './phonemes.js';
 
@@ -5,7 +6,7 @@ export function curriculumSound(id) {
   const lesson = LESSONS[id.replace(/^lesson:/, '')];
   if (!lesson) return null;
   return {title:lesson.text, copy:lesson.translation, tip:lesson.hint,
-    steps:['准备构形', '保持 / 过渡', '释放 / 收尾'],
+    steps:[t('准备构形'), t('保持 / 过渡'), t('释放 / 收尾')],
     focus:['tongue', 'lips', 'jaw', 'velum', 'voice'], duration:lesson.duration};
 }
 

@@ -1,3 +1,4 @@
+import {t, htmlT} from './i18n.js';
 import './dropdown.js';
 import {mountVoicePractice} from './voice-practice.js';
 import {showInspector} from './interface.js';
@@ -26,15 +27,15 @@ const $=s=>document.querySelector(s);
 const state={sound:'ipa:i',progress:0,playing:false,speed:1,loop:false,air:true,palette:'human',alpha:{left:0,right:0,skin:0,bone:0,muscle:0,organ:0},focus:null,voice:'female'};
 const mount=$('#viewer'),meshes=[],sectionCaps=[];
 const guides=document.createElement('div');guides.id='anatomy-guides';guides.hidden=true;
-guides.innerHTML='<svg aria-hidden="true">'+ANATOMY_GUIDES.map(()=>'<path/>').join('')+'<circle class="voice-location" r="10"/></svg>'+ANATOMY_GUIDES.map(g=>`<button type="button" data-guide="${g.id}" aria-pressed="false" aria-label="${g.label}：${g.nickname}" style="--organ-color:${g.color}"><i></i>${g.label}</button>`).join('');
+guides.innerHTML='<svg aria-hidden="true">'+ANATOMY_GUIDES.map(()=>'<path/>').join('')+'<circle class="voice-location" r="10"/></svg>'+ANATOMY_GUIDES.map(g=>htmlT`<button type="button" data-guide="${g.id}" aria-pressed="false" aria-label="${g.label}：${g.nickname}" style="--organ-color:${g.color}"><i></i>${g.label}</button>`).join('');
 $('#stage').append(guides);
 guides.querySelectorAll('button').forEach(button=>button.onclick=()=>explainOrgan(button.dataset.guide));
 let slowMotion=false,previewing=false,childMode=true,lessonKey='';
 let selectedGuide=null;
 const tongueLandmarks=[
-  {id:'tongue-tip',label:'舌尖',names:['Tongue'],point:[0,-.022,.080]},
-  {id:'tongue-body',label:'舌面',names:['Tongue'],point:[0,-.011,.052]},
-  {id:'tongue-root',label:'舌根',names:['Tongue'],point:[0,-.043,.030]},
+  {id:'tongue-tip',label:t('舌尖'),names:['Tongue'],point:[0,-.022,.080]},
+  {id:'tongue-body',label:t('舌面'),names:['Tongue'],point:[0,-.011,.052]},
+  {id:'tongue-root',label:t('舌根'),names:['Tongue'],point:[0,-.043,.030]},
 ];
 const tongueLabels=document.createElement('div');tongueLabels.id='tongue-landmarks';tongueLabels.hidden=true;
 tongueLabels.innerHTML=tongueLandmarks.map(g=>`<span>${g.label}</span>`).join('');$('#stage').append(tongueLabels);
@@ -72,8 +73,8 @@ function audioFailure(error){
   window.dispatchEvent(new CustomEvent('teaching-error',{detail:{message:error.message}}));
   player.pause();state.playing=false;syncPlay();
   coach?.fail();
-  $('#audio-status').textContent=error.message||'无法播放，请重试。';
-  curriculum?.setStatus('示范暂时没播完，请点“听示范并跟读”重试。');
+  $('#audio-status').textContent=error.message||t('无法播放，请重试。');
+  curriculum?.setStatus(t('示范暂时没播完，请点“听示范并跟读”重试。'));
 }
 function pausePlayback(){playbackAttempt++;player.pause();state.playing=false;syncPlay();coach?.interrupt();}
 async function startPlayback(){
@@ -82,10 +83,10 @@ async function startPlayback(){
   const attempt=++playbackAttempt;
   if(state.progress>=1||previewing)state.progress=0;
   previewing=false;
-  state.playing=true;syncPlay();$('#audio-status').textContent='正在准备声音…';
+  state.playing=true;syncPlay();$('#audio-status').textContent=t('正在准备声音…');
   try{
     await player.play(state.progress);
-    if(attempt===playbackAttempt&&state.playing){$('#audio-status').textContent='课程示范音 · 口型为教学辅助';curriculum?.setStatus('先听完整示范，再跟读；可用下方进度条暂停和回看。');coach?.resume(slowMotion?'watch':'listen');}
+    if(attempt===playbackAttempt&&state.playing){$('#audio-status').textContent=t('课程示范音 · 口型为教学辅助');curriculum?.setStatus(t('先听完整示范，再跟读；可用下方进度条暂停和回看。'));coach?.resume(slowMotion?'watch':'listen');}
   }catch(error){if(attempt===playbackAttempt)audioFailure(error);}
 }
 
@@ -111,42 +112,42 @@ const nasalPath=new THREE.CatmullRomCurve3([
  new THREE.Vector3(0,-.11,.013),new THREE.Vector3(0,-.058,.018),new THREE.Vector3(0,-.007,.02),
  new THREE.Vector3(0,.019,.035),new THREE.Vector3(0,.023,.078),new THREE.Vector3(0,.02,.135),
 ]);
-function fail(error){console.error(error);ready=false;coach?.ready(false);curriculum?.setReady(false);$('#play').disabled=true;$('#restart').disabled=true;$('#load-state').hidden=false;$('#load-state b').textContent='模型暂时无法显示';$('#load-detail').textContent='请检查网络连接，然后重试。';$('.spinner').hidden=true;$('#retry').hidden=false;pausePlayback();}
+function fail(error){console.error(error);ready=false;coach?.ready(false);curriculum?.setReady(false);$('#play').disabled=true;$('#restart').disabled=true;$('#load-state').hidden=false;$('#load-state b').textContent=t('模型暂时无法显示');$('#load-detail').textContent=t('请检查网络连接，然后重试。');$('.spinner').hidden=true;$('#retry').hidden=false;pausePlayback();}
 $('#retry').onclick=()=>location.reload();
 
 function buildUI(){
-  $('.eyebrow').textContent='国内常见48音标教学集合';
+  $('.eyebrow').textContent=t('国内常见48音标教学集合');
   const chooser=document.createElement('div');chooser.className='library-chooser';
-  chooser.innerHTML='<label for="library-mode">学习模式</label><lab-select id="library-mode"><option value="ipa">48 音标教学集合</option><option value="vowels">20 个元音口型</option><option value="letters">A–Z 字母名称</option><option value="curriculum">单词与句子 · 循序跟读</option></lab-select><label for="category">音标分类</label><lab-select id="category"></lab-select>';
+  chooser.innerHTML=htmlT('<label for="library-mode">学习模式</label><lab-select id="library-mode"><option value="ipa">48 音标教学集合</option><option value="vowels">20 个元音口型</option><option value="letters">A–Z 字母名称</option><option value="curriculum">单词与句子 · 循序跟读</option></lab-select><label for="category">音标分类</label><lab-select id="category"></lab-select>');
   $('.eyebrow').after(chooser);
   const picker=document.createElement('div');picker.id='vowel-picker';
   chooser.after(picker);
   picker.onclick=event=>{const button=event.target.closest('[data-sound]');if(button)selectSound(button.dataset.sound);};
   const motionToggle=document.createElement('label');motionToggle.className='motion-toggle';
-  motionToggle.innerHTML='<input id="motion-only" type="checkbox"> 慢速跟读 · 声音同步';
+  motionToggle.innerHTML=htmlT('<input id="motion-only" type="checkbox"> 慢速跟读 · 声音同步');
   $('.audio-toolbar').append(motionToggle);
-  $('#motion-only').onchange=e=>{pausePlayback();slowMotion=e.target.checked;previewing=false;state.progress=0;player.seek(0);$('#speed').value=slowMotion?'0.65':'1';$('#speed').dispatchEvent(new Event('input'));if(slowMotion){player.setMuted(false);$('#sound-toggle').checked=true;}$('#audio-status').textContent=slowMotion?'声音与口型同步慢放':'本地合成示范音';syncPlay();};
+  $('#motion-only').onchange=e=>{pausePlayback();slowMotion=e.target.checked;previewing=false;state.progress=0;player.seek(0);$('#speed').value=slowMotion?'0.65':'1';$('#speed').dispatchEvent(new Event('input'));if(slowMotion){player.setMuted(false);$('#sound-toggle').checked=true;}$('#audio-status').textContent=slowMotion?t('声音与口型同步慢放'):t('本地合成示范音');syncPlay();};
   $('#category').setOptions(Object.entries(CATEGORIES));
-  $('#focus-heading').textContent='观察发音动作';
+  $('#focus-heading').textContent=t('观察发音动作');
   const refreshEntries=()=>{
     const mode=$('#library-mode').value;
     const course=mode==='curriculum';
-    $('.eyebrow').textContent=course?'从声音到句子':'国内常见48音标教学集合';
+    $('.eyebrow').textContent=course?t('从声音到句子'):t('国内常见48音标教学集合');
     curriculum?.setVisible(course);
     $('.lesson-note').hidden=course;
     $('#category').hidden=mode!=='ipa';$('label[for="category"]').hidden=mode!=='ipa';
     picker.hidden=course;
     if(course){selectSound('lesson:'+LESSON_SERIES[0].lessonIds[0]);return;}
     const groups=mode==='letters'?['letters']:mode==='vowels'?['vowel','diphthong']:[$('#category').value];
-    const entries=groups.flatMap(category=>category==='letters'?[...Object.values(LETTERS).map(l=>['letter:'+l.id,l.id,`/${l.ipa}/`]),['alphabet','A–Z','连续播放']]:Object.values(PHONEMES).filter(p=>p.category===category).map(p=>['ipa:'+p.id,p.ipa,p.word]));
+    const entries=groups.flatMap(category=>category==='letters'?[...Object.values(LETTERS).map(l=>['letter:'+l.id,l.id,`/${l.ipa}/`]),['alphabet','A–Z',t('连续播放')]]:Object.values(PHONEMES).filter(p=>p.category===category).map(p=>['ipa:'+p.id,p.ipa,p.word]));
     picker.innerHTML=groups.map(category=>{
       const items=category==='letters'?entries:entries.filter(([id])=>PHONEMES[id.slice(4)].category===category);
-      return `<fieldset><legend>${CATEGORIES[category]||'A–Z 字母名称'}</legend><div class="vowel-grid">${items.map(([id,label,example])=>`<button type="button" data-sound="${id}" ${id.startsWith('ipa:')&&['vowel','diphthong'].includes(category)?`data-vowel="${id.slice(4)}"`:''} aria-label="${label} ${example}" aria-pressed="false"><b>${label}</b><small>${example}</small></button>`).join('')}</div></fieldset>`;
+      return `<fieldset><legend>${CATEGORIES[category]||t('A–Z 字母名称')}</legend><div class="vowel-grid">${items.map(([id,label,example])=>`<button type="button" data-sound="${id}" ${id.startsWith('ipa:')&&['vowel','diphthong'].includes(category)?`data-vowel="${id.slice(4)}"`:''} aria-label="${label} ${example}" aria-pressed="false"><b>${label}</b><small>${example}</small></button>`).join('')}</div></fieldset>`;
     }).join('');
     selectSound(entries[0][0]);
   };
   $('#library-mode').onchange=refreshEntries;$('#category').onchange=refreshEntries;
-  $('#layer-controls').innerHTML=Object.entries({skin:'皮肤与眼球',bone:'骨骼与牙齿',muscle:'肌肉',organ:'舌、腭与气道'}).map(([id,label])=>`<div class="layer"><label for="layer-${id}">${label}<output id="value-${id}"></output></label><input type="range" min="0" max="100" id="layer-${id}" value="${state.alpha[id]}"></div>`).join('');
+  $('#layer-controls').innerHTML=Object.entries({skin:t('皮肤与眼球'),bone:t('骨骼与牙齿'),muscle:t('肌肉'),organ:t('舌、腭与气道')}).map(([id,label])=>`<div class="layer"><label for="layer-${id}">${label}<output id="value-${id}"></output></label><input type="range" min="0" max="100" id="layer-${id}" value="${state.alpha[id]}"></div>`).join('');
   for(const key of ['left','right','skin','bone','muscle','organ']){
     const input=$(key==='left'||key==='right'?`#${key}-alpha`:`#layer-${key}`);
     input.addEventListener('input',()=>{state.alpha[key]=Number(input.value);alphaPending=true;invalidate();clearPreset();});
@@ -157,9 +158,9 @@ function showLesson(id){
   const lesson=lessonFor(id);if(!lesson||lessonKey===id)return;lessonKey=id;
   $('#lesson-symbol').textContent='/'+lesson.ipa+'/';$('#lesson-word').textContent=lesson.word;
   $('#cue-mouth').textContent=lesson.mouth;$('#cue-tongue').textContent=lesson.tongue;
-  $('#cue-air').textContent=lesson.air+'；'+lesson.voice+'。';$('#cue-reminder').textContent=lesson.reminder;
-  const other=PHONEMES[lesson.contrast];$('#contrast-sound').textContent=`比一比 /${other.ipa}/ · ${other.word}`;$('#contrast-sound').dataset.sound=other.id;
-  $('#voice-cue').textContent=lesson.voiced?'声带会振动':'不主动振动声带';
+  $('#cue-air').textContent=lesson.air+t('；')+lesson.voice+t('。');$('#cue-reminder').textContent=lesson.reminder;
+  const other=PHONEMES[lesson.contrast];$('#contrast-sound').textContent=t("比一比 /{0}/ · {1}", other.ipa, other.word);$('#contrast-sound').dataset.sound=other.id;
+  $('#voice-cue').textContent=lesson.voiced?t('声带会振动'):t('不主动振动声带');
 }
 function selectLesson(id){
   $('#library-mode').value='ipa';$('#category').value=PHONEMES[id].category;$('#category').dispatchEvent(new Event('change'));
@@ -202,24 +203,24 @@ function selectSound(id){
   if(enteringCourse&&state.speed===1){
     player.setRate(DEMONSTRATION_RATE);state.speed=player.rate;
     $('#speed').value=state.speed;$('#speed-value').value=state.speed.toFixed(2)+' ×';
-    $('#speed').setAttribute('aria-valuetext',state.speed.toFixed(2)+' 倍');
+    $('#speed').setAttribute('aria-valuetext',state.speed.toFixed(2)+t(' 倍'));
   }
-  player.select(id,state.voice);$('#audio-status').textContent='本地合成示范音';
+  player.select(id,state.voice);$('#audio-status').textContent=t('本地合成示范音');
   const sound=currentSound();
   $('#steps').hidden=isCurriculum();
   $('#lesson-word').hidden=isCurriculum();
-  $('.sound-tag').textContent=isCurriculum()?'当前音素':'发音探索';
-  $('.cue-heading').textContent=isCurriculum()?'当前音素的发音提示':'三个发音小提示';
-  $('#sound-title').textContent=(isCurriculum()?'口型分解 · ':'')+sound.title;$('#sound-copy').textContent=sound.copy;$('#sound-tip').textContent=sound.tip;
+  $('.sound-tag').textContent=isCurriculum()?t('当前音素'):t('发音探索');
+  $('.cue-heading').textContent=isCurriculum()?t('当前音素的发音提示'):t('三个发音小提示');
+  $('#sound-title').textContent=(isCurriculum()?t('口型分解 · '):'')+sound.title;$('#sound-copy').textContent=sound.copy;$('#sound-tip').textContent=sound.tip;
   $('#steps').innerHTML=sound.steps.map((s,i)=>`<button class="step" data-step="${i}"><span>${i+1}</span>${s}</button>`).join('');
   document.querySelectorAll('[data-step]').forEach(b=>b.onclick=()=>{pausePlayback();previewing=false;state.progress=[.25,.50,.85][Number(b.dataset.step)];player.seek(state.progress);});
-  $('#focus-list').innerHTML=sound.focus.filter(id=>state.palette==='human'||!['genio','smile'].includes(id)).map(id=>`<button class="focus-item" data-focus="${id}"><span>${focusLabel(id)}</span><em>观察</em><i></i></button>`).join('');
+  $('#focus-list').innerHTML=sound.focus.filter(id=>state.palette==='human'||!['genio','smile'].includes(id)).map(id=>htmlT`<button class="focus-item" data-focus="${id}"><span>${focusLabel(id)}</span><em>观察</em><i></i></button>`).join('');
   document.querySelectorAll('[data-focus]').forEach(b=>b.onclick=()=>focusOn(b.dataset.focus));
-  $('#selection').innerHTML='<strong>选择器官查看动作</strong><p>点击模型或上方列表，查看当前音中的运动。</p>';
+  $('#selection').innerHTML=htmlT('<strong>选择器官查看动作</strong><p>点击模型或上方列表，查看当前音中的运动。</p>');
   syncPlay();
 }
-function syncPlay(){invalidate();curriculum?.setPlaying(state.playing);$('#play').textContent=state.playing?'Ⅱ 暂停':slowMotion?'▶ 慢速跟读':'▶ 播放发音';$('#play').setAttribute('aria-pressed',String(state.playing));}
-function focusLabel(id){return childMode?CHILD_LABELS[id]:state.palette==='human'?FOCUS[id].label:({tongue:'舌头',lips:'嘴唇',jaw:'下巴',velum:'腭部',voice:'喉部发声'}[id]||FOCUS[id].label);}
+function syncPlay(){invalidate();curriculum?.setPlaying(state.playing);$('#play').textContent=state.playing?t('Ⅱ 暂停'):slowMotion?t('▶ 慢速跟读'):t('▶ 播放发音');$('#play').setAttribute('aria-pressed',String(state.playing));}
+function focusLabel(id){return childMode?CHILD_LABELS[id]:state.palette==='human'?FOCUS[id].label:({tongue:t('舌头'),lips:t('嘴唇'),jaw:t('下巴'),velum:t('腭部'),voice:t('喉部发声')}[id]||FOCUS[id].label);}
 function focusMatch(id){
   if(childMode&&state.palette==='human'&&['lips','jaw'].includes(id))return n=>id==='lips'?n==='Skin - stitched atlas regions':n.startsWith('Lower ');
   return state.palette!=='human'&&['lips','jaw'].includes(id)?n=>n.startsWith('Character ')&&(id==='jaw'?/Chin|Face mask/.test(n):/Muzzle|Chin/.test(n)):FOCUS[id].match;
@@ -306,7 +307,7 @@ function focusOn(id,rawName,reveal=true){
   state.focus=id?{id,match:focusMatch(id),label:focusLabel(id)}:rawName?{match:n=>n===rawName,label:surfaceLabel(meshes.find(m=>m.userData.anatomyName===rawName)?.userData||{})}:null;
   document.querySelectorAll('[data-focus]').forEach(b=>b.classList.toggle('selected',b.dataset.focus===id));
   $('#selection').replaceChildren();const strong=document.createElement('strong'),p=document.createElement('p');
-  strong.textContent=state.focus?.label||'选择器官查看动作';p.textContent=id?(state.palette!=='human'&&['lips','jaw'].includes(id)?'观察角色嘴巴的张开与合拢，配合口腔内部的舌位一起练习。':FOCUS[id].desc):rawName?'当前选中的源模型结构。可旋转模型或调整透明度观察。':'点击模型或上方列表，查看当前音中的运动。';
+  strong.textContent=state.focus?.label||t('选择器官查看动作');p.textContent=id?(state.palette!=='human'&&['lips','jaw'].includes(id)?t('观察角色嘴巴的张开与合拢，配合口腔内部的舌位一起练习。'):FOCUS[id].desc):rawName?t('当前选中的源模型结构。可旋转模型或调整透明度观察。'):t('点击模型或上方列表，查看当前音中的运动。');
   $('#selection').append(strong,p);
 }
 function resetGuide(){
@@ -325,9 +326,9 @@ function explainOrgan(id){
   if(guide.names)state.focus={id:guide.focus,match:name=>guide.names.includes(name),label:guide.label};
   $('#part-description').textContent=guide.description;
   $('#part-try').textContent=guide.activity;$('#part-activity').hidden=false;
-  $('#part-demo').textContent=`看 /${PHONEMES[guide.sound].ipa}/ 的动作`;
+  $('#part-demo').textContent=t("看 /{0}/ 的动作", PHONEMES[guide.sound].ipa);
   $('#part-compare').hidden=!guide.contrast;
-  if(guide.contrast)$('#part-compare').textContent=`对比 /${PHONEMES[guide.contrast].ipa}/`;
+  if(guide.contrast)$('#part-compare').textContent=t("对比 /{0}/", PHONEMES[guide.contrast].ipa);
   document.querySelectorAll('[data-organ],[data-guide]').forEach(b=>b.setAttribute('aria-pressed',String((b.dataset.organ||b.dataset.guide)===id)));
   $('#selection strong').textContent=guide.label;$('#selection p').textContent=guide.description;
   if(id==='voice'){
@@ -374,7 +375,7 @@ function animatePose(pose){
   }
   document.querySelectorAll('[data-focus]').forEach(b=>{
     const f=FOCUS[b.dataset.focus],amount=Math.max(...f.keys.map(k=>pose.weights[k]||0));
-    b.querySelector('i').style.width=(amount*100)+'%';b.querySelector('em').textContent=amount>.1?'运动中':'观察';
+    b.querySelector('i').style.width=(amount*100)+'%';b.querySelector('em').textContent=amount>.1?t('运动中'):t('观察');
   });
   const pin=$('#organ-pin');pin.hidden=!pinned||!!selectedGuide;
   if(pinned){
@@ -457,7 +458,7 @@ function updateVocalDiagram(pose){
   const card=$('#vocal-card');
   card.classList.toggle('is-vibrating',state.playing&&voiced&&!coach?.reducedMotion);
   card.style.setProperty('--fold-gap',voiced?'1px':'7px');
-  $('#vocal-state').textContent=voiced?'这个音：声带振动':'这个音：不主动振动声带';
+  $('#vocal-state').textContent=voiced?t('这个音：声带振动'):t('这个音：不主动振动声带');
   card.dataset.voiced=String(voiced);
 }
 function updateAttention(){
@@ -489,11 +490,11 @@ function tick(now){
   coach?.update(pose,state.playing);
   if(isCurriculum())curriculum?.setWord(state.playing?pose.wordIndex:-1);
   $('#voice-cue').classList.toggle('vibrating',state.playing&&pose.voiced);
-  $('#timeline').value=Math.round(state.progress*1000);$('#time-label').textContent=(state.progress*duration).toFixed(1)+' / '+duration.toFixed(1)+' 秒';
+  $('#timeline').value=Math.round(state.progress*1000);$('#time-label').textContent=(state.progress*duration).toFixed(1)+' / '+duration.toFixed(1)+t(' 秒');
   $('#phase-label').textContent=currentSound().steps[pose.step];document.querySelectorAll('[data-step]').forEach(b=>b.classList.toggle('active',Number(b.dataset.step)===pose.step));
-  $('#air-status').textContent=!state.air?'气流已隐藏':pose.air>.02?pose.voiced?'口腔送气 · 喉部发声':'口腔送气':pose.phonemeProgress>.1&&pose.phonemeProgress<.65&&['plosive','affricate','cluster'].includes(PHONEMES[pose.phoneme]?.category)?'闭塞阶段 · 气流受阻':'准备呼气';
-  if(state.air&&pose.air>.02&&pose.nasal>.5)$('#air-status').textContent='鼻腔送气 · 喉部发声';
-  else if(state.air&&pose.air>.02&&pose.weights.TongueLateral>.5)$('#air-status').textContent='舌尖接触 · 气息从舌两侧通过';
+  $('#air-status').textContent=!state.air?t('气流已隐藏'):pose.air>.02?pose.voiced?t('口腔送气 · 喉部发声'):t('口腔送气'):pose.phonemeProgress>.1&&pose.phonemeProgress<.65&&['plosive','affricate','cluster'].includes(PHONEMES[pose.phoneme]?.category)?t('闭塞阶段 · 气流受阻'):t('准备呼气');
+  if(state.air&&pose.air>.02&&pose.nasal>.5)$('#air-status').textContent=t('鼻腔送气 · 喉部发声');
+  else if(state.air&&pose.air>.02&&pose.weights.TongueLateral>.5)$('#air-status').textContent=t('舌尖接触 · 气息从舌两侧通过');
   if(pose.phoneme)$('#phase-label').textContent=`${pose.letter?pose.letter+' · ':''}/${PHONEMES[pose.phoneme].ipa}/ · ${currentSound().steps[pose.step]}`;
   updateGuides();updateAttention();updateVocalDiagram(pose);renderer.render(scene,camera);renderCount++;
 }
@@ -575,9 +576,9 @@ if(LESSONS[requestedLesson]){
   $('#library-mode').value='curriculum';$('#library-mode').dispatchEvent(new Event('change'));
   selectSound('lesson:'+requestedLesson);
 }
-const mouthButton=document.createElement('button');mouthButton.dataset.view='mouth';mouthButton.textContent='口腔特写';$('.view-buttons').append(mouthButton);
-const lipsButton=document.createElement('button');lipsButton.dataset.view='lips';lipsButton.textContent='唇部特写';$('.view-buttons').append(lipsButton);
-const voiceButton=document.createElement('button');voiceButton.dataset.view='voice';voiceButton.textContent='声带特写';$('.view-buttons').append(voiceButton);
+const mouthButton=document.createElement('button');mouthButton.dataset.view='mouth';mouthButton.textContent=t('口腔特写');$('.view-buttons').append(mouthButton);
+const lipsButton=document.createElement('button');lipsButton.dataset.view='lips';lipsButton.textContent=t('唇部特写');$('.view-buttons').append(lipsButton);
+const voiceButton=document.createElement('button');voiceButton.dataset.view='voice';voiceButton.textContent=t('声带特写');$('.view-buttons').append(voiceButton);
 $('#anatomy-key').innerHTML=ANATOMY_GUIDES.map(g=>`<button type="button" data-organ="${g.id}" aria-pressed="false" style="--organ-color:${g.color}"><i></i>${g.label}<small>${g.nickname}</small></button>`).join('');
 document.querySelectorAll('[data-organ]').forEach(b=>b.onclick=()=>explainOrgan(b.dataset.organ));
 function previewPart(compare=false){
@@ -601,7 +602,7 @@ try{
   Promise.all([loader.loadAsync('./assets/classroom.glb'),loader.loadAsync('./assets/classroom-skin.glb')]).then(async([gltf,skin])=>{
     model=new THREE.Group();scene.add(model);gltf.scene.add(skin.scene);addModelMeshes(gltf.scene);
     syncTeachingGeometry();preset('cutaway');setView('right');model.updateMatrixWorld(true);
-    $('#load-detail').textContent='正在准备透明观察效果…';await warmMaterials();
+    $('#load-detail').textContent=t('正在准备透明观察效果…');await warmMaterials();
     $('#anatomy-details').disabled=false;ready=true;coach?.ready();curriculum?.setReady(true);$('#load-state').hidden=true;$('#play').disabled=false;$('#restart').disabled=false;tick(performance.now());
   }).catch(fail);
 }catch(error){fail(error);}
@@ -612,10 +613,10 @@ $('#timeline').oninput=e=>{pausePlayback();previewing=false;state.progress=Numbe
 $('#speed').oninput=e=>{
   player.setRate(Number(e.target.value));state.speed=player.rate;
   $('#speed-value').value=state.speed.toFixed(2)+' ×';
-  e.target.setAttribute('aria-valuetext',state.speed.toFixed(2)+' 倍');
+  e.target.setAttribute('aria-valuetext',state.speed.toFixed(2)+t(' 倍'));
 };
-$('#voice').onchange=e=>{const resume=state.playing;pausePlayback();state.voice=e.target.value;state.progress=0;player.select(state.sound,state.voice);$('#audio-status').textContent='本地合成示范音';if(resume)startPlayback();};
-$('#sound-toggle').onchange=e=>{player.setMuted(!e.target.checked);if(!e.target.checked)coach?.interrupt('声音已关闭。准备好后，点“听示范音”再听一次。');};
+$('#voice').onchange=e=>{const resume=state.playing;pausePlayback();state.voice=e.target.value;state.progress=0;player.select(state.sound,state.voice);$('#audio-status').textContent=t('本地合成示范音');if(resume)startPlayback();};
+$('#sound-toggle').onchange=e=>{player.setMuted(!e.target.checked);if(!e.target.checked)coach?.interrupt(t('声音已关闭。准备好后，点“听示范音”再听一次。'));};
 $('#loop').onchange=e=>state.loop=e.target.checked;$('#air-toggle').onchange=e=>state.air=e.target.checked;
 document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{if(controls){if(b.dataset.view==='voice')explainOrgan('voice');else setView(b.dataset.view,true);}});$('#reset-view').onclick=()=>controls&&setView(embedded?'right':'oblique',true);
 document.querySelectorAll('[data-preset]').forEach(b=>b.onclick=()=>preset(b.dataset.preset));$('#reset-opacity').onclick=()=>preset('cutaway');
@@ -624,15 +625,15 @@ $('#clear-focus').onclick=()=>focusOn(null);
 $('#anatomy-details').onchange=async e=>{
   const input=e.target;
   if(input.checked&&!detailsLoaded){
-    input.disabled=true;$('#display-mode').textContent='正在加载解剖细节…';
+    input.disabled=true;$('#display-mode').textContent=t('正在加载解剖细节…');
     try{await loadAnatomyDetails();}
-    catch{input.checked=false;$('#display-mode').textContent='解剖细节加载失败，可重新勾选重试';return;}
+    catch{input.checked=false;$('#display-mode').textContent=t('解剖细节加载失败，可重新勾选重试');return;}
     finally{input.disabled=false;}
   }
   childMode=!input.checked;refreshMaterials();
   document.querySelectorAll('[data-focus]').forEach(b=>b.querySelector('span').textContent=focusLabel(b.dataset.focus));
-  focusOn(null);$('#display-mode').textContent=childMode?'儿童简化模型':'教师解剖对照';
-  $('#focus-heading').textContent=!childMode&&state.palette==='human'?'观察肌肉配合':'观察发音动作';
+  focusOn(null);$('#display-mode').textContent=childMode?t('儿童简化模型'):t('教师解剖对照');
+  $('#focus-heading').textContent=!childMode&&state.palette==='human'?t('观察肌肉配合'):t('观察发音动作');
 };
 $('#contrast-sound').onclick=e=>selectLesson(e.currentTarget.dataset.sound);
 coach=createLearningCoach({
