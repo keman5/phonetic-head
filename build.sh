@@ -11,6 +11,7 @@ npm test
 npm run test:server
 npm run test:admin-ui
 npm run test:i18n-ui
+npm run test:design
 test -s dist/index.html
 test -s dist/learn.html
 test -s dist/assets/phonetic-head.glb

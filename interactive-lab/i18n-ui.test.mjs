@@ -83,6 +83,67 @@ test('manual choice survives navigation, reload and switches back to browser lan
   assert.equal(await unsupported.locator('html').getAttribute('lang'),'en');await unsupported.close();
 });
 
+test('focusing the sticky language switch keeps the scroll position with mouse and keyboard',{timeout:120000},async t=>{
+  const {page,base}=await setup(t,'zh-CN');
+  for(const path of ['/','/learn.html?course=dog','/practice.html','/lab.html']){
+    await page.goto(base+path);
+    if(path==='/')await page.locator('.course-card').first().waitFor();
+    if(path.includes('learn'))await page.waitForFunction(()=>document.body.dataset.chapter);
+    if(path==='/practice.html')await page.locator('[data-voice=record]').waitFor();
+    if(path==='/lab.html')await page.waitForFunction(()=>window.teachingPlayer?.ready,null,{timeout:90000});
+    for(const width of [1280,390]){
+      await page.setViewportSize({width,height:800});
+      for(const method of ['focus','mouse','keyboard']){
+        const before=await page.evaluate(()=>{
+          document.activeElement.blur();scrollTo(0,300);return scrollY;
+        });
+        assert(before>100,`${path} at ${width} must be scrolled`);
+        if(method==='focus')await page.locator('#language-select').focus();
+        if(method==='mouse'){
+          const box=await page.locator('#language-select').boundingBox();
+          await page.mouse.click(box.x+box.width/2,box.y+box.height/2);
+          await page.keyboard.press('Escape');
+        }
+        if(method==='keyboard'){
+          await page.evaluate(()=>{
+            const controls=[...document.querySelectorAll('body > header a, body > header button, body > header select')];
+            controls[controls.indexOf(document.querySelector('#language-select'))-1].focus({preventScroll:true});
+          });
+          await page.keyboard.press('Tab');
+        }
+        assert.equal(await page.locator('#language-select').evaluate(el=>el===document.activeElement),true);
+        assert.equal(await page.evaluate(()=>scrollY),before,`${path} at ${width}: ${method}`);
+      }
+    }
+  }
+});
+
+test('language reload does not reset classroom scroll while chapter navigation still starts at the title',{timeout:90000},async t=>{
+  const {page,base}=await setup(t,'zh-CN');
+  await page.goto(base+'/');
+  await page.evaluate(()=>localStorage.setItem('phonetic-journey-v1',JSON.stringify({dog:{step:0,done:[0]}})));
+  await page.goto(base+'/learn.html?course=dog');
+  await page.waitForFunction(()=>document.body.dataset.chapter==='0');
+  await page.waitForFunction(()=>document.querySelector('#model-frame').contentWindow.teachingPlayer?.ready,null,{timeout:90000});
+  await page.locator('#language-select').evaluate(el=>el.focus({preventScroll:true}));
+  await page.evaluate(()=>scrollTo(0,300));
+  const before=await page.evaluate(()=>scrollY);
+  assert(before>100);
+  // Native scroll anchoring may adjust for asynchronously rendered course content.
+  await Promise.all([page.waitForEvent('load'),page.locator('#language-select').selectOption('zh-CN')]);
+  await page.waitForFunction(()=>document.body.dataset.chapter==='0');
+  await page.waitForFunction(()=>document.querySelector('#model-frame').contentWindow.teachingPlayer?.ready,null,{timeout:90000});
+  assert(await page.evaluate(()=>scrollY)>100,'reloading the language must not reset the page to the top');
+  await Promise.all([page.waitForEvent('load'),page.locator('#language-select').selectOption('en')]);
+  await page.waitForFunction(()=>document.documentElement.lang==='en'&&document.body.dataset.chapter==='0');
+  await page.waitForFunction(()=>document.querySelector('#model-frame').contentWindow.teachingPlayer?.ready,null,{timeout:90000});
+  assert(await page.evaluate(()=>scrollY)>100,'changing the language must not reset the page to the top');
+  await page.locator('#chapters button').nth(1).click();
+  await page.waitForFunction(()=>document.body.dataset.chapter==='1');
+  assert.equal(await page.evaluate(()=>scrollY),0);
+  assert.equal(await page.evaluate(()=>document.activeElement.id),'screen-title');
+});
+
 test('English administration translates errors and protects unsaved edits during language switches',{timeout:90000},async t=>{
   const {page,base}=await setup(t);
   await page.goto(base+'/admin.html');await page.locator('#login-panel').waitFor({state:'visible'});await noChinese(page);

@@ -90,7 +90,7 @@ function switchMode(useText){
  $('scrub').value=0;setWords(-1);updateMode();
  $('feedback').textContent=t('已切换到')+(textMode?t('图文与声音'):t('3D 模型'))+t('，点示范按钮开始。');
 }
-function render(){
+function render(moveToTitle=false){
  stop();eligible=false;activeWord=-1;
  const match=location.hash.match(/^#step-(\d)$/);step=Math.min(match?Number(match[1]):saved.step,unlocked(),7);
  history.replaceState(null,'','#step-'+step);persist();lesson=LESSONS[lessonForChapter(series,step)];
@@ -123,7 +123,9 @@ function render(){
  $('task-badge').textContent=step===7?t('课程已完成'):saved.done.includes(step)?t('已完成 · 可复习'):t('一个小任务');
  if(step===6)updateReflection();
  updateMode();
- renderChapters();document.body.dataset.chapter=String(step);$('screen-title').focus({preventScroll:true});scrollTo({top:0,behavior:'instant'});
+ renderChapters();document.body.dataset.chapter=String(step);
+ // Reloads retain browser scroll restoration; chapter navigation starts at the new title.
+ if(moveToTitle){$('screen-title').focus({preventScroll:true});scrollTo({top:0,behavior:'instant'});}
 }
 frame.addEventListener('load',()=>{
  frameLoaded=true;model()?.select(lesson.id);
@@ -157,7 +159,7 @@ $('reflection').onchange=()=>{
  saved.selfCheck={date:localDateKey(),checks:[...$('reflection').querySelectorAll('input')].map(input=>input.checked)};
  persist();if(selfChecked())complete();else{updateReflection();$('feedback').textContent=saved.done.includes(6)?t('已完成的课程仍可查看回顾；本次自查按实际情况填写。'):$('reflection-progress').textContent;}
 };
-window.addEventListener('hashchange',render);
+window.addEventListener('hashchange',()=>render(true));
 window.addEventListener('pagehide',stop);
 document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();});
 function update(){

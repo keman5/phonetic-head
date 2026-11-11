@@ -12,7 +12,8 @@
     "build:audio:natural": "bash build.sh natural",
     "test:server": "node --test server.test.mjs admin.test.mjs",
     "test:i18n-ui": "node --test --test-concurrency=1 i18n-ui.test.mjs",
-    "test:admin-ui": "node --test --test-concurrency=1 admin-ui.test.mjs"
+    "test:admin-ui": "node --test --test-concurrency=1 admin-ui.test.mjs",
+    "test:design": "node --test ui-design.test.mjs"
   },
   "dependencies": {
     "three": "0.180.0"

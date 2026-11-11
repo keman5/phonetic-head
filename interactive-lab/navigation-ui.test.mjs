@@ -27,6 +27,7 @@ test('all pages share five reachable navigation links and one route-aware select
   ]) {
     await page.goto(origin+route,{waitUntil:'domcontentloaded'});
     await selection(selected);
+    if (route.startsWith('/learn')) await page.waitForFunction(() => document.querySelector('#lesson-name')?.textContent.trim(), null, {timeout:60000});
     for (const width of [320,390,768,1440]) {
       await page.setViewportSize({width,height:900});
       const bounds = await navigation.getByRole('link').evaluateAll(links => links.map(link => {
